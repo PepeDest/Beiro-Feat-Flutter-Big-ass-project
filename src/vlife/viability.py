@@ -96,7 +96,9 @@ def simulate_exits(B, S, subsets, p_out=0.05, n_traj=200, dt=0.05, t_max=100.0, 
 
 
 def mfpt_from(exit_t, event, valid):
-    """Censoring-aware mean first-passage time. Inputs are (n,) arrays. Returns (V, n_events, n_valid)."""
+    """Censoring-aware mean first-passage time. Inputs are (n,) arrays. Returns (V, n_events, n_valid).
+    With 0 events V = total exposure, a LOWER BOUND, not an estimate; callers must check n_events (the experiments drop
+    structures with fewer than 5 exits; ViabilityMeasure.evaluate returns nan for them, docs/code_review.md item 9)."""
     v = valid
     ev = int(event[v].sum())
     exposure = float(exit_t[v].sum())
@@ -129,14 +131,16 @@ class ViabilityMeasure(ABC):
 
 
 class MFPTViability(ViabilityMeasure):
+    """evaluate returns nan for structures with fewer than min_events observed exits (fix #9: V is then censored)."""
     name = "mfpt"
 
-    def __init__(self, **kw):
-        self.kw = kw
+    def __init__(self, min_events=5, **kw):
+        self.min_events, self.kw = min_events, kw
 
     def evaluate(self, world, subsets, rng):
         d = simulate_exits(world.B, world.S, subsets, rng=rng, **self.kw)
-        return mfpt_all(d)[0]
+        V, ev, _ = mfpt_all(d)
+        return np.where(ev >= self.min_events, V, np.nan)
 
 
 class GrowthRateViability(ViabilityMeasure):
@@ -150,8 +154,8 @@ class GrowthRateViability(ViabilityMeasure):
     Kaplan-Meier estimate). After t_max the curve continues with hazard 1/V."""
     name = "growth_rate"
 
-    def __init__(self, b=1.0, a_m=0.0, **sim_kw):
-        self.b, self.a_m, self.sim_kw = b, a_m, sim_kw
+    def __init__(self, b=1.0, a_m=0.0, min_events=5, **sim_kw):
+        self.b, self.a_m, self.min_events, self.sim_kw = b, a_m, min_events, sim_kw
 
     @staticmethod
     def survival(exit_t, valid, dt, t_max, event=None):
@@ -193,4 +197,5 @@ class GrowthRateViability(ViabilityMeasure):
 
     def evaluate(self, world, subsets, rng):
         d = simulate_exits(world.B, world.S, subsets, rng=rng, **self.sim_kw)
-        return self.from_exits(d)[0]
+        ev = d.event.sum(0)            # fix #9: nan when the curve is censored before min_events exits
+        return np.where(ev >= self.min_events, self.from_exits(d)[0], np.nan)

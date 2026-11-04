@@ -36,3 +36,15 @@ def test_independent_parts_hazards_add():
     d = simulate_exits(B, S, [(0,), (1,)], p_out=0.2, n_traj=8000, dt=0.02, t_max=100, rng=np.random.default_rng(1))
     V = mfpt_all(d)[0]; Vu = mfpt_union(d, 0, 1)[0]
     assert abs(Vu * (1 / V[0] + 1 / V[1]) - 1) < 0.08
+
+
+def test_evaluate_returns_nan_for_censored_structures():
+    # Fix #9 (docs/code_review.md): with (almost) no exits, V = exposure is a lower bound, so evaluate must not return it.
+    from vlife.viability import MFPTViability, GrowthRateViability
+    from vlife.worlds import make_world
+    w = make_world("equilibrium", 3, np.random.default_rng(0)); subs = [(0,), (1,), (0, 1)]
+    short = dict(n_traj=50, dt=0.05, t_max=0.05)           # one step: hardly any exits
+    for m in (MFPTViability(**short), GrowthRateViability(**short)):
+        assert np.all(np.isnan(m.evaluate(w, subs, np.random.default_rng(1))))
+    V = MFPTViability(n_traj=200, dt=0.05, t_max=100.0).evaluate(w, subs, np.random.default_rng(1))
+    assert np.all(np.isfinite(V)) and np.all(V > 0)

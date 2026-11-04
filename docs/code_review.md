@@ -181,7 +181,7 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 Con zero uscite la funzione restituisce l'esposizione totale (`exposure / max(ev, 1)`): è un limite inferiore, non una stima. E3, E5 e E9 scartano le strutture con meno di 5 uscite, quindi gli esperimenti non ne sono toccati. `MFPTViability.evaluate` e `GrowthRateViability.evaluate` invece restituiscono questi valori senza filtro. Chi usa l'interfaccia `ViabilityMeasure` può ricevere valori censurati senza saperlo. Proposta: restituire anche il numero di uscite, oppure `nan` sotto una soglia.
 
-**Stato:** non ancora corretto, previsto in fase B.
+**Stato:** corretto nel codice (fase B). `MFPTViability.evaluate` e `GrowthRateViability.evaluate` restituiscono `nan` sotto `min_events` uscite (predefinito 5, la stessa soglia degli esperimenti). `mfpt_from` non cambia, ma il docstring dice che con zero uscite il valore è un limite inferiore. Le copie in `agency` e `nonlinear` non cambiano: chi le usa (E5, E6, E6b) controlla già il numero di uscite. Test in `tests/test_viability.py`. Nessun risultato cambia: nessun esperimento usa `evaluate`.
 
 ## 10. Bassa: divisione per zero in `gib_projection`
 
