@@ -44,21 +44,37 @@ The full table is in `results/s1b_table.md` (made by `experiments/s1b_unitfree.p
 | Rule | Verdict | Numbers |
 |---|---|---|
 | R1 (free of units) | passes | `tests/test_gaussian.py::test_total_correlation_is_free_of_units` |
-| R2 (H1 for Φ_TC) | supported in 9 of 9 settings | ρ from +0.33 to +0.53. All CIs exclude 0. |
-| R3 (stable when D changes) | not stable | The R2 verdict is the same in all three D settings. The change from baseline to r = 3 is +0.1008, and the limit was 0.1. For comparison, Φ_orig changes by +0.27. |
-| R4 (TC helps over P + C) | helps | Φ_TC is higher than P + C in 9 of 9 settings, by +0.015 to +0.086. The CIs overlap, so each single gain is small. |
-| R5 (TC sign) | stable, negative | The TC coefficient is negative in all 3 families in all 9 settings. |
+| R2 (H1 for Φ_TC) | supported in 9 of 9 settings | ρ from ~~+0.33~~ +0.27 to +0.53. All CIs exclude 0. (Phase C: baseline, τ 0.5, τ 2 corrected; the other 6 settings use the old exit check.) |
+| R3 (stable when D changes) | not stable | The R2 verdict is the same in all three D settings. The change from baseline to r = 3 is +0.1008, and the limit was 0.1. For comparison, Φ_orig changes by +0.27. (Phase C: not re-evaluated, because the D-test runs still use the old exit check.) |
+| R4 (TC helps over P + C) | helps | Φ_TC is higher than P + C in 9 of 9 settings, by +0.015 to +0.086. The CIs overlap, so each single gain is small. (Phase C: higher in 3 of 3 corrected settings, by +0.054, +0.016 and +0.145 at baseline, τ 0.5, τ 2; the 9-setting count is not recomputed.) |
+| R5 (TC sign) | stable, negative | The TC coefficient is negative in all 3 families in all 9 settings. (Phase C: still negative in all 3 families in the 3 corrected settings.) |
+
+**Superseded (2026-11-04, phase C, docs/RERUN.md):** baseline, τ 0.5 and τ 2 were redone with the corrected exit check
+(Brownian-bridge correction, common random numbers; tag `_v2`). New table: `results/s1b_table_v2.md` and
+`results/s1b_unitfree_v2.json` (old files kept). The other 6 settings still use the old exit check.
+
+| setting | Φ_TC (R2) | P + C | Φ_TC, equal size | −TC, equal size | TC coef eq / driven / modular |
+|---|---|---|---|---|---|
+| baseline | ~~+0.41 [+0.34, +0.48]~~ +0.34 [+0.27, +0.42] supported | ~~+0.36~~ +0.29 [+0.21, +0.37] | ~~+0.56~~ +0.57 | ~~+0.15~~ +0.19 [+0.12, +0.26] | ~~−0.118 / −0.034 / −0.045~~ −0.156 / −0.047 / −0.059 |
+| τ 0.5 | ~~+0.33 [+0.24, +0.42]~~ +0.27 [+0.18, +0.35] supported | ~~+0.32~~ +0.25 [+0.16, +0.34] | ~~+0.61~~ +0.64 | ~~+0.15~~ +0.19 | ~~−0.095 / −0.042 / −0.054~~ −0.128 / −0.053 / −0.068 |
+| τ 2 | ~~+0.48 [+0.42, +0.53]~~ +0.47 [+0.42, +0.52] supported | ~~+0.39~~ +0.32 [+0.25, +0.40] | ~~+0.47~~ +0.49 | ~~+0.15~~ +0.19 | ~~−0.138 / −0.019 / −0.027~~ −0.180 / −0.033 / −0.041 |
+
+The R2 verdict is "supported" in all 3 corrected settings, and the TC coefficient is negative in every family.
 
 Other observations (description only):
-- Among structures of equal size, ρ(Φ_TC) is between +0.47 and +0.71.
-- ρ(−TC) among structures of equal size is between +0.13 and +0.22. At fixed size, structures with less internal dependence live longer.
-- ρ(−TC) is the same at τ = 0.5, 1 and 2 (+0.15). This is a check: TC and V do not depend on τ.
+- Among structures of equal size, ρ(Φ_TC) is between ~~+0.47~~ +0.49 and +0.71 (phase C: τ 2 corrected to +0.49; the maximum, D-test r 3, is old).
+- ρ(−TC) among structures of equal size is between +0.13 and +0.22. At fixed size, structures with less internal dependence live longer. (Phase C: +0.19 in the 3 corrected settings, inside this range; the range ends come from old settings.)
+- ρ(−TC) is the same at τ = 0.5, 1 and 2 (~~+0.15~~ +0.19, phase C). This is a check: TC and V do not depend on τ.
 
 ### The expectation was partly wrong
 I expected TC to leave the τ problem of S1. It did not: Φ_TC is supported at all three τ values. The likely reason is the
 scale: TC changes much less across structures than K_H does, so the penalty never outweighs C. This explanation is post hoc.
 A check on the baseline data supports it. The within-world spread of the penalty term is 0.25 × sd(TC) = 0.017, against
 0.25 × sd(K_H) = 0.397. The spread of C is 0.304, 0.124 and 0.034 at τ = 0.5, 1 and 2, so it stays larger than the TC penalty at every τ.
+**Note (2026-11-04, phase C):** this check uses only the features, which do not depend on the exit check. The feature
+spreads in the `_v2` summaries are the same (sd(K_H) 1.587, sd(C) 0.304 / 0.124 / 0.034), so the check stands. sd(TC) is
+not stored in the json files; the value 0.017 is from the old analysis, and TC also does not depend on the exit check.
+On the corrected data Φ_TC is still supported at all three τ values.
 
 ### What this means
 - The negative H1 result of RESULTS.md comes from the K_H term. When K_H is replaced by a term free of units, the
@@ -66,6 +82,7 @@ A check on the baseline data supports it. The within-world spread of the penalty
 - Internal dependence (TC) acts as a cost: at fixed P and C, a more integrated structure leaves its viability set sooner.
   This agrees in sign with the "complexity cost" of the original proposal. In this passive linear world, it does not
   agree with "integration helps survival".
-- C still carries most of the effect: P + C alone gives +0.28 to +0.48.
+- C still carries most of the effect: P + C alone gives ~~+0.28~~ +0.25 to +0.48 (phase C: corrected values +0.29, +0.25,
+  +0.32 at baseline, τ 0.5, τ 2; the other 6 settings, including the maximum, still use the old exit check).
 - Limits: linear-Gaussian, passive worlds only. λ = 0.25 was kept, not chosen for TC. TC is one choice among other
   unit-free terms. The I(A;B) merge result (H4) is not tested again here.

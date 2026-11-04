@@ -139,7 +139,7 @@ V5, description:
 | Measure | Old | New |
 |---|---|---|
 | ρ(C only), all structures | +0.33 | +0.26 |
-| ρ(P only), all / equal size | +0.09 / +0.14 | +0.09 / +0.14 |
+| ρ(P only), all / equal size | +0.09 / +0.14 | +0.09 / +0.13 |
 | ρ(−K_H), all / equal size | −0.26 / −0.70 | −0.19 / −0.74 |
 | ρ(−leak), all | +0.12 | +0.10 |
 | fitted linear (cross-fitted), all / equal size | +0.36 / +0.49 | +0.33 / +0.48 |
