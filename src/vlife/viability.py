@@ -154,15 +154,23 @@ class GrowthRateViability(ViabilityMeasure):
         self.b, self.a_m, self.sim_kw = b, a_m, sim_kw
 
     @staticmethod
-    def survival(exit_t, valid, dt, t_max):
-        t = np.sort(exit_t[valid])
+    def survival(exit_t, valid, dt, t_max, event=None):
+        """l(a) = fraction of valid trajectories with exit time > a, on the grid 0, dt, ..., t_max.
+        Exit times lie on the dt grid, so the comparison uses a tolerance of dt/2: this gives the same curve for float32
+        and float64 times. Censored trajectories (event False) are alive at every grid age, also at t_max.
+        Fix #7 (docs/code_review.md): the old code used a tolerance of 1e-9 and returned P(T >= a), and with the float32
+        times stored by E3 it returned P(T > a) at about 40 % of the grid points."""
+        t = np.asarray(exit_t, float)[valid]
+        if event is not None:
+            t = np.where(np.asarray(event, bool)[valid], t, np.inf)
+        t = np.sort(t)
         grid = np.arange(0.0, t_max + dt / 2, dt)
-        return grid, 1.0 - np.searchsorted(t, grid - 1e-9, side="right") / len(t)   # fraction with exit time > a
+        return grid, 1.0 - np.searchsorted(t, grid + dt / 2, side="right") / len(t)
 
     def rate(self, exit_t, event, valid, dt, t_max, a_m=None):
         a_m = self.a_m if a_m is None else a_m
         V = mfpt_from(exit_t, event, valid)[0]
-        grid, l = self.survival(exit_t, valid, dt, t_max)
+        grid, l = self.survival(exit_t, valid, dt, t_max, event)
         m = grid >= a_m - 1e-12; g, lm = grid[m], l[m]
         tail_l, h = l[-1], 1.0 / V
 

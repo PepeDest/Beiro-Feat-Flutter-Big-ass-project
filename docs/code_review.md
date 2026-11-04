@@ -161,7 +161,7 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 **Correzione proposta.** Salvare l'indice del passo (intero) invece del tempo, oppure usare una tolleranza di dt/2, e allineare il docstring.
 
-**Stato:** non ancora corretto, previsto in fase B.
+**Stato:** corretto nel codice (fase B). `survival` ora usa una tolleranza di dt/2 e restituisce P(T > a), come dice il docstring; con il nuovo argomento `event` le traiettorie censurate restano vive a t_max (prima a t_max contavano anche le uscite all'ultimo passo). Test in `tests/test_growth.py`: esempio a mano, curve identiche per tempi float32 e float64, l(t_max) uguale alla frazione censurata. Effetto misurato su un mondo guidato (62 strutture, a_m = 4,4): r cambia al massimo di 0,0013, Spearman tra r vecchio e nuovo 0,99995. Le conclusioni di S4 non dovrebbero cambiare; E9 verrà rifatto in fase C sui dati nuovi.
 
 ## 8. Bassa: il rumore della GPU si ripete a certi ritardi temporali
 
