@@ -1,11 +1,14 @@
 """E7 / S2c - dissipation term in Phi, on existing S2, S2b and S1 data. Rules: docs/S2c.md. No simulation."""
-import pickle
+import argparse, pickle
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
 from vlife.nonlinear import T
 from vlife.gaussian import total_correlation, structure_entropy_production
 
+ap = argparse.ArgumentParser(description="--s2_tag: tag of e6/e6b data; --s1_suffix: suffix of the S1 data (_v2 = corrected exit check)")
+ap.add_argument("--s2_tag", default=""); ap.add_argument("--s1_suffix", default=""); A_ = ap.parse_args()
+OUT = A_.s2_tag + ("_s1" + A_.s1_suffix if A_.s1_suffix else "")
 rng = np.random.default_rng(0)
 f3 = lambda x: f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
 
@@ -20,9 +23,9 @@ def label(x, pos="yes", neg="no", mid="no clear effect"):
 
 
 # ---------------------------------------------------------------- part A: nonlinear units (S2, S2b)
-s2 = pickle.load(open(RES / "e6_dataset.pkl", "rb"))
+s2 = pickle.load(open(RES / f"e6_dataset{A_.s2_tag}.pkl", "rb"))
 power = {r["i"]: r["power"] for r in s2}
-s2b = pickle.load(open(RES / "e6b_dataset.pkl", "rb")); rows_b, tau_star = s2b["rows"], s2b["tau_star"]
+s2b = pickle.load(open(RES / f"e6b_dataset{A_.s2_tag}.pkl", "rb")); rows_b, tau_star = s2b["rows"], s2b["tau_star"]
 A = {}
 for name, rows in (("S2b", rows_b), ("S2", s2)):
     osc = [r for r in rows if r["kind"] == "oscillator"]
@@ -59,12 +62,12 @@ def linear(tag):
     return dict(n_worlds=len(r3), D3=cb(r3), D4=cb(d4))
 
 
-B = {"baseline": linear(""), "Dtest_r3": linear("_D3")}
+B = {"baseline": linear(A_.s1_suffix), "Dtest_r3": linear("_D3" + A_.s1_suffix)}
 lab3 = lambda x: label(x, "lengthens life", "shortens life", "no effect")
 lab4 = lambda x: label(x, "helps", "hurts", "no effect")
 v.update(D3=lab3(B["baseline"]["D3"]), D4=lab4(B["baseline"]["D4"]),
          D5=f"D3: {lab3(B['Dtest_r3']['D3'])}, D4: {lab4(B['Dtest_r3']['D4'])}")
-save_json("e7_dissipation.json", dict(nonlinear=A, linear=B, check_auc_phiD_S2b=check, verdicts=v))
+save_json(f"e7_dissipation{OUT}.json", dict(nonlinear=A, linear=B, check_auc_phiD_S2b=check, verdicts=v))
 L = ["# E7 / S2c report (auto-generated; rules in docs/S2c.md)\n",
      "| Rule | Data | Value [95% CI] | Verdict |", "|---|---|---|---|",
      f"| D1: rho(sigma, log V_on), oscillators | S2b | {f3(A['S2b']['rho_sigma_logV'])} | {v['D1']} |",
@@ -77,4 +80,4 @@ L = ["# E7 / S2c report (auto-generated; rules in docs/S2c.md)\n",
      f"- S2 (outer-edge viability): rho(sigma, log V_on) {f3(A['S2']['rho_sigma_logV'])}, rho(sigma, log R) {f3(A['S2']['rho_sigma_logR'])}",
      f"- median sigma of oscillators: {A['S2b']['sigma_median']:.2f} per time unit",
      f"- check by construction, S2b: AUC of Phi_D (rock > oscillator) = {check:.2f}"]
-(RES / "e7_dissipation.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
+(RES / f"e7_dissipation{OUT}.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
