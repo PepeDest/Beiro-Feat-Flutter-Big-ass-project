@@ -232,3 +232,30 @@ N 5, N 7, D-test r 2 and r 3; S2, S2b, S2c; S5 and S6 do not use this exit check
 **Already stale before phase C** (code review items 4, 11 and ROADMAP text): "Price identity exact to 1e-16" (true by
 construction), the growth exponent 1.92 (depends on the time origin), and the ROADMAP lines "not measured yet" and
 "no test with mutation", which the S6c status line contradicts.
+
+## C5. Rules for the other 6 S1 settings on corrected data (fixed 2026-11-04 23:55 UTC, before these runs)
+**Runs.** One at a time, all cores, same seeds and settings as the old S1 runs (30 worlds per family, 600 trajectories,
+dt 0.05, t_max 200), now with `--crn --bridge` and the tag `<old tag>_v2`, each followed by `e4_merging.py --tag <tag>`:
+`_p0.2_v2` (`--p_out 0.2`), `_N5_v2` (`--N 5`), `_D2_v2` (`--noise_range 2`), `_D3_v2` (`--noise_range 3`),
+`_N7_v2` (`--N 7`), `_p0.01_v2` (`--p_out 0.01`). Order: shortest first. Estimated time on this machine with all cores:
+15–25 min each for p_out 0.2, N 5, D2, D3; about 1.5 h each for N 7 and p_out 0.01; about 4–5 h in total.
+After the last run: `s1_summary.py --suffix _v2` (all 9 settings), `s1b_unitfree.py --suffix _v2` (R3–R5 can now be
+computed), `e9_growth.py --tag _v2 --wide_tag _p0.2_v2` (S4 rule G2).
+
+| Rule | Question | Verdict |
+|---|---|---|
+| W1 | Does C predict life in all 9 corrected settings? | "stands" if ρ(C only, equal size) has CI low > 0 in all 9 |
+| W2 | Does H4 fail in all 9? | "stands" if H4 is "not supported" in all 9 |
+| W3 | Is the H3 control exact in all 9? | "exact" if \|mean log R\| < 1e-9 in the equilibrium family of every setting |
+| W4 | In which settings is H1 supported (S1 gate)? | Listed. Old: τ 0.5 and D-test r 3. |
+| W5 | D-test rule of docs/S1.md on corrected data | "supported" if ρ(−K_H, equal size) in `_D3_v2` moves toward 0 by more than 0.2 from the corrected baseline (−0.74), and `_D2_v2` lies between the baseline and `_D3_v2`; else "not supported" |
+| W6 | S1b rules R2–R5 on all 9 corrected settings | thresholds of docs/S1b_unitfree.md, unchanged |
+| W7 | S4 rule G2 with `_p0.2_v2` | rule of docs/S4.md, unchanged |
+| W8 | Size of the change, per setting | old and new H1 ρ, ρ(C only, equal size), ρ(−K_H, equal size), mean log R. Description only. |
+
+Expectations: every old verdict holds: W1 "stands", W2 "stands", W3 "exact", W4 "τ 0.5 and D-test r 3", W5 "supported"
+(old: −0.70 → −0.29 → −0.08), W6 as in S1b (R2 supported in 9 of 9, R5 stable and negative), W7 "V more stable".
+The least certain is W5 and the H1 verdict of the D-test r 3: the D-test makes rates up to about 9, where the old check
+had its largest bias (+1.2 in log V), so the old D-test shift can be partly an artefact of the check. List item 5 of the
+night plan measures this directly.
+If a run fails twice, it is recorded in docs/night_log.md and the next setting starts.
