@@ -31,3 +31,11 @@ def test_bridge_option_is_recorded_and_shortens_life():
     for x, y in zip(a, b):
         assert y["bridge"] and not x["bridge"]
         assert np.mean(np.log(y["V_on"]) - np.log(x["V_on"])) < -0.1
+
+
+def test_e3_defaults_match_the_documented_settings():
+    # Fix #13 (docs/code_review.md): RESULTS.md and README use n_traj 600, t_max 200, dt 0.05, 30 worlds, seed 2026.
+    from e3_phi_vs_viability import make_parser
+    a = make_parser().parse_args([])
+    assert (a.n_traj, a.t_max, a.dt, a.n_worlds, a.seed, a.tau, a.p_out, a.N) == (600, 200.0, 0.05, 30, 2026, 1.0, 0.05, 6)
+    assert not a.crn and not a.bridge

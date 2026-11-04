@@ -158,11 +158,13 @@ def write_report(results, args):
     (RES / f"e3_report{args.tag}.md").write_text("\n".join(L))
 
 
-if __name__ == "__main__":
+def make_parser():
+    """Defaults match docs/RESULTS.md and README (n_traj 600, t_max 200). Fix #13: they were 200 and 150, which differ
+    from the documented settings (old defaults superseded 2026-11-04)."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--n_worlds", type=int, default=30); ap.add_argument("--tau", type=float, default=1.0)
-    ap.add_argument("--p_out", type=float, default=0.05); ap.add_argument("--n_traj", type=int, default=200)
-    ap.add_argument("--dt", type=float, default=0.05); ap.add_argument("--t_max", type=float, default=150.0)
+    ap.add_argument("--p_out", type=float, default=0.05); ap.add_argument("--n_traj", type=int, default=600)
+    ap.add_argument("--dt", type=float, default=0.05); ap.add_argument("--t_max", type=float, default=200.0)
     ap.add_argument("--seed", type=int, default=2026); ap.add_argument("--tag", default="")
     ap.add_argument("--reuse", action="store_true")
     ap.add_argument("--N", type=int, default=6)
@@ -172,6 +174,11 @@ if __name__ == "__main__":
     ap.add_argument("--sim_from", default=None,
                     help="tag of an existing dataset: reuse its exit data and recompute only the features with --tau "
                          "(tau does not enter the simulation)")
+    return ap
+
+
+if __name__ == "__main__":
+    ap = make_parser()
     args = ap.parse_args()
     pk = RES / f"e3_dataset{args.tag}.pkl"
     if args.sim_from is not None:
@@ -193,6 +200,7 @@ if __name__ == "__main__":
     d0 = data[0]
     args.N, args.tau, args.p_out, args.t_max = d0["B"].shape[0], d0["tau"], d0["p_out"], d0["t_max"]
     args.n_traj, args.n_worlds = d0["exit_t"].shape[0], len(data) // len(FAMILIES)
+    args.dt = d0.get("dt", args.dt)                     # recorded in datasets made after fix #5
     results = {"all": analyse(data, "ALL families", range(len(data)))}
     for fam in FAMILIES:
         results[fam] = analyse(data, fam, [i for i, d in enumerate(data) if d["family"] == fam])

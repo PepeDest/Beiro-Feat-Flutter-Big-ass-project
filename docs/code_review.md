@@ -217,7 +217,7 @@ Con l'attrito di Rayleigh γ = γ₀ − α + βv² e β = (α − γ₀)/v₀²
 - `experiments/run_all.py`: il docstring stima 12 minuti, README e RESULTS 30 minuti (1631 s per E3).
 - `e3_phi_vs_viability.py`: i valori predefiniti da riga di comando (`--n_traj 200`, `--t_max 150`) sono diversi da quelli dei documenti (600 e 200). `run_all.py` passa i valori giusti, ma chi lancia lo script a mano ottiene un'altra impostazione. È la stessa causa dell'intestazione sbagliata trovata in S0.
 
-**Stato:** in parte corretto, solo documentazione (fase A). Corretti, con il testo vecchio segnato come superato: docstring di `price.py`, PROVENANCE riga 37, LIMITATIONS §1, §2, §9 e §10, il titolo di RESULTS.md (nota sulle 11 250 coppie), il docstring di `run_all.py`. LIMITATIONS §6 e S6.md sono trattati ai punti 1 e 4. Non ancora corretto: i valori predefiniti di `e3_phi_vs_viability.py`, perché cambiano il codice (fase B).
+**Stato:** corretto. Fase A, solo documentazione: corretti, con il testo vecchio segnato come superato, il docstring di `price.py`, PROVENANCE riga 37, LIMITATIONS §1, §2, §9 e §10, il titolo di RESULTS.md (nota sulle 11 250 coppie), il docstring di `run_all.py`. LIMITATIONS §6 e S6.md sono trattati ai punti 1 e 4. In fase B: i valori predefiniti di `e3_phi_vs_viability.py` ora sono 600 traiettorie e t_max = 200, come nei documenti; il parser è in `make_parser()` e un test in `tests/test_e3_crn.py` controlla i valori. Il report prende anche dt dal dataset. Il punto è corretto del tutto.
 
 ---
 
