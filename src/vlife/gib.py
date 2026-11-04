@@ -55,6 +55,22 @@ def tica_modes(C_tica, S):
     return mu[order], V[:, order].T
 
 
+def tica_subspace(C_tica, S, k, tol=1e-9):
+    """Real basis of the span of the k leading TICA modes (by |mu|), for non-symmetric C_tica.
+    A complex mode v spans a real plane {Re v, Im v}; taking np.real(v) alone gives a direction that depends on the
+    arbitrary phase LAPACK gives to v (docs/code_review.md, item 3). If the k-th mode is complex and its conjugate is
+    the (k+1)-th, the pair is kept together, so the dimension m can be k + 1.
+    Returns (mu of the m modes, basis rows (m x n, orthonormal), m). The span is invariant under S^-1 C_tica."""
+    mu, V = eig(C_tica, S)
+    order = np.argsort(-np.abs(mu), kind="stable"); mu, V = mu[order], V[:, order]
+    m = k
+    if m < len(mu) and abs(mu[m - 1].imag) > tol * abs(mu[m - 1]) and np.isclose(mu[m], np.conj(mu[m - 1])):
+        m += 1
+    R = np.hstack([V[:, :m].real, V[:, :m].imag])
+    U, s, _ = np.linalg.svd(R, full_matrices=False)
+    return mu[:m], U[:, :m].T, m
+
+
 def subspace_gap(A_rows, B_rows):
     """Largest principal angle (radians) between the row-spaces of A_rows and B_rows. [GolubVanLoan13 ch.6.4]"""
     return float(np.max(subspace_angles(np.real(A_rows).T, np.real(B_rows).T)))

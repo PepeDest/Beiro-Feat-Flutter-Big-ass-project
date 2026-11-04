@@ -109,7 +109,7 @@ Misura sui 20 mondi guidati di E2 (seed 100–119): in 20 su 20 c'è almeno un a
 
 **Correzione proposta.** Usare la forma di Schur reale (o Re e Im insieme) e non spezzare le coppie coniugate. In alternativa, dichiarare in RESULTS che il numero dipende dalla convenzione.
 
-**Stato:** non ancora corretto, previsto in fase B.
+**Stato:** corretto nel codice (fase B). Nuova funzione `gib.tica_subspace`: base reale da Re v e Im v, con le coppie coniugate tenute insieme (dimensione k o k + 1). `tica_modes` resta com'era. Test in `tests/test_gib.py`: la base è ortonormale e invariante per S⁻¹C_tica in tutti i 20 mondi guidati di E2 (il metodo vecchio ha un residuo mediano di 0,85) e coincide con GIB nei mondi reversibili. E2 scrive ora su `e2_gib_slowmodes_realbasis.*`; la nuova run di E2 segue, con regole scritte prima.
 
 ## 4. Media: il controllo H5 dell'identità di Price non può fallire
 

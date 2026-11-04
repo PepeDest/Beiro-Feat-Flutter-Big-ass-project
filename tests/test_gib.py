@@ -43,3 +43,33 @@ def test_gib_equals_tica_when_reversible():
 def test_gib_differs_from_tica_when_irreversible():
     gaps = [_gib_vs_tica(make_world("driven", 6, np.random.default_rng(s)), 1.0, 2) for s in range(5)]
     assert max(gaps) > 1e-3
+
+
+def _invariance_residual(M, rows):
+    Q = np.linalg.qr(rows.T)[0]; X = M @ Q
+    return np.linalg.norm(X - Q @ (Q.T @ X)) / np.linalg.norm(X)
+
+
+def test_tica_subspace_is_a_real_invariant_subspace():
+    # Fix #3 (docs/code_review.md): the TICA basis must span an invariant subspace of S^-1 C_tica, also when the
+    # leading modes are complex. The old recipe (real part of each eigenvector) does not.
+    split = 0
+    for s in range(20):
+        w = make_world("driven", 6, np.random.default_rng(100 + s))
+        Ct = lagged_cov(w.B, w.S, 1.0).T; M = np.linalg.solve(w.S, Ct)
+        for k in (1, 2, 3):
+            mu, rows, m = tica_subspace(Ct, w.S, k)
+            assert m in (k, k + 1) and rows.shape == (m, 6)
+            assert np.allclose(rows @ rows.T, np.eye(m), atol=1e-10)
+            assert _invariance_residual(M, rows) < 1e-8
+            split += m == k + 1
+    assert split > 0                                     # the pair-keeping branch is exercised
+
+
+def test_tica_subspace_equals_gib_when_reversible():
+    w = make_world("equilibrium", 6, np.random.default_rng(1))
+    Sxy = lagged_cov(w.B, w.S, 1.0).T
+    lam, V, _ = gib_modes(w.S, w.S, Sxy)
+    for k in (1, 2, 3):
+        _, rows, m = tica_subspace(Sxy, w.S, k)
+        assert m == k and subspace_gap(V[:k], rows) < 1e-6
