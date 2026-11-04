@@ -102,3 +102,20 @@ A verdict that changes is reported in this file and in the step document, next t
 
 ## C4. Which conclusions of README and ROADMAP stand
 Written after C1–C3, in a section at the end of this file.
+
+## C1 results (added 2026-11-04, after the run)
+Report: `results/c1_dt_control.md`, `.json`, `.log`. 12 worlds, 436 s.
+
+| Rule | Comparison | Mean difference of log V [95% CI over worlds] | sd(z) | Verdict |
+|---|---|---|---|---|
+| K1 | bridge dt 0.05 − bridge dt 0.005 | +0.011 [−0.008, +0.029] | 0.86 | agree |
+| K2 | bridge dt 0.05 − extrapolation dt → 0 | +0.022 [−0.007, +0.052] | 0.87 | agree |
+| K3 | bridge dt 0.05 − no bridge dt 0.005 | −0.131 [−0.152, −0.109] | 0.89 | do not agree (as expected) |
+| description | no bridge dt 0.05 − extrapolation (old bias) | +0.482 [+0.437, +0.527] | 1.11 | |
+
+All three verdicts are as written before the run. The corrected V does not depend on dt and matches the dt → 0
+extrapolation of the old method within the Monte Carlo error (sd(z) < 1, so the differences are noise). dt = 0.005
+without correction still keeps a bias of about +0.13, as the 1-D check predicted, so it is not a valid reference.
+The old method at dt = 0.05 is biased by +0.48 in log V on average in these worlds (driven dynamics).
+Description: ρ(C, log V) among structures of equal size, mean over the 12 worlds: +0.68 (bridge 0.05), +0.64 (bridge 0.005),
++0.63 (no bridge 0.05), +0.63 (no bridge 0.005). The differences are inside the CIs (about ±0.15).
