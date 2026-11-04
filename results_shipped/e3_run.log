@@ -1,0 +1,202 @@
+  equilibrium #0: median V_on=4.9  censored(<5 ev)=0.00
+  equilibrium #1: median V_on=4.4  censored(<5 ev)=0.00
+  equilibrium #2: median V_on=6.8  censored(<5 ev)=0.00
+  equilibrium #3: median V_on=5.2  censored(<5 ev)=0.00
+  equilibrium #4: median V_on=5.8  censored(<5 ev)=0.00
+  equilibrium #5: median V_on=4.5  censored(<5 ev)=0.00
+  equilibrium #6: median V_on=5.4  censored(<5 ev)=0.00
+  equilibrium #7: median V_on=4.2  censored(<5 ev)=0.00
+  equilibrium #8: median V_on=4.1  censored(<5 ev)=0.00
+  equilibrium #9: median V_on=5.6  censored(<5 ev)=0.00
+  equilibrium #10: median V_on=6.9  censored(<5 ev)=0.00
+  equilibrium #11: median V_on=5.3  censored(<5 ev)=0.00
+  equilibrium #12: median V_on=5.3  censored(<5 ev)=0.00
+  equilibrium #13: median V_on=6.8  censored(<5 ev)=0.00
+  equilibrium #14: median V_on=4.1  censored(<5 ev)=0.00
+  equilibrium #15: median V_on=3.1  censored(<5 ev)=0.00
+  equilibrium #16: median V_on=4.3  censored(<5 ev)=0.00
+  equilibrium #17: median V_on=5.7  censored(<5 ev)=0.00
+  equilibrium #18: median V_on=5.6  censored(<5 ev)=0.00
+  equilibrium #19: median V_on=6.8  censored(<5 ev)=0.00
+  equilibrium #20: median V_on=5.2  censored(<5 ev)=0.00
+  equilibrium #21: median V_on=7.4  censored(<5 ev)=0.00
+  equilibrium #22: median V_on=4.3  censored(<5 ev)=0.00
+  equilibrium #23: median V_on=6.0  censored(<5 ev)=0.00
+  equilibrium #24: median V_on=4.9  censored(<5 ev)=0.00
+  equilibrium #25: median V_on=5.1  censored(<5 ev)=0.00
+  equilibrium #26: median V_on=4.4  censored(<5 ev)=0.00
+  equilibrium #27: median V_on=6.2  censored(<5 ev)=0.00
+  equilibrium #28: median V_on=6.0  censored(<5 ev)=0.00
+  equilibrium #29: median V_on=6.0  censored(<5 ev)=0.00
+  driven #0: median V_on=4.2  censored(<5 ev)=0.00
+  driven #1: median V_on=4.0  censored(<5 ev)=0.00
+  driven #2: median V_on=4.6  censored(<5 ev)=0.00
+  driven #3: median V_on=3.5  censored(<5 ev)=0.00
+  driven #4: median V_on=3.5  censored(<5 ev)=0.00
+  driven #5: median V_on=3.0  censored(<5 ev)=0.00
+  driven #6: median V_on=4.0  censored(<5 ev)=0.00
+  driven #7: median V_on=3.4  censored(<5 ev)=0.00
+  driven #8: median V_on=5.6  censored(<5 ev)=0.00
+  driven #9: median V_on=3.6  censored(<5 ev)=0.00
+  driven #10: median V_on=4.1  censored(<5 ev)=0.00
+  driven #11: median V_on=2.9  censored(<5 ev)=0.00
+  driven #12: median V_on=5.0  censored(<5 ev)=0.00
+  driven #13: median V_on=4.8  censored(<5 ev)=0.00
+  driven #14: median V_on=3.2  censored(<5 ev)=0.00
+  driven #15: median V_on=3.9  censored(<5 ev)=0.00
+  driven #16: median V_on=3.4  censored(<5 ev)=0.00
+  driven #17: median V_on=4.1  censored(<5 ev)=0.00
+  driven #18: median V_on=4.0  censored(<5 ev)=0.00
+  driven #19: median V_on=4.9  censored(<5 ev)=0.00
+  driven #20: median V_on=3.4  censored(<5 ev)=0.00
+  driven #21: median V_on=3.9  censored(<5 ev)=0.00
+  driven #22: median V_on=4.9  censored(<5 ev)=0.00
+  driven #23: median V_on=3.2  censored(<5 ev)=0.00
+  driven #24: median V_on=6.0  censored(<5 ev)=0.00
+  driven #25: median V_on=4.6  censored(<5 ev)=0.00
+  driven #26: median V_on=4.0  censored(<5 ev)=0.00
+  driven #27: median V_on=4.5  censored(<5 ev)=0.00
+  driven #28: median V_on=3.9  censored(<5 ev)=0.00
+  driven #29: median V_on=3.9  censored(<5 ev)=0.00
+  modular_driven #0: median V_on=3.5  censored(<5 ev)=0.00
+  modular_driven #1: median V_on=4.4  censored(<5 ev)=0.00
+  modular_driven #2: median V_on=4.1  censored(<5 ev)=0.00
+  modular_driven #3: median V_on=3.3  censored(<5 ev)=0.00
+  modular_driven #4: median V_on=4.7  censored(<5 ev)=0.00
+  modular_driven #5: median V_on=3.9  censored(<5 ev)=0.00
+  modular_driven #6: median V_on=4.4  censored(<5 ev)=0.00
+  modular_driven #7: median V_on=3.4  censored(<5 ev)=0.00
+  modular_driven #8: median V_on=4.7  censored(<5 ev)=0.00
+  modular_driven #9: median V_on=5.5  censored(<5 ev)=0.00
+  modular_driven #10: median V_on=4.4  censored(<5 ev)=0.00
+  modular_driven #11: median V_on=3.6  censored(<5 ev)=0.00
+  modular_driven #12: median V_on=4.2  censored(<5 ev)=0.00
+  modular_driven #13: median V_on=4.4  censored(<5 ev)=0.00
+  modular_driven #14: median V_on=5.2  censored(<5 ev)=0.00
+  modular_driven #15: median V_on=3.5  censored(<5 ev)=0.00
+  modular_driven #16: median V_on=4.1  censored(<5 ev)=0.00
+  modular_driven #17: median V_on=4.3  censored(<5 ev)=0.00
+  modular_driven #18: median V_on=4.4  censored(<5 ev)=0.00
+  modular_driven #19: median V_on=3.6  censored(<5 ev)=0.00
+  modular_driven #20: median V_on=3.5  censored(<5 ev)=0.00
+  modular_driven #21: median V_on=3.3  censored(<5 ev)=0.00
+  modular_driven #22: median V_on=3.4  censored(<5 ev)=0.00
+  modular_driven #23: median V_on=4.5  censored(<5 ev)=0.00
+  modular_driven #24: median V_on=4.0  censored(<5 ev)=0.00
+  modular_driven #25: median V_on=5.7  censored(<5 ev)=0.00
+  modular_driven #26: median V_on=4.2  censored(<5 ev)=0.00
+  modular_driven #27: median V_on=5.1  censored(<5 ev)=0.00
+  modular_driven #28: median V_on=2.8  censored(<5 ev)=0.00
+  modular_driven #29: median V_on=5.0  censored(<5 ev)=0.00
+simulation done in 552s
+# E3 report (auto-generated)
+
+Settings: tau=1.0, p_out=0.05, n_worlds/family=30, n_traj=600, dt=0.05, t_max=200.0
+
+
+## ALL families  (worlds=90, structures=5580)
+
+Standardised coefficients (d log V per +1 SD, within-world), 95% cluster bootstrap CI:
+
+| feature | coef | CI low | CI high |
+|---|---|---|---|
+| P | +0.024 | +0.018 | +0.033 |
+| C | +0.095 | +0.075 | +0.119 |
+| KH | -0.072 | -0.101 | -0.046 |
+| IAX | -0.000 | -0.008 | +0.006 |
+
+Mean within-world Spearman rho (score vs log V):
+
+| score | rho | CI low | CI high |
+|---|---|---|---|
+| Phi_orig(b=1,l=.25) | -0.083 | -0.193 | +0.024 |
+| C only | +0.328 | +0.231 | +0.415 |
+| P only | +0.086 | +0.046 | +0.131 |
+| -KH (simplicity) | -0.256 | -0.352 | -0.161 |
+| size (-k) | -0.112 | -0.217 | -0.012 |
+| -leak (closure) | +0.120 | +0.072 | +0.163 |
+| -IAX | -0.106 | -0.130 | -0.078 |
+| fitted linear (cross-validated) | -0.241 | -0.320 | -0.151 |
+
+Price selection term Cov(w/wbar, Phi_orig): mean=+0.0009, fraction of worlds >0 = 0.49
+
+log(V_driven/V_eq): mean=-0.144 +- 0.015 (s.e. over worlds)
+
+
+## equilibrium  (worlds=30, structures=1860)
+
+Standardised coefficients (d log V per +1 SD, within-world), 95% cluster bootstrap CI:
+
+| feature | coef | CI low | CI high |
+|---|---|---|---|
+| P | +0.058 | +0.037 | +0.085 |
+| C | +0.193 | +0.163 | +0.230 |
+| KH | -0.236 | -0.279 | -0.202 |
+| IAX | -0.041 | -0.068 | -0.018 |
+
+Mean within-world Spearman rho (score vs log V):
+
+| score | rho | CI low | CI high |
+|---|---|---|---|
+| Phi_orig(b=1,l=.25) | +0.541 | +0.492 | +0.587 |
+| C only | -0.143 | -0.217 | -0.062 |
+| P only | +0.227 | +0.196 | +0.261 |
+| -KH (simplicity) | +0.281 | +0.222 | +0.340 |
+| size (-k) | +0.472 | +0.421 | +0.526 |
+| -leak (closure) | +0.038 | -0.060 | +0.124 |
+| -IAX | -0.223 | -0.258 | -0.191 |
+| fitted linear (cross-validated) | +0.279 | +0.234 | +0.323 |
+
+Price selection term Cov(w/wbar, Phi_orig): mean=+0.0250, fraction of worlds >0 = 1.00
+
+log(V_driven/V_eq): mean=+0.019 +- 0.005 (s.e. over worlds)
+
+
+## driven  (worlds=30, structures=1860)
+
+Standardised coefficients (d log V per +1 SD, within-world), 95% cluster bootstrap CI:
+
+| feature | coef | CI low | CI high |
+|---|---|---|---|
+| P | +0.010 | +0.000 | +0.020 |
+| C | +0.075 | +0.043 | +0.113 |
+| KH | -0.030 | -0.067 | +0.004 |
+| IAX | +0.011 | +0.007 | +0.015 |
+
+Mean within-world Spearman rho (score vs log V):
+
+| score | rho | CI low | CI high |
+|---|---|---|---|
+| Phi_orig(b=1,l=.25) | -0.344 | -0.451 | -0.237 |
+| C only | +0.508 | +0.422 | +0.586 |
+| P only | -0.042 | -0.103 | +0.023 |
+| -KH (simplicity) | -0.464 | -0.563 | -0.368 |
+| size (-k) | -0.347 | -0.456 | -0.236 |
+| -leak (closure) | +0.154 | +0.086 | +0.218 |
+| -IAX | -0.087 | -0.130 | -0.036 |
+| fitted linear (cross-validated) | -0.393 | -0.477 | -0.313 |
+
+Price selection term Cov(w/wbar, Phi_orig): mean=-0.0086, fraction of worlds >0 = 0.27
+
+log(V_driven/V_eq): mean=-0.206 +- 0.015 (s.e. over worlds)
+
+
+## modular_driven  (worlds=30, structures=1860)
+
+Standardised coefficients (d log V per +1 SD, within-world), 95% cluster bootstrap CI:
+
+| feature | coef | CI low | CI high |
+|---|---|---|---|
+| P | +0.037 | +0.027 | +0.047 |
+| C | +0.113 | +0.087 | +0.148 |
+| KH | -0.040 | -0.075 | -0.009 |
+| IAX | -0.000 | -0.004 | +0.007 |
+
+Mean within-world Spearman rho (score vs log V):
+
+| score | rho | CI low | CI high |
+|---|---|---|---|
+| Phi_orig(b=1,l=.25) | -0.446 | -0.538 | -0.329 |
+| C only | +0.618 | +0.551 | +0.676 |
+| P only | +0.072 | +0.000 | +0.143 |
+| -

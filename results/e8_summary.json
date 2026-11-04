@@ -1,0 +1,154 @@
+{
+  "equilibrium": {
+    "static exact": {
+      "rate": [
+        1.0,
+        0.954180263735425,
+        1.0
+      ],
+      "precision": 1.0,
+      "recall": 1.0,
+      "verdict": "recovers"
+    },
+    "dynamic exact": {
+      "rate": [
+        1.0,
+        0.954180263735425,
+        1.0
+      ],
+      "precision": 1.0,
+      "recall": 1.0,
+      "verdict": "recovers"
+    },
+    "static finite": {
+      "rate": [
+        1.0,
+        0.954180263735425,
+        1.0
+      ],
+      "precision": 1.0,
+      "recall": 1.0,
+      "verdict": "recovers"
+    },
+    "dynamic finite": {
+      "rate": [
+        0.875,
+        0.7849700281693438,
+        0.9306651696322249
+      ],
+      "precision": 0.9828981906408201,
+      "recall": 0.9934477577688334,
+      "verdict": "recovers"
+    },
+    "Phi_TC": {
+      "median_pct": [
+        0.018033596837944664,
+        0.010622529644268776,
+        0.03732707509881421
+      ],
+      "verdict": "does not find"
+    },
+    "C": {
+      "median_pct": [
+        0.38290513833992096,
+        0.2887845849802372,
+        0.4955533596837945
+      ],
+      "verdict": "does not find"
+    },
+    "TC": {
+      "median_pct": [
+        0.9920948616600791,
+        0.987401185770751,
+        0.9950592885375494
+      ],
+      "verdict": "finds structures"
+    },
+    "closure": {
+      "median_pct": [
+        0.995800395256917,
+        0.9933300395256917,
+        0.9970355731225297
+      ],
+      "verdict": "finds structures"
+    }
+  },
+  "driven": {
+    "static exact": {
+      "rate": [
+        0.0,
+        -3.469446951953614e-18,
+        0.0458197362645751
+      ],
+      "precision": 0.17089215132693394,
+      "recall": 1.0,
+      "verdict": "fails"
+    },
+    "dynamic exact": {
+      "rate": [
+        1.0,
+        0.954180263735425,
+        1.0
+      ],
+      "precision": 1.0,
+      "recall": 1.0,
+      "verdict": "recovers"
+    },
+    "static finite": {
+      "rate": [
+        0.9875,
+        0.9325356757603457,
+        0.9977900813816939
+      ],
+      "precision": 0.997723269844126,
+      "recall": 0.9757737869458193,
+      "verdict": "recovers"
+    },
+    "dynamic finite": {
+      "rate": [
+        0.9125,
+        0.8302301722291654,
+        0.95696854535256
+      ],
+      "precision": 0.9902365774522025,
+      "recall": 1.0,
+      "verdict": "recovers"
+    },
+    "Phi_TC": {
+      "median_pct": [
+        0.04125494071146245,
+        0.01358695652173913,
+        0.061017786561264824
+      ],
+      "verdict": "does not find"
+    },
+    "C": {
+      "median_pct": [
+        0.5901679841897234,
+        0.48740118577075103,
+        0.6989562747035573
+      ],
+      "verdict": "does not find"
+    },
+    "TC": {
+      "median_pct": [
+        0.9886363636363636,
+        0.9829421936758894,
+        0.9925889328063242
+      ],
+      "verdict": "finds structures"
+    },
+    "closure": {
+      "median_pct": [
+        0.9948122529644269,
+        0.9930830039525692,
+        0.995306324110672
+      ],
+      "verdict": "finds structures"
+    }
+  },
+  "aguilera": {
+    "static_IE_max_median": 0.03418233457191048,
+    "static_edge_median": 0.14915781578845944
+  }
+}

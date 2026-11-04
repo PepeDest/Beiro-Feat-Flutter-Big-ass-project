@@ -1,0 +1,12 @@
+# E11 / S6b report (auto-generated; rules in docs/S6.md)
+
+eps* = 0.001 (pilot change of cycle time -24.2%, predicted sign of S: +1). Runs: 32 + 32.
+
+| Rule | Selection runs | Control runs (eps = 0) | Verdict |
+|---|---|---|---|
+| H1: fidelity | 1.0000 (18396 pairs) | 1.0000 (16141 pairs) | high fidelity |
+| H2/H3: selection term S | +0.0388 [+0.0363, +0.0412] | -0.0051 [-0.0111, +0.0005] | control clean; selection detected |
+| transmission term T | +0.0000 [+0.0000, +0.0000] | +0.0000 [+0.0000, +0.0000] | measured |
+| H4: final fraction of type A | +0.7227 [+0.7203, +0.7250] | +0.4989 [+0.4952, +0.5026] | yes |
+| H5: max error of the Price identity | 1.1e-16 | 1.1e-16 | exact |
+| H6: growth law (exp wins / power wins) | 0 / 32, power median 1.92, window N [8, 174] | | polynomial |

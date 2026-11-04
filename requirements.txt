@@ -1,0 +1,8 @@
+numpy
+scipy
+scikit-learn
+matplotlib
+pytest
+numba
+# optional, for the GPU version of S6b and S6c (experiments e11 and e12): needs an OpenCL GPU with float64
+pyopencl

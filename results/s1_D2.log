@@ -1,0 +1,130 @@
+  equilibrium #0: median V_on=5.3  censored(<5 ev)=0.00
+  equilibrium #1: median V_on=4.0  censored(<5 ev)=0.00
+  equilibrium #2: median V_on=6.0  censored(<5 ev)=0.00
+  equilibrium #3: median V_on=4.5  censored(<5 ev)=0.00
+  equilibrium #4: median V_on=4.4  censored(<5 ev)=0.00
+  equilibrium #5: median V_on=3.8  censored(<5 ev)=0.00
+  equilibrium #6: median V_on=5.4  censored(<5 ev)=0.00
+  equilibrium #7: median V_on=3.5  censored(<5 ev)=0.00
+  equilibrium #8: median V_on=3.8  censored(<5 ev)=0.00
+  equilibrium #9: median V_on=4.7  censored(<5 ev)=0.00
+  equilibrium #10: median V_on=6.3  censored(<5 ev)=0.00
+  equilibrium #11: median V_on=7.6  censored(<5 ev)=0.00
+  equilibrium #12: median V_on=5.9  censored(<5 ev)=0.00
+  equilibrium #13: median V_on=5.9  censored(<5 ev)=0.00
+  equilibrium #14: median V_on=3.8  censored(<5 ev)=0.00
+  equilibrium #15: median V_on=4.0  censored(<5 ev)=0.00
+  equilibrium #16: median V_on=5.9  censored(<5 ev)=0.00
+  equilibrium #17: median V_on=5.9  censored(<5 ev)=0.00
+  equilibrium #18: median V_on=5.3  censored(<5 ev)=0.00
+  equilibrium #19: median V_on=5.9  censored(<5 ev)=0.00
+  equilibrium #20: median V_on=4.9  censored(<5 ev)=0.00
+  equilibrium #21: median V_on=8.2  censored(<5 ev)=0.00
+  equilibrium #22: median V_on=4.0  censored(<5 ev)=0.00
+  equilibrium #23: median V_on=4.5  censored(<5 ev)=0.00
+  equilibrium #24: median V_on=5.6  censored(<5 ev)=0.00
+  equilibrium #25: median V_on=5.9  censored(<5 ev)=0.00
+  equilibrium #26: median V_on=4.6  censored(<5 ev)=0.00
+  equilibrium #27: median V_on=5.6  censored(<5 ev)=0.00
+  equilibrium #28: median V_on=5.8  censored(<5 ev)=0.00
+  equilibrium #29: median V_on=7.4  censored(<5 ev)=0.00
+  driven #0: median V_on=4.2  censored(<5 ev)=0.00
+  driven #1: median V_on=3.5  censored(<5 ev)=0.00
+  driven #2: median V_on=4.3  censored(<5 ev)=0.00
+  driven #3: median V_on=3.6  censored(<5 ev)=0.00
+  driven #4: median V_on=3.9  censored(<5 ev)=0.00
+  driven #5: median V_on=2.6  censored(<5 ev)=0.00
+  driven #6: median V_on=4.0  censored(<5 ev)=0.00
+  driven #7: median V_on=3.6  censored(<5 ev)=0.00
+  driven #8: median V_on=4.4  censored(<5 ev)=0.00
+  driven #9: median V_on=3.4  censored(<5 ev)=0.00
+  driven #10: median V_on=3.4  censored(<5 ev)=0.00
+  driven #11: median V_on=2.9  censored(<5 ev)=0.00
+  driven #12: median V_on=4.7  censored(<5 ev)=0.00
+  driven #13: median V_on=5.2  censored(<5 ev)=0.00
+  driven #14: median V_on=3.2  censored(<5 ev)=0.00
+  driven #15: median V_on=5.1  censored(<5 ev)=0.00
+  driven #16: median V_on=3.7  censored(<5 ev)=0.00
+  driven #17: median V_on=5.3  censored(<5 ev)=0.00
+  driven #18: median V_on=5.1  censored(<5 ev)=0.00
+  driven #19: median V_on=5.0  censored(<5 ev)=0.00
+  driven #20: median V_on=3.1  censored(<5 ev)=0.00
+  driven #21: median V_on=3.4  censored(<5 ev)=0.00
+  driven #22: median V_on=4.3  censored(<5 ev)=0.00
+  driven #23: median V_on=3.4  censored(<5 ev)=0.00
+  driven #24: median V_on=5.4  censored(<5 ev)=0.00
+  driven #25: median V_on=4.9  censored(<5 ev)=0.00
+  driven #26: median V_on=3.5  censored(<5 ev)=0.00
+  driven #27: median V_on=3.5  censored(<5 ev)=0.00
+  driven #28: median V_on=3.2  censored(<5 ev)=0.00
+  driven #29: median V_on=3.9  censored(<5 ev)=0.00
+  modular_driven #0: median V_on=3.5  censored(<5 ev)=0.00
+  modular_driven #1: median V_on=3.4  censored(<5 ev)=0.00
+  modular_driven #2: median V_on=4.3  censored(<5 ev)=0.00
+  modular_driven #3: median V_on=3.3  censored(<5 ev)=0.00
+  modular_driven #4: median V_on=5.0  censored(<5 ev)=0.00
+  modular_driven #5: median V_on=4.0  censored(<5 ev)=0.00
+  modular_driven #6: median V_on=4.0  censored(<5 ev)=0.00
+  modular_driven #7: median V_on=3.2  censored(<5 ev)=0.00
+  modular_driven #8: median V_on=5.1  censored(<5 ev)=0.00
+  modular_driven #9: median V_on=5.7  censored(<5 ev)=0.00
+  modular_driven #10: median V_on=4.6  censored(<5 ev)=0.00
+  modular_driven #11: median V_on=4.4  censored(<5 ev)=0.00
+  modular_driven #12: median V_on=3.7  censored(<5 ev)=0.00
+  modular_driven #13: median V_on=3.3  censored(<5 ev)=0.00
+  modular_driven #14: median V_on=4.7  censored(<5 ev)=0.00
+  modular_driven #15: median V_on=4.2  censored(<5 ev)=0.00
+  modular_driven #16: median V_on=4.2  censored(<5 ev)=0.00
+  modular_driven #17: median V_on=3.6  censored(<5 ev)=0.00
+  modular_driven #18: median V_on=5.4  censored(<5 ev)=0.00
+  modular_driven #19: median V_on=3.9  censored(<5 ev)=0.00
+  modular_driven #20: median V_on=3.7  censored(<5 ev)=0.00
+  modular_driven #21: median V_on=4.3  censored(<5 ev)=0.00
+  modular_driven #22: median V_on=3.6  censored(<5 ev)=0.00
+  modular_driven #23: median V_on=3.9  censored(<5 ev)=0.00
+  modular_driven #24: median V_on=3.8  censored(<5 ev)=0.00
+  modular_driven #25: median V_on=5.4  censored(<5 ev)=0.00
+  modular_driven #26: median V_on=3.8  censored(<5 ev)=0.00
+  modular_driven #27: median V_on=4.8  censored(<5 ev)=0.00
+  modular_driven #28: median V_on=3.0  censored(<5 ev)=0.00
+  modular_driven #29: median V_on=4.9  censored(<5 ev)=0.00
+<project>\experiments\e3_phi_vs_viability.py:95: RuntimeWarning: Mean of empty slice
+  pt, lo, hi = cluster_bootstrap(len(ids), lambda b: np.nanmean(vals[b]), 400)
+<project>\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1396: RuntimeWarning: All-NaN slice encountered
+  return _nanquantile_unchecked(
+simulation done in 3003s
+report written
+pairs: 11250
+# E4 report (auto-generated)
+
+pairs analysed: 11250;  fraction with S>1: 0.87;  identity max|dKH + I(A;B)| = 2.22e-15
+
+Mean within-world Spearman rho between predictor and log S (95% cluster-bootstrap CI)
+
+| family | predictor | rho | CI low | CI high |
+|---|---|---|---|---|
+| all | dPhi_orig | -0.213 | -0.265 | -0.149 |
+| all | static MI I(A;B) | +0.446 | +0.409 | +0.478 |
+| all | dP | -0.442 | -0.478 | -0.401 |
+| all | dC | +0.046 | -0.033 | +0.136 |
+| all | -lam*dKH (=lam*I(A;B)) | +0.446 | +0.409 | +0.478 |
+| all | sign agreement dPhi>0 <-> S>1 | 0.48 | | |
+| equilibrium | dPhi_orig | -0.508 | -0.569 | -0.432 |
+| equilibrium | static MI I(A;B) | +0.568 | +0.505 | +0.623 |
+| equilibrium | dP | -0.529 | -0.588 | -0.456 |
+| equilibrium | dC | -0.514 | -0.574 | -0.433 |
+| equilibrium | -lam*dKH (=lam*I(A;B)) | +0.568 | +0.505 | +0.623 |
+| equilibrium | sign agreement dPhi>0 <-> S>1 | 0.32 | | |
+| driven | dPhi_orig | -0.141 | -0.200 | -0.076 |
+| driven | static MI I(A;B) | +0.387 | +0.327 | +0.437 |
+| driven | dP | -0.408 | -0.468 | -0.341 |
+| driven | dC | +0.297 | +0.213 | +0.388 |
+| driven | -lam*dKH (=lam*I(A;B)) | +0.387 | +0.327 | +0.437 |
+| driven | sign agreement dPhi>0 <-> S>1 | 0.52 | | |
+| modular_driven | dPhi_orig | +0.010 | -0.087 | +0.094 |
+| modular_driven | static MI I(A;B) | +0.383 | +0.333 | +0.433 |
+| modular_driven | dP | -0.390 | -0.458 | -0.323 |
+| modular_driven | dC | +0.356 | +0.297 | +0.426 |
+| modular_driven | -lam*dKH (=lam*I(A;B)) | +0.383 | +0.333 | +0.433 |
+| modular_driven | sign agreement dPhi>0 <-> S>1 | 0.59 | | |
+exit=0

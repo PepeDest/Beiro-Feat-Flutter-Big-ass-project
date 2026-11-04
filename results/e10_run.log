@@ -1,0 +1,17 @@
+runs done in 447s
+# E10 / S6 report (auto-generated; rules in docs/S6.md)
+
+Parameters {'F': 0.0367, 'k': 0.0649}. Runs: 8. Parent-daughter pairs: 1769.
+
+| Rule | Value [95% CI] | Verdict |
+|---|---|---|
+| R1: growth law (runs where exp fit wins / power fit wins) | 8 / 0; power exponent median 1.87 | exponential |
+| R2: rho(parent area, daughter area) | +0.260 [+0.228, +0.292] | native heredity |
+| R3: rho(parent dye, daughter dye) | +0.975 [+0.971, +0.980] | pipeline detects heredity |
+| R4: fidelity slope (dye) | +1.077 [+1.068, +1.088] | measured |
+| R4: Price selection S / transmission T | +4.720 [+4.629, +4.827] / -5.254 [-5.364, -5.161] | measured |
+
+Per run growth: N_max 235, R2 exp 0.966, R2 pow 0.965, p 1.85; N_max 227, R2 exp 0.966, R2 pow 0.956, p 1.82; N_max 232, R2 exp 0.977, R2 pow 0.977, p 1.86; N_max 230, R2 exp 0.968, R2 pow 0.964, p 1.96; N_max 226, R2 exp 0.976, R2 pow 0.972, p 1.89; N_max 227, R2 exp 0.964, R2 pow 0.963, p 1.87; N_max 226, R2 exp 0.976, R2 pow 0.971, p 1.91; N_max 230, R2 exp 0.962, R2 pow 0.950, p 1.80
+
+Merges per run: [0, 0, 0, 0, 0, 1, 0, 0]
+exit=0

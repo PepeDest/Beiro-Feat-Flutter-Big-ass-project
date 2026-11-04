@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vlife"
+version = "0.1.0"
+description = "Variational Life Lab: does information-theoretic organisation (Phi) predict physical viability (mean first-passage time)?"
+requires-python = ">=3.9"
+dependencies = ["numpy", "scipy", "scikit-learn", "matplotlib"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

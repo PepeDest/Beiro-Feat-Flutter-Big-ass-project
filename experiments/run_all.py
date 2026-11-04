@@ -1,0 +1,8 @@
+"""Run every experiment in order.  --quick uses a small ensemble (~2 min); default is the full ensemble (~12 min)."""
+import subprocess, sys, pathlib
+here = pathlib.Path(__file__).parent
+quick = "--quick" in sys.argv
+e3 = ["--n_worlds", "6", "--n_traj", "300", "--t_max", "100"] if quick else ["--n_worlds", "30", "--n_traj", "600", "--t_max", "200"]
+for cmd in (["e0_audit_legacy.py"], ["e1_estimators.py"], ["e2_gib_slowmodes.py"], ["e3_phi_vs_viability.py"] + e3, ["e4_merging.py"]):
+    print("\n=== running", " ".join(cmd), flush=True)
+    subprocess.run([sys.executable, str(here / cmd[0])] + cmd[1:], check=True, cwd=here)
