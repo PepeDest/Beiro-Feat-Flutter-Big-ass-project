@@ -233,7 +233,7 @@ N 5, N 7, D-test r 2 and r 3; S2, S2b, S2c; S5 and S6 do not use this exit check
 construction), the growth exponent 1.92 (depends on the time origin), and the ROADMAP lines "not measured yet" and
 "no test with mutation", which the S6c status line contradicts.
 
-## C5. Rules for the other 6 S1 settings on corrected data (fixed 2026-11-04 23:55 UTC, before these runs)
+## C5. Rules for the other 6 S1 settings on corrected data (fixed 2026-11-04 about 23:51 UTC, before these runs; first written as 23:55)
 **Runs.** One at a time, all cores, same seeds and settings as the old S1 runs (30 worlds per family, 600 trajectories,
 dt 0.05, t_max 200), now with `--crn --bridge` and the tag `<old tag>_v2`, each followed by `e4_merging.py --tag <tag>`:
 `_p0.2_v2` (`--p_out 0.2`), `_N5_v2` (`--N 5`), `_D2_v2` (`--noise_range 2`), `_D3_v2` (`--noise_range 3`),
@@ -260,7 +260,7 @@ had its largest bias (+1.2 in log V), so the old D-test shift can be partly an a
 night plan measures this directly.
 If a run fails twice, it is recorded in docs/night_log.md and the next setting starts.
 
-## D. KSG at high mutual information (code review item 6; rules fixed 2026-11-05 00:05 UTC, before the run)
+## D. KSG at high mutual information (code review item 6; rules fixed 2026-11-04 about 23:53 UTC, before the run; first written as 00:05, which was wrong)
 **Run D1.** `python d1_ksg_highmi.py`: KSG (k = 4, as in S2) on 4-dimensional pairs X = (x1, x2), Y = (y1, y2) with exact
 I(X; Y) = 0.5, 1, 2, 2.7 and 3.5 nats, n = 4000 (as S2/S2b) and n = 16000, 20 repetitions, in two geometries with the same
 exact MI: Gaussian, and "ring" (an invertible map of each 2-vector to curved, ring-like sets; MI does not change under
@@ -280,3 +280,24 @@ Expectation: KSG underestimates high MI (negative bias), more in the ring geomet
 "wrong by a lot" for the ring geometry at 2.7 nats. If so, I expect the S2 verdict F2 ("C favours oscillators", AUC 0.00)
 to stand, because the gap between the classes is large, and the S2b verdict G2 (signal of about 0.01 nats near the noise)
 to be the least certain.
+
+### D1 results (added 2026-11-04 23:55 UTC, after the run)
+Report: `results/d1_ksg_highmi.md`, `.json`, `_run.log`. 74 s.
+
+| Exact MI (nats) | n = 4000, Gaussian | n = 4000, ring | n = 16000, Gaussian | n = 16000, ring |
+|---|---|---|---|---|
+| 0.5 | +0.004 | −0.032 | +0.008 | −0.010 |
+| 1.0 | +0.009 | −0.050 | +0.016 | −0.010 |
+| 2.0 | −0.002 | −0.113 | +0.025 | −0.024 |
+| 2.7 | −0.023 | −0.180 | +0.020 | −0.056 |
+| 3.5 | −0.081 | −0.297 | +0.004 | −0.109 |
+
+(values are the bias, mean estimate − exact)
+
+**D1: "adequate".** The largest bias at n = 4000 and 2–3 nats is −0.18 nats (6.7 %, ring geometry), below both limits
+(0.2 nats, 10 %). **D2:** 16000 pairs cut the ring bias by about 3 times. The expectation "wrong by a lot for the ring at
+2.7 nats" was wrong: the bias is negative and larger in the ring geometry, as expected, but it stays under the limits.
+So by the rule fixed before the run, e6, e6b and e7 are not rerun for the estimator. What this means for S2: the
+oscillators' median C of 2.71 nats is probably about 0.1–0.2 nats too low, and the rocks' 1.57 a little too low;
+the gap of about 1.1 nats between the classes, and the verdict F2, stand. The validated range of KSG now covers 0.5–3.5
+nats in 4 dimensions.

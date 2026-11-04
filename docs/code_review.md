@@ -147,7 +147,7 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 **Correzione proposta.** Aggiungere a E1 un caso con MI di 2–3 nats in 4 dimensioni, per esempio un OU con τ piccolo, oppure riportare i valori di C di S2 come solo ordinali.
 
-**Stato:** non ancora corretto, previsto in fase D.
+**Stato:** verificato (fase D), nessuna correzione necessaria. Nuovo esperimento `experiments/d1_ksg_highmi.py` (regole in `docs/RERUN.md`, sezione D, scritte prima): KSG con k = 4 su coppie in 4 dimensioni con MI esatta da 0,5 a 3,5 nats, in geometria gaussiana e ad anello. A n = 4000 e 2–3 nats l'errore massimo è −0,18 nats (6,7 %, anello), sotto le soglie fissate (0,2 nats, 10 %). Con 16 000 coppie scende a −0,06. Per la regola, E6, E6b ed E7 non vanno rifatti; la C mediana degli oscillatori (2,71) è probabilmente bassa di 0,1–0,2 nats, ma il divario tra le classi (circa 1,1 nats) e il verdetto F2 reggono.
 
 ## 7. Bassa: la curva di sopravvivenza di S4 è spostata di un passo, e il float32 la rende irregolare
 
