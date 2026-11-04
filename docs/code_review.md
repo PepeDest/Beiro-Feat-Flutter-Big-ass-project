@@ -95,6 +95,8 @@ Con N = 6 restano 125 coppie per mondo: 90 × 125 = 11 250, il numero riportato 
 
 **Correzione proposta.** Togliere `or min(a) > min(b)` e ripetere E4 e `s1_summary.py`.
 
+**Stato:** non ancora corretto, previsto in fase B (codice) e fase C (nuova run di E4).
+
 ## 3. Media: divario GIB–TICA calcolato su parti reali di autovettori complessi (E2)
 
 **Dove.** `gib.tica_modes` usa `scipy.linalg.eig` su C_tica non simmetrica. `gib.subspace_gap` prende `np.real` dei vettori. E2 confronta i primi k modi per k = 1, 2, 3.
@@ -106,6 +108,8 @@ Misura sui 20 mondi guidati di E2 (seed 100–119): in 20 su 20 c'è almeno un a
 **Conseguenza.** Il divario «≈ 0,5–0,9 rad» nei mondi guidati (RESULTS.md, PROVENANCE riga 32) è in parte un artefatto di questa scelta. Per i mondi reversibili il risultato (≈ 1e-13 rad) resta valido, perché lì C è simmetrica e gli autovalori sono reali. Nota a margine: per dinamiche non reversibili le direzioni GIB coincidono con le direzioni canoniche (CCA), cioè con i vettori singolari di VAMP. Un confronto con VAMP darebbe divario zero per costruzione. Va quindi chiarito che cosa il divario dovrebbe misurare.
 
 **Correzione proposta.** Usare la forma di Schur reale (o Re e Im insieme) e non spezzare le coppie coniugate. In alternativa, dichiarare in RESULTS che il numero dipende dalla convenzione.
+
+**Stato:** non ancora corretto, previsto in fase B.
 
 ## 4. Media: il controllo H5 dell'identità di Price non può fallire
 
@@ -133,6 +137,8 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 **Correzione proposta.** Usare lo stesso seed per `d_on` e `d_eq`, come già fa E6 per V_on e V_off. Con questa scelta il controllo H3 diventa esatto: log R = 0 nella famiglia di equilibrio.
 
+**Stato:** non ancora corretto, previsto in fase B (codice) e fase C (nuova run di E3).
+
 ## 6. Media: KSG usato fuori dall'intervallo validato
 
 **Dove.** `estimators.ksg_mi`, usato in E6 (C = I(z_t; z_{t+1}) in 4 dimensioni, TC = I(x; v)) e in E6b.
@@ -140,6 +146,8 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 **Che cosa succede.** E1 valida KSG su variabili gaussiane con MI esatta di 0,07 e 0,22 nats, in 1–3 dimensioni (bias ≤ 0,011 nats). In S2 la C mediana degli oscillatori è 2,71 nats, in 4 dimensioni, su una distribuzione ad anello. Per MI alte e dipendenze quasi deterministiche KSG sottostima molto e la sottostima dipende dalla forma della distribuzione (Gao, Ver Steeg e Galstyan, AISTATS 2015). Il confronto tra classi in F2 (AUC 0,00) probabilmente regge, perché il distacco è grande. I valori assoluti (2,71 contro 1,57 nats) e il confronto rocce–oscillatori in S2b (segnali di 0,01 nats, che S2.md riconosce già vicini al rumore) non sono validati.
 
 **Correzione proposta.** Aggiungere a E1 un caso con MI di 2–3 nats in 4 dimensioni, per esempio un OU con τ piccolo, oppure riportare i valori di C di S2 come solo ordinali.
+
+**Stato:** non ancora corretto, previsto in fase D.
 
 ## 7. Bassa: la curva di sopravvivenza di S4 è spostata di un passo, e il float32 la rende irregolare
 
@@ -153,6 +161,8 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 **Correzione proposta.** Salvare l'indice del passo (intero) invece del tempo, oppure usare una tolleranza di dt/2, e allineare il docstring.
 
+**Stato:** non ancora corretto, previsto in fase B.
+
 ## 8. Bassa: il rumore della GPU si ripete a certi ritardi temporali
 
 **Dove.** `gs_opencl.py:26`: `uint s = h(seed ^ h(t * 2654435761U + (uint)c * 2U));`
@@ -163,21 +173,29 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 **Correzione proposta.** Combinare t e c in due passaggi di hash (per esempio `h(h(t) ^ c)`) o usare un generatore a contatore come Philox.
 
+**Stato:** non ancora corretto, previsto in fase B.
+
 ## 9. Bassa: comportamento con zero uscite
 
 **Dove.** `viability.mfpt_from`, e le copie in `agency.simulate_exit_threshold` e `nonlinear.exit_times*`.
 
 Con zero uscite la funzione restituisce l'esposizione totale (`exposure / max(ev, 1)`): è un limite inferiore, non una stima. E3, E5 e E9 scartano le strutture con meno di 5 uscite, quindi gli esperimenti non ne sono toccati. `MFPTViability.evaluate` e `GrowthRateViability.evaluate` invece restituiscono questi valori senza filtro. Chi usa l'interfaccia `ViabilityMeasure` può ricevere valori censurati senza saperlo. Proposta: restituire anche il numero di uscite, oppure `nan` sotto una soglia.
 
+**Stato:** non ancora corretto, previsto in fase B.
+
 ## 10. Bassa: divisione per zero in `gib_projection`
 
 `gib_projection` calcola `sqrt((beta*(1-l) - 1) / l)`. Se una direzione di X è determinata da Y, λ_i = 0 e la divisione dà infinito (verificato con Sx = I, Sxy = diag(1; 0,5)). Negli esperimenti non succede, perché c'è sempre rumore. Proposta: un controllo esplicito con un messaggio d'errore.
+
+**Stato:** non ancora corretto, previsto in fase B.
 
 ## 11. Bassa: l'esponente della legge di potenza dipende dall'origine dei tempi
 
 **Dove.** `e10_grayscott.growth`, `e11_selection.growth`.
 
 Il fit di log N contro log t usa il tempo dall'inizio della simulazione. L'esponente di una legge N ∝ (t − t₀)^p cambia con t₀, e le prime divisioni avvengono dopo centinaia di passi. Il verdetto «polynomial, exponent 1.92, close to the area law 2» di S6b dipende quindi da una scelta non dichiarata. `e11_selection.growth` non ha neppure il controllo `N.max() < 8` di E10. Proposta: stimare t₀ nel fit o riportare la sensibilità.
+
+**Stato:** non ancora corretto, previsto in fase B.
 
 ## 12. Bassa: v₀ non è l'ampiezza del ciclo dell'oscillatore
 
