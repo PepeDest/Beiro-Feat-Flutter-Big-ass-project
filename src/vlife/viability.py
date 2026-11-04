@@ -19,8 +19,13 @@ Numerics
    multivariate form follows from Gardiner04 ch.4.4.6]. No Euler time-stepping error.
  * Exit is only checked on the dt grid, which biases MFPT upward (missed excursions): [Mannella99]. For a 1-D
    barrier the bias is equivalent to moving the boundary outward by ~0.5826*sigma*sqrt(dt) [BroadieGlassermanKou97];
-   tests/test_viability.py validates the simulator against the backward equation WITH that shift. The bias is
-   systematic (same for every structure at equal dt), so rankings are affected much less than absolute values.
+   tests/test_viability.py validates the simulator against the backward equation WITH that shift. The bias is NOT the
+   same for every structure: the shift relative to the radius of the set grows like sqrt(theta * dt), theta = relaxation
+   rate of the structure, so fast structures are biased more. 1-D OU, dt = 0.05, p_out = 0.05: log V is too high by
+   +0.23 at theta = 0.3, +0.42 at theta = 1, +0.71 at theta = 3, +1.21 at theta = 9. In E3 worlds it changes the ranking
+   of structures (Spearman 0.85-0.98 against dt = 0.005). See docs/code_review.md, item 1.
+   (Earlier text, superseded 2026-11-04: "The bias is systematic (same for every structure at equal dt), so rankings
+   are affected much less than absolute values.")
  * Rate estimator with right-censoring at t_max:  V = (total exposure time)/(number of exits)
    (exponential-survival MLE, [CoxOakes84]); equals the plain mean exit time when nothing is censored.
    The exit time from a stationary start is not exactly exponential; V is therefore an OPERATIONAL

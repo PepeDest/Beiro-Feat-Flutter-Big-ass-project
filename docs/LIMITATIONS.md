@@ -14,7 +14,13 @@
    partly a statement about relaxation time and fluctuation geometry; correlation of V with C is expected in part by
    construction (slow structures live long). The flux ratio and the within-world design are the guards; they are not proofs.
 6. **Discrete-monitoring bias.** Exit is checked every dt = 0.05; absolute V is biased upward (≈ boundary shift
-   0.5826σ√dt [BroadieGlassermanKou97]); the bias is systematic across structures, but affects absolute values.
+   0.5826σ√dt [BroadieGlassermanKou97]). ~~The bias is systematic across structures, but affects absolute values.~~
+   **Superseded (2026-11-04, docs/code_review.md item 1):** the bias is *not* the same for every structure. The shift
+   relative to the radius of the set grows like √(θ·dt), with θ the relaxation rate of the structure. In 1-D
+   (dt = 0.05, p_out = 0.05) log V is too high by +0.23 at θ = 0.3, +0.71 at θ = 3 and +1.21 at θ = 9. In four E3 worlds
+   the bias ranges from +0.18 to +0.45 between structures of one world, the ranking by V against dt = 0.005 has
+   Spearman ρ 0.85–0.98, and ρ(C, log V) moves by up to 0.14. This bias also affects S3 (same dt) and the D-test of S1
+   (faster rates).
 7. **Censoring / exponential approximation.** Structures with < 5 observed exits are dropped. V = exposure/events assumes
    roughly constant hazard [CoxOakes84]; from a stationary start it is only approximate [ColletMartinezSanMartin13].
 8. **Merging definition.** "Alive iff both parts inside their own sets" makes S sensitive to *temporal clustering of

@@ -68,6 +68,8 @@ Le velocità dei mondi vanno da 0,3 a 3 (`worlds._random_spd`). Nel D-test con r
 
 **Correzione proposta (da decidere, non applicata).** Aggiungere la probabilità di uscita tra due passi con il ponte browniano, oppure ripetere E3 su un sottoinsieme di mondi a dt più piccolo e riportare la sensibilità. In ogni caso va corretta la frase «same for every structure» nel docstring e in LIMITATIONS §6.
 
+**Stato:** in parte corretto, solo documentazione (fase A). Corrette la frase del docstring di `viability.py` e LIMITATIONS §6; la frase vecchia resta, segnata come superata. Non ancora corretto nel codice: il ponte browniano è previsto in fase B e la nuova run di E3 in fase C.
+
 ## 2. Alta: E4 scarta il 54 % delle coppie in modo sistematico
 
 **Dove.** `experiments/e4_merging.py:231`:
