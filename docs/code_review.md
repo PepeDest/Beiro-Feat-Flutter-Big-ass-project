@@ -95,7 +95,7 @@ Con N = 6 restano 125 coppie per mondo: 90 × 125 = 11 250, il numero riportato 
 
 **Correzione proposta.** Togliere `or min(a) > min(b)` e ripetere E4 e `s1_summary.py`.
 
-**Stato:** non ancora corretto, previsto in fase B (codice) e fase C (nuova run di E4).
+**Stato:** corretto nel codice (fase B). Le coppie ora vengono da `functional.merge_pairs`, senza il filtro `min(a) > min(b)`: 270 coppie per mondo con N = 6. Test: `tests/test_merging.py` (numero di coppie, nessun doppione, nessuna coppia mancante, indipendenza dall'etichetta delle variabili). I risultati di E4 vanno rifatti: previsto in fase C.
 
 ## 3. Media: divario GIB–TICA calcolato su parti reali di autovettori complessi (E2)
 

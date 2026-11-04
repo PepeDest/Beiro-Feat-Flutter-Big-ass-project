@@ -30,6 +30,14 @@ def all_subsets(N):
     return [s for k in range(1, N) for s in combinations(range(N), k)]
 
 
+def merge_pairs(subsets, N, max_size=5):
+    """All unordered pairs (a, b) of disjoint structures whose union is a proper subset of size <= min(max_size, N - 1).
+    Each pair appears once (itertools.combinations). E4 used to drop pairs with min(a) > min(b) as well, which removed
+    54 % of the eligible pairs for N = 6, depending on the variable index (docs/code_review.md, item 2)."""
+    limit = min(max_size, N - 1)
+    return [(a, b) for a, b in combinations(subsets, 2) if not set(a) & set(b) and len(a) + len(b) <= limit]
+
+
 def structure_features(world, tau, subsets=None):
     N = world.N
     subsets = all_subsets(N) if subsets is None else subsets
