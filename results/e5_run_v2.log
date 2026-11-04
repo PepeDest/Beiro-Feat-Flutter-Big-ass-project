@@ -1,0 +1,18 @@
+simulation done in 265s
+# E5 / S3 report (auto-generated; rules in docs/S3.md)
+
+Settings: {'n': 400, 'seed': 2026, 'tau': 1.0, 'n_traj': 600, 't_max': 1000.0, 'workers': 2, 'tag': '_v2', 'bridge': True}. Organisms: 400, kept 395, dropped 5 (fewer than 5 exits).
+
+| Rule | Measure | Value [95% CI] | Verdict |
+|---|---|---|---|
+| R1 | mean VoI = log V_intact - log V_scrambled | +1.265 [+1.138, +1.401] (VoI > 0 in 99%) | used |
+| R2 | beta_P intact / scrambled / difference | +0.759 [+0.620, +0.892] / +0.375 [+0.318, +0.433] / +0.384 [+0.251, +0.516] | depends on the loop |
+| Gate | | | not triggered |
+| R3 | rho(P_intact, VoI) | +0.408 [+0.314, +0.495] | yes |
+| R4 | rho(I(v;h)_intact, log V_intact) | +0.301 [+0.210, +0.392] | not present |
+| R5 | rho(Phi_TC, log V) intact | +0.214 [+0.115, +0.306] (scrambled +0.390 [+0.304, +0.468]) | supported |
+
+Description only:
+- mean log V_intact - log V_nofeedback: +0.736 [+0.600, +0.875] (> 0 in 77%)
+- rho(L, VoI): +0.337 [+0.231, +0.432]
+- rho(leak_intact, log V_intact): -0.042 [-0.147, +0.051]
