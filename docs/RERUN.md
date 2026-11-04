@@ -206,7 +206,7 @@ N 5, N 7, D-test r 2 and r 3; S2, S2b, S2c; S5 and S6 do not use this exit check
   P has a small positive effect, the merge criterion fails (H4), driven dynamics shorten life by about 17–22 %.
 - S1: "the verdict of Φ_orig depends on τ" (H1 supported at τ 0.5 only). The ROADMAP S1 gate still triggers.
 - S1b: P + C − 0.25·TC predicts life (baseline, τ 0.5, τ 2), and the TC coefficient is negative in every family.
-- S3: information pays when it is used: VoI +1.27, life about 3.6 times longer; P's effect depends on the loop; the gate is not triggered. S3b unchanged.
+- S3: information pays when it is used: VoI +1.27, life about 3.5 times longer (old text: 3.6); P's effect depends on the loop; the gate is not triggered. S3b unchanged.
 - S4: the growth rate ranks like the mean exit time (ρ 0.95 and 0.99), because lives are near exponential (CV 1.04);
   selection on Φ_TC is positive (74 % of worlds) and the random-swap transmission term is small and negative (98 %).
 
