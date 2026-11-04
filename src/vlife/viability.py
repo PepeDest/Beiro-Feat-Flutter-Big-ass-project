@@ -53,6 +53,7 @@ class ExitData:
     valid: np.ndarray    # (n_traj, S) bool: started inside the viability set
     t_max: float
     dt: float
+    bridge: bool = False  # Brownian-bridge correction used (fix #1)
 
 
 def _stack_precisions(S, subsets, p_out):
@@ -65,7 +66,20 @@ def _stack_precisions(S, subsets, p_out):
     return Q, c
 
 
-def simulate_exits(B, S, subsets, p_out=0.05, n_traj=200, dt=0.05, t_max=100.0, rng=None):
+def bridge_crossing_prob(d0, d1, s2):
+    """Probability that a Brownian bridge with variance s2 over the step crosses a flat boundary at distances d0, d1 > 0
+    from its two end points: exp(-2 d0 d1 / s2) [Mannella99; Giraudo and Sacerdote 1999, Biol. Cybern. 81:525]."""
+    return np.exp(-2.0 * d0 * d1 / s2)
+
+
+def simulate_exits(B, S, subsets, p_out=0.05, n_traj=200, dt=0.05, t_max=100.0, rng=None, bridge=False):
+    """Exit times from the viability sets of all subsets (module docstring).
+    bridge=True (fix #1, docs/code_review.md): between two checks, a trajectory that is inside at both ends is also
+    counted as exited with the Brownian-bridge crossing probability exp(-2 d0 d1 / s2). The boundary is linearised in
+    g(x) = sqrt(x_A^T S_A^-1 x_A): d = sqrt(c) - g at each end, s2 = grad g^T (2 D dt) grad g averaged over the two ends,
+    with 2D = B S + S B^T (Lyapunov). The exit time stays on the dt grid (end of the step). 1-D check against the backward
+    equation at dt = 0.05, p_out = 0.05: error <= 2.1 % for theta = 0.3 to 9, against +24 % to +239 % without the bridge
+    (tests/test_bridge.py). bridge=False is the old method and uses the same random numbers as before."""
     rng = np.random.default_rng() if rng is None else rng
     N = S.shape[0]
     Q, c = _stack_precisions(S, subsets, p_out)
@@ -81,18 +95,40 @@ def simulate_exits(B, S, subsets, p_out=0.05, n_traj=200, dt=0.05, t_max=100.0, 
     Cn = (Cn + Cn.T) / 2 + 1e-12 * np.eye(N)
     L = np.linalg.cholesky(Cn)
     x = rng.normal(size=(n_traj, N)) @ np.linalg.cholesky(S).T
-    valid = maha(x) < c
+    if bridge:
+        D2dt = (B @ S + S @ B.T) * dt                   # 2 D dt
+        D2dt = (D2dt + D2dt.T) / 2
+        sqc = np.sqrt(c)
+
+        def maha_s2(x):
+            y = (x @ Qflat).reshape(x.shape[0], nS, N)   # rows: Q_j x (Q_j symmetric)
+            q = (y * x[:, None, :]).sum(-1)
+            return q, ((y @ D2dt) * y).sum(-1) / np.maximum(q, 1e-300)
+        q0, s20 = maha_s2(x)
+        valid = q0 < c
+    else:
+        valid = maha(x) < c
     alive = valid.copy()
     exit_t = np.full((n_traj, nS), float(t_max)); event = np.zeros((n_traj, nS), bool)
     for step in range(1, int(round(t_max / dt)) + 1):
         if not alive.any():
             break
         x = x @ Phi.T + rng.normal(size=(n_traj, N)) @ L.T
-        newly = alive & (maha(x) >= c)
+        if bridge:
+            q1, s21 = maha_s2(x)
+            newly = alive & (q1 >= c)
+            u = rng.random((n_traj, nS))
+            stay = alive & ~newly
+            with np.errstate(invalid="ignore"):
+                p = bridge_crossing_prob(sqc - np.sqrt(q0), sqc - np.sqrt(q1), 0.5 * (s20 + s21))
+            newly |= stay & (u < p)
+            q0, s20 = q1, s21
+        else:
+            newly = alive & (maha(x) >= c)
         exit_t[newly] = step * dt
         event |= newly
         alive &= ~newly
-    return ExitData(list(subsets), exit_t, event, valid, t_max, dt)
+    return ExitData(list(subsets), exit_t, event, valid, t_max, dt, bridge)
 
 
 def mfpt_from(exit_t, event, valid):

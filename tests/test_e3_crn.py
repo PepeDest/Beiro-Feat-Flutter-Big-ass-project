@@ -21,3 +21,13 @@ def test_common_random_numbers_make_the_equilibrium_control_exact():
 def test_without_crn_the_control_is_only_equal_in_distribution():
     eq = next(d for d in _data(False) if d["family"] == "equilibrium")
     assert not np.allclose(eq["V_on"], eq["V_eq"])          # old behaviour: separate random numbers
+
+
+def test_bridge_option_is_recorded_and_shortens_life():
+    # Fix #1: the bridge adds the exits missed between two checks, so V falls (by about 0.2-0.4 in log V at dt = 0.05).
+    from e3_phi_vs_viability import build_dataset
+    a = build_dataset(1, 1.0, 0.05, 200, 0.05, 30.0, 7, crn=True, bridge=False)
+    b = build_dataset(1, 1.0, 0.05, 200, 0.05, 30.0, 7, crn=True, bridge=True)
+    for x, y in zip(a, b):
+        assert y["bridge"] and not x["bridge"]
+        assert np.mean(np.log(y["V_on"]) - np.log(x["V_on"])) < -0.1

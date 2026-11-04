@@ -17,14 +17,14 @@ def features(B, S, tau):
 
 
 def run_one(job):
-    i, seed, tau, n_traj, t_max = job
+    i, seed, tau, n_traj, t_max = job[:5]; bridge = job[5] if len(job) > 5 else False
     o = draw_organism(np.random.default_rng([seed, i]))
     sys_ = {ver: homeostat(o, ver) for ver in VERSIONS}
     c = 1.2816 * np.sqrt(sys_["nofeedback"][2][V, V])
     out = dict(i=i, org=o.__dict__, c=c)
     for k, ver in enumerate(VERSIONS):
         B, D, S = sys_[ver]
-        Vv, ev, nv = simulate_exit_threshold(B, S, V, c, n_traj, 0.05, t_max, np.random.default_rng([seed, i, k]))
+        Vv, ev, nv = simulate_exit_threshold(B, S, V, c, n_traj, 0.05, t_max, np.random.default_rng([seed, i, k]), bridge)
         out[ver] = dict(V=Vv, ev=ev, nv=nv, **features(B, S, tau))
     return out
 
@@ -84,10 +84,11 @@ if __name__ == "__main__":
     ap.add_argument("--tau", type=float, default=1.0); ap.add_argument("--n_traj", type=int, default=600)
     ap.add_argument("--t_max", type=float, default=1000.0); ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--bridge", action="store_true", help="fix #1: Brownian-bridge correction of the exit check")
     a = ap.parse_args()
     from concurrent.futures import ProcessPoolExecutor
     t0 = time.time()
-    jobs = [(i, a.seed, a.tau, a.n_traj, a.t_max) for i in range(a.n)]
+    jobs = [(i, a.seed, a.tau, a.n_traj, a.t_max, a.bridge) for i in range(a.n)]
     with ProcessPoolExecutor(a.workers) as ex:
         rows = list(ex.map(run_one, jobs, chunksize=4))
     print(f"simulation done in {time.time() - t0:.0f}s", flush=True)
