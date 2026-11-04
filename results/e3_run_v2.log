@@ -60,3 +60,5 @@
   driven #29: median V_on=2.5  censored(<5 ev)=0.00
   modular_driven #0: median V_on=2.0  censored(<5 ev)=0.00
   modular_driven #1: median V_on=3.0  censored(<5 ev)=0.00
+  modular_driven #2: median V_on=2.7  censored(<5 ev)=0.00
+  modular_driven #3: median V_on=1.8  censored(<5 ev)=0.00
