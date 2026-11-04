@@ -27,7 +27,7 @@ success in the equilibrium family looked like a size effect. The sign interpreta
 | Independent parts: hazards add | within 8%, `tests/` |
 | Gaussian IB analytic solution vs direct optimisation | equal to 1e-3, `tests/` |
 | GIB vs TICA subspaces, reversible worlds | gap ≈ 1e-13 rad (identical, as proved in THEORY §6) |
-| GIB vs TICA subspaces, driven worlds | gap ≈ 0.5–0.9 rad (E2) |
+| GIB vs TICA subspaces, driven worlds | ~~gap ≈ 0.5–0.9 rad (E2)~~ superseded (fix #3): mean gap 0.62–0.72 rad for k = 1–3, range 0.12–1.41 rad over worlds (E2 rerun, end of this page) |
 | KSG estimator vs exact | bias ≲ 0.01 nats for n ≥ 250 |
 | Legacy binned estimator vs exact | bias +0.16 nats (n = 250), +0.03 (n = 1000) (E1) |
 | Legacy script: planted block recovered with NO environmental drive | yes, 5/5 seeds (E0) |
@@ -110,3 +110,23 @@ per family (seeds 100–119), τ = 1. The old gap is computed again in the same 
 
 Expectations: E2a "passes", E2b "yes". E2c "old values superseded", because the old recipe did not give an invariant
 subspace in any of the 20 driven worlds (median residual 0.85, measured with the tests of fix #3).
+
+### E2 rerun: results (added 2026-11-04, after the run)
+Output: `results/e2_gib_slowmodes_realbasis.json`, `.png`, `.log`. Run time a few seconds.
+
+| k | equilibrium, largest new gap | driven, mean old gap | driven, mean new gap [min, max] | driven worlds where a conjugate pair was kept (m = k + 1) |
+|---|---|---|---|---|
+| 1 | 1.9e-13 | 0.911 | 0.623 [0.122, 1.208] | 90 % |
+| 2 | 2.1e-12 | 0.544 | 0.666 [0.122, 1.208] | 10 % |
+| 3 | 3.0e-13 | 0.895 | 0.718 [0.120, 1.409] | 85 % |
+
+| Rule | Verdict |
+|---|---|
+| E2a (control) | passes |
+| E2b (GIB and TICA differ in every driven world) | yes (smallest gap 0.12 rad) |
+| E2c (old values) | old values superseded (changes of −0.29, +0.12, −0.18 rad) |
+
+What this changes: the qualitative E2 result stands. GIB and TICA coincide in reversible worlds and differ in every
+driven world. The size of the gap was partly an artefact: with the old recipe the mean gap went down and up with k
+(0.91, 0.54, 0.89); with a real invariant basis it grows slowly with k (0.62, 0.67, 0.72). When a pair is kept, the
+TICA span has dimension k + 1 and is compared with the first k + 1 GIB modes.
