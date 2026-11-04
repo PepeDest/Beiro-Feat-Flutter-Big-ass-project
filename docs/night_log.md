@@ -15,7 +15,7 @@ instructions; experiment rules go in the step documents before each run (phase C
 - 23:55 D1 says "adequate", so by its rule e6, e6b and e7 are not rerun for the estimator. e7 could still be redone on the
   corrected S1 data (S2c rules D3–D5), but it needs the e6/e6b data files, which are not on this machine; rerunning e6 and
   e6b (same seeds, about 30 min) only to feed e7 is planned after the S1 settings, if time allows.
-- 23:56 Phase E (S6d) needs long runs; the S1 settings use all cores until about 04:00–05:00. Prudent order: write the S6d
+- 23:55 Phase E (S6d) needs long runs; the S1 settings use all cores until about 04:00–05:00. Prudent order: write the S6d
   rules and port the mutation to the numba version now (no long CPU use), run the short mutation check, and start the
   long S6d runs only when the S1 settings are done.
 
@@ -23,4 +23,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | Time (UTC) | Finished | Running | Next |
 |---|---|---|---|
 | 23:55 | Phase C points 1–4 (before the night). C5 rules written (docs/RERUN.md). | — | C5: `_p0.2_v2` (estimate 15–25 min), then N 5, D2, D3, N 7, p_out 0.01 |
-| 23:57 | D1 (KSG adequate). e6/e6b/e7 options for more pairs and tags (tested). | `_p0.2_v2` (E3 + E4) | phase E preparation: S6d rules, mutation in grayscott2 (numba), short check |
+| 23:55 | D1 (KSG adequate). e6/e6b/e7 options for more pairs and tags (tested). | `_p0.2_v2` (E3 + E4) | phase E preparation: S6d rules, mutation in grayscott2 (numba), short check |
