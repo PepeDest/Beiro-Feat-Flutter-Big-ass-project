@@ -121,6 +121,8 @@ err = max(err, abs(dz - (s + t)))
 
 **Correzione proposta (solo documentazione).** Riscrivere H5 come controllo aritmetico, oppure calcolare Δz̄ in modo indipendente: per esempio dalla frazione di tipo A tra tutti i figli registrati dal tracker, senza passare da w e zd.
 
+**Stato:** solo documentazione (fase A). In S6.md una nota sotto la tabella dei risultati spiega che H5 non può fallire. La frase «so the bookkeeping is correct» resta, barrata e segnata come superata, con il testo nuovo accanto. Il codice di `e11_selection.py` non cambia: un controllo indipendente richiederebbe di rifare S6b, che qui non si può lanciare senza GPU.
+
 ## 5. Media: il rapporto di flusso non usa numeri casuali comuni; il controllo H3 è debole
 
 **Dove.** `experiments/e3_phi_vs_viability.py:43-44`: `d_on` e `d_eq` usano lo stesso generatore in sequenza, quindi flussi casuali diversi.
