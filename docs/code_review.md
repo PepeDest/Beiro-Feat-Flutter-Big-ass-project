@@ -195,7 +195,7 @@ Con zero uscite la funzione restituisce l'esposizione totale (`exposure / max(ev
 
 Il fit di log N contro log t usa il tempo dall'inizio della simulazione. L'esponente di una legge N ∝ (t − t₀)^p cambia con t₀, e le prime divisioni avvengono dopo centinaia di passi. Il verdetto «polynomial, exponent 1.92, close to the area law 2» di S6b dipende quindi da una scelta non dichiarata. `e11_selection.growth` non ha neppure il controllo `N.max() < 8` di E10. Proposta: stimare t₀ nel fit o riportare la sensibilità.
 
-**Stato:** non ancora corretto, previsto in fase B.
+**Stato:** corretto nel codice (fase B). Nuova funzione `vlife.growthlaw.growth_fits`, usata da E10 ed E11: stessa finestra e stessi R2_exp, R2_pow e power di prima (le regole preregistrate R1 e H6 non cambiano), più t₀ stimato (ricerca a griglia sul miglior R² di log N contro log(t − t₀)) e l'esponente con quel t₀, solo come descrizione. Restituisce `None` anche in E11 se la colonia non arriva a 8 macchie. Test in `tests/test_growthlaw.py`. Effetto sui risultati: non misurabile qui, perché i dati delle run di S6 e S6b (`e10_runs.pkl`, `e11_runs.pkl`) non sono nel repository. Si potrà misurare con le nuove run della fase E.
 
 ## 12. Bassa: v₀ non è l'ampiezza del ciclo dell'oscillatore
 
