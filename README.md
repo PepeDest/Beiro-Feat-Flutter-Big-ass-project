@@ -16,7 +16,7 @@ then a run, then results. Post-hoc checks are labelled as such. The full history
 | S1b | A complexity term that does not depend on units | P + C − 0.25·TC predicts life in all 9 settings. | `docs/S1b_unitfree.md` |
 | S2 | Does C rate passive "rocks" like drive-sustained oscillators? | Cutting the drive separates the two classes. At a long lag, C rates rocks higher (weak signal). | `docs/S2.md` |
 | S2c | A dissipation term in Φ | Tracks life where the drive builds the structure. Hurts where the drive only stirs it. | `docs/S2c.md` |
-| S3 | Does information pay when it is used? | Yes: breaking the sensor–actuator link shortens life about 3.6 times. | `docs/S3.md` |
+| S3 | Does information pay when it is used? | Yes: breaking the sensor–actuator link shortens life about ~~3.6~~ 3.5 times (corrected rerun). | `docs/S3.md` |
 | S4 | Population growth rate as viability | Ranks like the mean exit time, because lives are near exponential. | `docs/S4.md` |
 | S5 | Boundaries by conditional independence | Planted blankets are found. The static blanket breaks down as the drive grows. The dynamic one stays exact. | `docs/S5.md` |
 | S6 | Replication, heredity, selection, mutation (Gray–Scott spots) | Selection and transmission terms are measured per generation, with a neutral control. No sharp error threshold in finite colonies. | `docs/S6.md` |
