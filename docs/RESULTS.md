@@ -1,5 +1,9 @@
 # Results of the full run (90 worlds, 5,580 structures, 11,250 merge pairs)
 
+**Note (2026-11-04, docs/code_review.md item 2):** the 11,250 merge pairs are not all eligible pairs. A filter in
+`experiments/e4_merging.py` (`min(a) > min(b)`) kept 125 of the 270 eligible pairs per world, and the dropped pairs
+depend on the variable index. The E4 numbers below come from this subset. A rerun without the filter is planned.
+
 Settings: N = 6, τ = 1, p_out = 0.05, 600 trajectories per world, dt = 0.05, seed 2026. Raw outputs: `results/`.
 Figures: `e3_phi_vs_viability.png`, `e4_merging.png`, `e2_gib_slowmodes.png`, `e1_estimators.png`.
 

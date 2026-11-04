@@ -1,4 +1,6 @@
-"""Run every experiment in order.  --quick uses a small ensemble (~2 min); default is the full ensemble (~12 min)."""
+"""Run every experiment in order.  --quick uses a small ensemble (~2 min); default is the full ensemble.
+Run time of the full ensemble: about 30 min on the PC of README.md (E3 alone took 1631 s there).
+(Superseded 2026-11-04: "default is the full ensemble (~12 min)".)"""
 import subprocess, sys, pathlib
 here = pathlib.Path(__file__).parent
 quick = "--quick" in sys.argv

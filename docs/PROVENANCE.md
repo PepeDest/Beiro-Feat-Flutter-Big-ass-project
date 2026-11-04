@@ -46,7 +46,7 @@
 | 34 | Cov(w/w̄, Φ) over structures of one world as a 'selection differential' | e3 | N / X | Structures do not reproduce; descriptive statistic only |
 | 35 | Telos as T1 (selection effect), T2 (variational postulate), T3 (arrow of organisation) | THEORY §1 | N (framing) | T1 relates to teleonomy: Pittendrigh58, Mayr74 |
 | 36 | "Equilibrium, linear-regime and replicator dynamics each have a Lyapunov-type functional; far-from-equilibrium has none in general" | THEORY §1 | E (statement of known facts) | Free energy (textbook), Prigogine55, Fisher30 / Price72 / HofbauerSigmund98 |
-| 37 | Growth-rate viability via Euler–Lotka / Leslie matrix | viability.GrowthRateViability (stub) | E (theory) / not implemented | Lotka1907, Leslie45, Charlesworth94, Caswell01 |
+| 37 | Growth-rate viability via Euler–Lotka / Leslie matrix | viability.GrowthRateViability (~~stub~~ implemented in S4, see row 51) | E (theory) / ~~not implemented~~ implemented (Euler–Lotka; no Leslie matrix) | Lotka1907, Leslie45, Charlesworth94, Caswell01 |
 | 38 | Heredity requirements, error threshold, constructor logic | ROADMAP.md | E (background) | Eigen71, vonNeumann66, SzathmaryMaynardSmith95 |
 | 39 | Good-regulator caveat: successful regulation can *lower* I(output; disturbance) | THEORY §5 | E (background) | ConantAshby70, TouchetteLloyd00 |
 | 40 | Gray–Scott and active droplets as physical division models | ROADMAP.md | E (background) | Pearson93, Zwicker17 |

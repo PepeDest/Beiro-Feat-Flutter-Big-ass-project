@@ -3,9 +3,12 @@
 1. **Linear-Gaussian only.** All information terms are exact, but linear OU worlds cannot hold bistable memory, limit
    cycles, or anything "rock-like". The hard-disk/spin-glass counterexample to C (persistence ≠ organisation) is therefore
    *not tested* here; it needs the non-linear stage (ROADMAP).
+   **Update (2026-11-04):** this holds for S0–S1, S1b, S3, S4 and S5. S2/S2b add nonlinear inertial units (bistable rocks,
+   Rayleigh oscillators), and S6 uses Gray–Scott spots. Their information terms come from estimators (KSG), not closed forms.
 2. **Passive world.** Structures never act on their environment, so predictive information has no feedback payoff.
    A null or negative P coefficient must not be read as a refutation of the thermodynamics of prediction [Still12,
    ParrondoHorowitzSagawa15]; it is evidence that prediction needs a use.
+   **Update (2026-11-04):** this holds for S0–S2. S3 adds a sensor–actuator loop (docs/S3.md), where P has a payoff.
 3. **Differential entropy K_H is scale-dependent.** Rescaling x shifts K_H by k·log(scale). Within-world comparisons at fixed
    units are fine; across-world comparison of K_H is not meaningful. We demean within worlds for this reason.
 4. **Ensemble choice is arbitrary.** Rate range, flux scale, modular block sizes, N = 6, D = I are our choices. Results are
@@ -25,7 +28,11 @@
    roughly constant hazard [CoxOakes84]; from a stationary start it is only approximate [ColletMartinezSanMartin13].
 8. **Merging definition.** "Alive iff both parts inside their own sets" makes S sensitive to *temporal clustering of
    exits*, which correlates with statistical dependence by construction. H4 therefore compares against static I(A;B).
-9. **Selection term only.** No heredity, so T3's transmission term, and replication itself, are untested.
-10. **References not machine-verified** (see REFERENCES.md). Novelty claims mean "no source recalled", not "searched".
+9. ~~**Selection term only.** No heredity, so T3's transmission term, and replication itself, are untested.~~
+   **Superseded (2026-11-04):** S4 measures a transmission term with an offspring map we chose, and S6 has real division,
+   heredity, selection and mutation (docs/S6.md). The structures of S0–S3 still do not reproduce.
+10. ~~**References not machine-verified** (see REFERENCES.md).~~ **Superseded (2026-11-04):** S0 checked all 62 references
+    against Crossref (docs/ROADMAP.md, S0). Novelty claims mean "no source recalled", not "searched"; the S0 novelty search
+    was limited (PROVENANCE.md, search log).
 11. **Single run per world for MFPT** with n_traj Monte-Carlo trajectories: noise sd(log V) ≈ 0.03–0.04 (measured), versus
     signal sd across structures ≈ 0.07–0.12; coefficients are attenuated slightly by this noise.
