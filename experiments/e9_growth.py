@@ -1,5 +1,5 @@
 """E9 / ROADMAP S4 - growth-rate viability from stored E3 exit data, and Price terms. Rules: docs/S4.md. No simulation."""
-import pickle
+import argparse, pickle
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
@@ -43,8 +43,11 @@ def cboot(vals, n_boot=400, rng=np.random.default_rng(0)):
     lo, hi = np.percentile(bs, [2.5, 97.5]); return [float(pt), float(lo), float(hi)]
 
 
-base = [world_table(d) for d in pickle.load(open(RES / "e3_dataset.pkl", "rb"))]
-wide = [world_table(d) for d in pickle.load(open(RES / "e3_dataset_p0.2.pkl", "rb"))]
+ap = argparse.ArgumentParser(); ap.add_argument("--tag", default=""); ap.add_argument("--wide_tag", default="_p0.2")
+A_ = ap.parse_args(); TAG = A_.tag
+base = [world_table(d) for d in pickle.load(open(RES / f"e3_dataset{TAG}.pkl", "rb"))]
+wpk = RES / f"e3_dataset{A_.wide_tag}.pkl"
+wide = [world_table(d) for d in pickle.load(open(wpk, "rb"))] if wpk.exists() else []   # G2 needs the p_out 0.2 dataset
 B = [t for t in base if t is not None]
 rho = lambda a, b: spearmanr(a, b)[0]
 G1_0 = cboot([rho(t["r0"], t["logV"]) for t in B]); G1_m = cboot([rho(t["rm"], t["logV"]) for t in B])
@@ -57,19 +60,19 @@ for tb, tw in zip(base, wide):
         continue
     ib = np.searchsorted(tb["J"], common); iw = np.searchsorted(tw["J"], common)
     a, b = rho(tb["logV"][ib], tw["logV"][iw]), rho(tb["rm"][ib], tw["rm"][iw]); sV.append(a); sR.append(b); diffs.append(b - a)
-G2 = cboot(diffs)
+G2 = cboot(diffs) if diffs else [float("nan")] * 3
 G3 = cboot([rho(t["z_all"][t["J"]], t["rm"]) for t in B])
 P = np.array([price(t) for t in B]); S4 = cboot(P[:, 0]); T4 = cboot(P[:, 1])
 lab1 = lambda x: "agree" if x[0] >= 0.9 else "moderate" if x[0] >= 0.5 else "disagree strongly"
 v = dict(G1_am0=lab1(G1_0), G1_amMedian=lab1(G1_m),
-         G2="r more stable" if G2[1] > 0 else "V more stable" if G2[2] < 0 else "same",
+         G2=("not run (no p_out 0.2 dataset)" if not diffs else "r more stable" if G2[1] > 0 else "V more stable" if G2[2] < 0 else "same"),
          G3="yes" if G3[1] > 0 else "no",
          G4="mutation erodes selection" if S4[1] > 0 and T4[2] < 0 else "not shown")
-desc = dict(n_worlds=len(B), n_worlds_G2=len(diffs), rho_V_stability=cboot(sV), rho_r_stability=cboot(sR),
+desc = dict(n_worlds=len(B), n_worlds_G2=len(diffs), rho_V_stability=cboot(sV) if sV else None, rho_r_stability=cboot(sR) if sR else None,
             frac_S_pos=float(np.mean(P[:, 0] > 0)), frac_T_neg=float(np.mean(P[:, 1] < 0)),
             median_a_m=float(np.median([t["a_med"] for t in B])),
             rho_PhiTC_logV=cboot([rho(t["z_all"][t["J"]], t["logV"]) for t in B]))
-save_json("e9_growth.json", dict(G1_am0=G1_0, G1_amMedian=G1_m, G2=G2, G3=G3, G4_S=S4, G4_T=T4, verdicts=v, description=desc))
+save_json(f"e9_growth{TAG}.json", dict(G1_am0=G1_0, G1_amMedian=G1_m, G2=G2, G3=G3, G4_S=S4, G4_T=T4, verdicts=v, description=desc))
 f = lambda x: f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
 L = ["# E9 / S4 report (auto-generated; rules in docs/S4.md)\n", f"Worlds: {len(B)} (S1 baseline).\n",
      "| Rule | Value [95% CI] | Verdict |", "|---|---|---|",
@@ -79,4 +82,4 @@ L = ["# E9 / S4 report (auto-generated; rules in docs/S4.md)\n", f"Worlds: {len(
      f"| G3: rho(Phi_TC, r) | {f(G3)} | {v['G3']} |",
      f"| G4: selection S / transmission T | {f(S4)} / {f(T4)} | {v['G4']} |",
      "\nDescription only:"] + [f"- {k}: {val}" for k, val in desc.items()]
-(RES / "e9_growth.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
+(RES / f"e9_growth{TAG}.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
