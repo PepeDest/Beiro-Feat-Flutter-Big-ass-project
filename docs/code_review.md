@@ -187,7 +187,7 @@ Con zero uscite la funzione restituisce l'esposizione totale (`exposure / max(ev
 
 `gib_projection` calcola `sqrt((beta*(1-l) - 1) / l)`. Se una direzione di X è determinata da Y, λ_i = 0 e la divisione dà infinito (verificato con Sx = I, Sxy = diag(1; 0,5)). Negli esperimenti non succede, perché c'è sempre rumore. Proposta: un controllo esplicito con un messaggio d'errore.
 
-**Stato:** non ancora corretto, previsto in fase B.
+**Stato:** corretto nel codice (fase B). `gib_projection` solleva `ValueError` se un modo attivo ha λ ≤ 1e-12; `gib_modes` non emette più l'avviso di divisione per zero quando λ = 1 (β critico infinito, come prima). Test in `tests/test_gib.py`. Nessun risultato cambia.
 
 ## 11. Bassa: l'esponente della legge di potenza dipende dall'origine dei tempi
 

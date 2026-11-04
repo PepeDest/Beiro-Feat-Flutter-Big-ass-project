@@ -27,11 +27,18 @@ def gib_modes(Sx, Sy, Sxy):
     Msym = Sx_is @ Sxgy @ Sx_is
     lam, U = eigh((Msym + Msym.T) / 2)
     V = (Sx_is @ U).T                       # row i = v_i, with r_i = v_i^T Sx v_i = 1
-    return lam, V, 1.0 / (1.0 - lam)
+    with np.errstate(divide="ignore"):
+        bc = 1.0 / (1.0 - lam)                  # inf for lambda = 1 (a direction of X that carries no information on Y)
+    return lam, V, bc
 
 
-def gib_projection(Sx, Sy, Sxy, beta):
+def gib_projection(Sx, Sy, Sxy, beta, tol=1e-12):
+    """Optimal GIB map at trade-off beta (rows alpha_i v_i of the active modes). If an active mode has lambda_i ~ 0
+    (Y determines that direction of X), alpha_i is infinite and no finite optimum exists: raise ValueError
+    (fix #10, docs/code_review.md)."""
     lam, V, bc = gib_modes(Sx, Sy, Sxy)
+    if np.any((beta >= bc) & (lam <= tol)):
+        raise ValueError("GIB mode with lambda ~ 0 is active: Y determines a direction of X, the optimal gain is infinite")
     rows = [np.sqrt((beta * (1 - l) - 1) / l) * v for l, v, b in zip(lam, V, bc) if beta >= b]
     return np.array(rows).reshape(len(rows), Sx.shape[0])
 

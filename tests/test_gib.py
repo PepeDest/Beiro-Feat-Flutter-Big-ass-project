@@ -73,3 +73,14 @@ def test_tica_subspace_equals_gib_when_reversible():
     for k in (1, 2, 3):
         _, rows, m = tica_subspace(Sxy, w.S, k)
         assert m == k and subspace_gap(V[:k], rows) < 1e-6
+
+
+def test_gib_projection_rejects_a_fully_determined_direction():
+    # Fix #10 (docs/code_review.md): lambda_1 = 0 used to give a division by zero and an infinite row.
+    import pytest
+    Sx, Sy, Sxy = np.eye(2), np.eye(2), np.diag([1.0, 0.5])            # x_1 = y_1 exactly
+    lam, _, bc = gib_modes(Sx, Sy, Sxy)
+    assert np.isclose(lam.min(), 0.0, atol=1e-12)
+    with pytest.raises(ValueError):
+        gib_projection(Sx, Sy, Sxy, 5.0)
+    assert gib_projection(Sx, Sy, Sxy, 0.5).shape == (0, 2)            # below every critical beta: no active mode
