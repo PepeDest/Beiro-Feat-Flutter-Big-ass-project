@@ -95,3 +95,18 @@ coefficient is negative everywhere. The K_H term caused the negative H1 result.
 - Predictive information P has a small positive partial effect. This is what one should expect *if information only pays when it is used*: nothing in these worlds acts on P.
 - This is **not** a refutation of T3 in general. It refutes this functional in this ensemble. The untested regimes (action loops, hidden-state environments, nonlinear metastability, heredity) are exactly those where the theory was supposed to bite (ROADMAP).
 - The result is a concrete next step: the discriminating experiment is Track A/N, where information can be *used* and where equilibrium "rocks" exist.
+
+## E2 rerun after fix #3 (rules fixed 2026-11-04, before the run)
+**Why.** E2 compared GIB and TICA subspaces using the real part of complex TICA eigenvectors, and could split a conjugate
+pair (docs/code_review.md, item 3). The rerun uses `gib.tica_subspace` (real basis, pairs kept together). Same 20 worlds
+per family (seeds 100–119), τ = 1. The old gap is computed again in the same run, for comparison. Output:
+`results/e2_gib_slowmodes_realbasis.json` and `.png`. The old `results/e2_gib_slowmodes.json` stays.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| E2a | Control: do GIB and TICA still coincide in reversible worlds? | "passes" if the largest new gap over equilibrium worlds is < 1e-6 for k = 1, 2, 3 |
+| E2b | Do GIB and TICA still differ in every driven world? | "yes" if the smallest new gap over driven worlds is > 1e-3 for k = 1, 2, 3 |
+| E2c | Was the old driven gap an artefact of the recipe? | "old values superseded" if the mean new gap differs from the mean old gap by more than 0.05 rad for some k, else "old values stand" |
+
+Expectations: E2a "passes", E2b "yes". E2c "old values superseded", because the old recipe did not give an invariant
+subspace in any of the 20 driven worlds (median residual 0.85, measured with the tests of fix #3).
