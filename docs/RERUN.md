@@ -64,6 +64,28 @@ log V. The flux effect (mean log R in driven worlds) may grow slightly in size (
 Old values (S0 baseline): ρ(Φ_orig) −0.08 [−0.20, +0.03]; ρ(C only) +0.33 all, +0.55 equal size; ρ(−K_H, equal size)
 −0.70; E4 ρ(ΔΦ) −0.20, ρ(I(A;B)) +0.41.
 
+## C2b. Rules for τ 0.5 and τ 2 on `_v2` (fixed 2026-11-04, before these runs; added after the go for them)
+**Why.** In S1 the τ settings reused the baseline exit data and recomputed only the information features (docs/S1.md).
+After the E3 `_v2` run, the old τ settings would still use the old exit check. So they are redone from the `_v2` exit
+data, with no new simulation: `python e3_phi_vs_viability.py --sim_from _v2 --tau 0.5 --tag _tau0.5_v2` (and τ 2), then
+`python e4_merging.py --tag _tau0.5_v2` (and `_tau2_v2`). `s1_summary.py --suffix _v2` then reports baseline, τ 0.5 and τ 2
+together. As a description, `s1_lambda_scan.py` is rerun on the three `_v2` datasets. Expected time: a few minutes.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| T1 | H1 at τ 0.5 (old: supported, +0.15) | S1 rule for H1 |
+| T2 | H1 at τ 2 (old: not supported) | S1 rule for H1 |
+| T3 | Does C still predict life at τ 0.5 and τ 2? | "stands" if ρ(C only, equal size) has CI low > 0 in both |
+| T4 | Does H4 still fail at τ 0.5 and τ 2? | "stands" if H4 is "not supported" in both |
+| T5 | README S1 claim "its verdict depends on τ" | "stands" if the H1 verdict at τ 0.5 differs from the H1 verdict at τ 1 or at τ 2 (all three `_v2`) |
+| T6 | S1b R2 at τ 0.5 and τ 2 (Φ_TC, CI low > 0) | "supported" in each setting, as in docs/S1b_unitfree.md |
+
+Expectations: T1 "supported", T2 "not supported", T3 and T4 "stand", T5 "stands", T6 "supported" in both. These
+expectations follow the old results. The bridge changes log V most for fast structures, and the λ scan
+(results/s1_lambda_scan.md) shows that H1 at τ 0.5 rests on the C : K_H balance, so T1 is the least certain.
+The D-test claim (S1 point 5) uses the baseline value of ρ(−K_H, equal size) as its reference, but the D-test runs keep the
+old exit check. It is not re-evaluated here; the new baseline value is reported next to the old one.
+
 ## C3. Rules for S1b, S4 and S3 on `_v2` (fixed before the runs)
 Same rule texts as in the step documents, applied to the `_v2` data:
 
