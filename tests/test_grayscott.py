@@ -108,3 +108,17 @@ def test_opencl_noise_matches_reference():
     v = g.fields(which=(1,))[0].ravel()
     ref = normal(11, 0, np.arange(n * n))
     assert np.allclose(v, np.maximum(ref, 0.0), atol=1e-12)
+
+
+def test_numba_run_mutation_matches_opencl_rule():
+    # S6d (docs/S6.md): the numba run has the S6c mutation. With mu = 1 every daughter of a type-A parent becomes B;
+    # with mu = 0 nothing is mutated and the run is unchanged by the new code path.
+    from vlife.grayscott2 import run
+    r = run(3, 0.001, types=("A",) * 4, n=120, max_steps=3000, stall=10 ** 9, mu=1.0)
+    info = r["info"]
+    born_of_A = [d for d in info.values() if d["parent"] is not None and info[d["parent"]]["div"] is not None
+                 and info[d["parent"]]["div"]["z"] == 1]
+    assert r["mutations"][0] == r["mutations"][1] > 0 and len(born_of_A) > 0
+    assert all(d["last"]["z"] == 0 for d in born_of_A if d["div"] is None)
+    r0 = run(3, 0.001, types=("A",) * 4, n=120, max_steps=3000, stall=10 ** 9, mu=0.0)
+    assert r0["mutations"] == [0, 0] and r0["counts"][-1][2] == r0["counts"][-1][1]      # all spots stay type A
