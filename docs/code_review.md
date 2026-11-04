@@ -137,7 +137,7 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 **Correzione proposta.** Usare lo stesso seed per `d_on` e `d_eq`, come già fa E6 per V_on e V_off. Con questa scelta il controllo H3 diventa esatto: log R = 0 nella famiglia di equilibrio.
 
-**Stato:** non ancora corretto, previsto in fase B (codice) e fase C (nuova run di E3).
+**Stato:** corretto nel codice (fase B), come opzione `--crn` di `e3_phi_vs_viability.py` (`build_dataset(..., crn=True)`). Il valore predefinito resta quello vecchio, così i risultati vecchi restano riproducibili. Il dataset registra `crn` e `dt`. Test: `tests/test_e3_crn.py` (con `crn` il controllo di equilibrio dà V_on = V_eq esattamente). La nuova run di E3 è prevista in fase C.
 
 ## 6. Media: KSG usato fuori dall'intervallo validato
 

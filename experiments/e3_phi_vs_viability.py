@@ -20,7 +20,10 @@ from vlife.stats import spearman_within, cluster_bootstrap
 from vlife.price import selection_differential
 
 
-def build_dataset(n_worlds, tau, p_out, n_traj, dt, t_max, seed, N=6, noise_range=None):
+def build_dataset(n_worlds, tau, p_out, n_traj, dt, t_max, seed, N=6, noise_range=None, crn=False):
+    """crn=True (fix #5, docs/code_review.md): the driven run and its equilibrium counterpart use the same random numbers
+    (common random numbers), so log R = 0 exactly in the equilibrium family. crn=False is the old behaviour (one stream,
+    used first by the driven run, then by the counterpart)."""
     data = []
     subsets = all_subsets(N)
     for fam in FAMILIES:
@@ -28,13 +31,18 @@ def build_dataset(n_worlds, tau, p_out, n_traj, dt, t_max, seed, N=6, noise_rang
             rng = np.random.default_rng([seed, FAMILIES.index(fam), k])
             w = make_world(fam, N, rng, noise_range=noise_range)
             f = structure_features(w, tau, subsets)
-            d_on = simulate_exits(w.B, w.S, subsets, p_out, n_traj, dt, t_max, rng)
-            d_eq = simulate_exits(w.B_eq(), w.S, subsets, p_out, n_traj, dt, t_max, rng)
+            if crn:
+                sim = [seed, FAMILIES.index(fam), k, 1]
+                d_on = simulate_exits(w.B, w.S, subsets, p_out, n_traj, dt, t_max, np.random.default_rng(sim))
+                d_eq = simulate_exits(w.B_eq(), w.S, subsets, p_out, n_traj, dt, t_max, np.random.default_rng(sim))
+            else:
+                d_on = simulate_exits(w.B, w.S, subsets, p_out, n_traj, dt, t_max, rng)
+                d_eq = simulate_exits(w.B_eq(), w.S, subsets, p_out, n_traj, dt, t_max, rng)
             V_on, ev_on, nv_on = mfpt_all(d_on); V_eq, ev_eq, nv_eq = mfpt_all(d_eq)
             data.append(dict(family=fam, k=k, B=w.B, S=w.S, D=w.D, feat=f, V_on=V_on, ev_on=ev_on, V_eq=V_eq, ev_eq=ev_eq,
                              sigma=entropy_production(w.B, w.D, w.S), subsets=subsets,
                              exit_t=d_on.exit_t.astype(np.float32), event=d_on.event, valid=d_on.valid,
-                             t_max=t_max, tau=tau, p_out=p_out))
+                             t_max=t_max, tau=tau, p_out=p_out, dt=dt, crn=crn))
             print(f"  {fam} #{k}: median V_on={np.median(V_on):.1f}  censored(<5 ev)={np.mean(ev_on<5):.2f}", flush=True)
     return data
 
@@ -157,6 +165,7 @@ if __name__ == "__main__":
     ap.add_argument("--seed", type=int, default=2026); ap.add_argument("--tag", default="")
     ap.add_argument("--reuse", action="store_true")
     ap.add_argument("--N", type=int, default=6)
+    ap.add_argument("--crn", action="store_true", help="fix #5: common random numbers for the driven and equilibrium runs")
     ap.add_argument("--noise_range", type=float, default=None, help="S1 D-test: D = diag(d), d log-uniform in [1/r, r]")
     ap.add_argument("--sim_from", default=None,
                     help="tag of an existing dataset: reuse its exit data and recompute only the features with --tau "
@@ -175,7 +184,7 @@ if __name__ == "__main__":
     elif args.reuse and pk.exists():
         data = pickle.load(open(pk, "rb"))
     else:
-        t0 = time.time(); data = build_dataset(args.n_worlds, args.tau, args.p_out, args.n_traj, args.dt, args.t_max, args.seed, args.N, args.noise_range)
+        t0 = time.time(); data = build_dataset(args.n_worlds, args.tau, args.p_out, args.n_traj, args.dt, args.t_max, args.seed, args.N, args.noise_range, args.crn)
         pickle.dump(data, open(pk, "wb")); print(f"simulation done in {time.time()-t0:.0f}s")
     # Take the report settings from the dataset, not from the command line. With --reuse the command-line
     # defaults can differ from the settings that made the data (this bug was found in S0).
