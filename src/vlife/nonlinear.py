@@ -4,6 +4,8 @@ State z = (x, v).  dx = v dt,  dv = (-U'(x) - gamma(v) v) dt + sqrt(2 gamma0 T) 
  rock:        U = h (x^2 - 1)^2,       gamma = gamma0 (on and off)
  oscillator:  U = omega0^2 x^2 / 2,    gamma_on = gamma0 - alpha + beta v^2 (active Rayleigh friction,
               energy-depot model [SchweitzerEbelingTilch98, Romanczuk12]),  gamma_off = gamma0
+              beta = (alpha - gamma0) / v0^2, so v0 is the speed where the friction is zero. The deterministic
+              cycle has peak speed (2/sqrt(3)) v0 ~ 1.155 v0, not v0 (docs/code_review.md, item 12).
  well:        U = k x^2 / 2,           gamma = gamma0 (control)
 Off dynamics has constant friction and noise 2 gamma0 T, so it relaxes to the Boltzmann law [Kramers40].
 Integrator: Euler-Maruyama (velocity first, then position with the new velocity)."""

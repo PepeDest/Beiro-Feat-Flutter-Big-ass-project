@@ -185,6 +185,8 @@ Il fit di log N contro log t usa il tempo dall'inizio della simulazione. L'espon
 
 Con l'attrito di Rayleigh γ = γ₀ − α + βv² e β = (α − γ₀)/v₀², il bilancio energetico su un ciclo armonico dà una velocità massima di √(4(α − γ₀)/(3β)) = (2/√3)·v₀ ≈ 1,155 v₀. v₀ è la velocità a cui l'attrito si annulla. Il codice è coerente con sé stesso, perché le condizioni iniziali vengono rilassate per 200 unità di tempo. La spiegazione del pilota in S2.md («v₀/√T ≥ 3.2») sottostima però la distanza del ciclo dal centro del 15 %. Il cambio di intervallo di v₀ resta giustificato.
 
+**Stato:** solo documentazione (fase A). Aggiunta una nota in S2.md dopo il pilota 1 (rapporti corretti: circa 3,0 invece di 2,6 e almeno 3,7 invece di 3,2) e una riga nel docstring di `nonlinear.py`. Nessun risultato cambia.
+
 ## 13. Nota: affermazioni superate o in contrasto tra loro
 
 - `price.py`, docstring: «In this project only the SELECTION term can be measured». S4 e S6 misurano anche il termine di trasmissione.
