@@ -259,3 +259,24 @@ The least certain is W5 and the H1 verdict of the D-test r 3: the D-test makes r
 had its largest bias (+1.2 in log V), so the old D-test shift can be partly an artefact of the check. List item 5 of the
 night plan measures this directly.
 If a run fails twice, it is recorded in docs/night_log.md and the next setting starts.
+
+## D. KSG at high mutual information (code review item 6; rules fixed 2026-11-05 00:05 UTC, before the run)
+**Run D1.** `python d1_ksg_highmi.py`: KSG (k = 4, as in S2) on 4-dimensional pairs X = (x1, x2), Y = (y1, y2) with exact
+I(X; Y) = 0.5, 1, 2, 2.7 and 3.5 nats, n = 4000 (as S2/S2b) and n = 16000, 20 repetitions, in two geometries with the same
+exact MI: Gaussian, and "ring" (an invertible map of each 2-vector to curved, ring-like sets; MI does not change under
+invertible maps of X and Y separately). Expected time: a few minutes.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| D1 | Is KSG wrong by a lot where S2 uses it? | "wrong by a lot" if, at n = 4000 and exact MI 2–3 nats, \|bias\| > 0.2 nats or > 10 % in either geometry; else "adequate" |
+| D2 | Does more data fix it? | Description: bias at n = 16000 against n = 4000 |
+
+**What follows from D1 (fixed now).** If D1 is "adequate", e6, e6b and e7 are not rerun, and the S2 numbers stand with
+the validated range extended. If D1 is "wrong by a lot", e6 and e6b are rerun with 4 times more pairs for C and TC
+(16000 instead of 4000; everything else, including the seeds of the units, unchanged; tag `_v2`), then e7 on these data.
+Rules for that rerun: the S2 rules F1–F4 and the S2b rules G0–G4 and the gate, unchanged; S2c rules D1–D2 (nonlinear part)
+unchanged. A verdict that changes is reported next to the old one.
+Expectation: KSG underestimates high MI (negative bias), more in the ring geometry, and less with more data. I expect
+"wrong by a lot" for the ring geometry at 2.7 nats. If so, I expect the S2 verdict F2 ("C favours oscillators", AUC 0.00)
+to stand, because the gap between the classes is large, and the S2b verdict G2 (signal of about 0.01 nats near the noise)
+to be the least certain.
