@@ -144,3 +144,14 @@ pre-registered version, dividing daughters only, is 50–60 % of it, so M2 faile
 of the faster type falls smoothly and crosses 0.1 at μ = 0.33, about 3 times the mean-field 0.114. A finite-time mean field
 keeps much less of the faster type than the colonies do, so space appears to protect it (not tested).
 Update to "Where the programme stands", condition 4: a nonzero transmission term from real copying errors is now measured.
+
+## Update after the code review (2026-11-04)
+A code review (`docs/code_review.md`) found bugs in the numerics; the fixes and reruns are in `docs/RERUN.md`.
+- The statements of "Where we stand" (top of this file) and of the S1, S1b, S3 and S4 status lines still hold on the
+  corrected data (S1 baseline, τ 0.5, τ 2). The S1 gate still triggers (H1 supported at τ 0.5 only).
+- Changed: H2 at τ 2 is "partial", not "not supported"; effect sizes moved (regression coefficients 20–100 % larger).
+- "In every setting" claims for S1 are confirmed in 3 corrected settings; p_out 0.01, p_out 0.2, N 5, N 7 and the D-test,
+  and the S2c rules D3–D5, still use the old exit check.
+- Superseded wording above: "Price identity exact to 1e-16" (S6b) is true by construction (review item 4); the growth
+  exponent 1.92 depends on the time origin (item 11); in "Where the programme stands", "not measured yet" and "no test
+  with mutation" are superseded by the S6c status line.

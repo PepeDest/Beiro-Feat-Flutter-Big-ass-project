@@ -101,7 +101,7 @@ old +1.27) to change by less than 0.2, because the bias is similar in the intact
 A verdict that changes is reported in this file and in the step document, next to the old verdict.
 
 ## C4. Which conclusions of README and ROADMAP stand
-Written after C1–C3, in a section at the end of this file.
+Written after C1–C3: see "C4 results" at the end of this file.
 
 ## C1 results (added 2026-11-04, after the run)
 Report: `results/c1_dt_control.md`, `.json`, `.log`. 12 worlds, 436 s.
@@ -119,3 +119,116 @@ without correction still keeps a bias of about +0.13, as the 1-D check predicted
 The old method at dt = 0.05 is biased by +0.48 in log V on average in these worlds (driven dynamics).
 Description: ρ(C, log V) among structures of equal size, mean over the 12 worlds: +0.68 (bridge 0.05), +0.64 (bridge 0.005),
 +0.63 (no bridge 0.05), +0.63 (no bridge 0.005). The differences are inside the CIs (about ±0.15).
+
+## C2 results: E3 / E4 baseline `_v2` (added 2026-11-04, after the run)
+Reports: `results/e3_report_v2.md`, `e3_summary_v2.json`, `e3_run_v2.log` (E3, 90 worlds, 5,580 structures, about 15 min with
+another run in parallel) and `results/e4_report_v2.md`, `e4_merging_v2.json` (E4, 24,300 pairs; the old run had 11,250).
+
+| Rule | Old (S0 baseline) | New (`_v2`) | Verdict |
+|---|---|---|---|
+| V0: mean log R, equilibrium | +0.019 ± 0.005 | 0.000 (exact) | exact |
+| V1: ρ(C only), equal size | +0.55 [+0.49, +0.60] | +0.55 [+0.49, +0.61] | stands |
+| V2 / H1: ρ(Φ_orig), all structures | −0.08 [−0.20, +0.03] | −0.01 [−0.12, +0.10] | stands (not supported) |
+| V3: mean log R, driven / modular | −0.21 / −0.24 | −0.190 ± 0.013 / −0.245 ± 0.019 | stands |
+| V4 / H4: ρ(ΔΦ) against ρ(I(A;B)) with log S | −0.19 against +0.41 | −0.17 [−0.23, −0.11] against +0.36 [+0.32, +0.40] | stands (not supported) |
+| H2: signs +P +C −K_H | partial (K_H in driven: CI [−0.067, +0.004]) | partial (P in driven: CI [−0.0004, +0.021]) | same verdict, different reason |
+| H3 control | supported | supported | same |
+
+V5, description:
+
+| Measure | Old | New |
+|---|---|---|
+| ρ(C only), all structures | +0.33 | +0.26 |
+| ρ(P only), all / equal size | +0.09 / +0.14 | +0.09 / +0.14 |
+| ρ(−K_H), all / equal size | −0.26 / −0.70 | −0.19 / −0.74 |
+| ρ(−leak), all | +0.12 | +0.10 |
+| fitted linear (cross-fitted), all / equal size | +0.36 / +0.49 | +0.33 / +0.48 |
+| ρ(Φ_orig) per family: equilibrium / driven / modular | +0.54 / −0.34 / −0.45 | +0.56 / −0.23 / −0.37 |
+| coefficients P, C, K_H, all families | +0.024, +0.095, −0.072 | +0.031, +0.123, −0.111 |
+| coefficients P, C, K_H, equilibrium | +0.058, +0.193, −0.236 | +0.066, +0.242, −0.300 |
+| coefficients P, C, K_H, driven | +0.010, +0.075, −0.030 | +0.010, +0.093, −0.058 |
+| coefficients P, C, K_H, modular | +0.037, +0.113, −0.040 | +0.049, +0.144, −0.075 |
+| Price selection term > 0: equilibrium / driven / modular | 100 % / 27 % / 20 % | 100 % / 47 % / 27 % |
+| E4: fraction of pairs with S > 1 | 0.88 | 0.77 |
+| E4: sign agreement ΔΦ > 0 with S > 1 | 0.50 | 0.56 |
+
+All verdicts are as expected before the run. Two changes in size: the regression coefficients grow by 20–100 % (the
+correction removes a bias that compressed the differences between fast and slow structures), and ρ(C only) over all
+structures falls from +0.33 to +0.26, while among structures of equal size it does not change.
+
+## C2b results: τ 0.5 and τ 2 from the `_v2` data (added 2026-11-04, after the run)
+Reports: `results/e3_report_tau0.5_v2.md`, `e3_report_tau2_v2.md`, the matching `e4_report_*_v2.md`, `s1_table_v2.md`,
+`s1_lambda_scan_v2.md`, `s1b_table_v2.md`. A few minutes in total.
+
+| Rule | Old | New | Verdict |
+|---|---|---|---|
+| T1: H1 at τ 0.5 | supported, +0.15 [+0.03, +0.26] | supported, +0.23 [+0.12, +0.33] | as expected |
+| T2: H1 at τ 2 | not supported, −0.23 [−0.33, −0.12] | not supported, −0.16 [−0.26, −0.07] | as expected |
+| T3: ρ(C only), equal size, τ 0.5 / τ 2 | +0.68 / +0.48 | +0.69 [+0.65, +0.73] / +0.48 [+0.42, +0.55] | stands |
+| T4: H4 at τ 0.5 / τ 2 | not supported / not supported | not supported (ΔΦ −0.16, I(A;B) +0.36) / not supported (ΔΦ −0.01, I(A;B) +0.36) | stands |
+| T5: "the H1 verdict depends on τ" | yes | yes (supported at τ 0.5 only) | stands |
+| T6: S1b R2 at τ 0.5 / τ 2 | supported +0.33 / supported | supported +0.27 [+0.18, +0.35] / supported +0.47 [+0.42, +0.52] | as expected |
+
+**One verdict changed that no rule of C2b covered:** H2 at τ 2 was "not supported" (K_H had the wrong sign in the driven
+and modular families) and is now "partial" (all signs right; the K_H CIs in driven and modular include 0). The K_H
+coefficient at τ 2 is −0.010 [−0.038, +0.013] (driven) and −0.013 [−0.040, +0.011] (modular). So the "wrong sign" at τ 2
+was within the bias of the old exit check. H2 at τ 0.5 stays "supported".
+The λ scan (description) keeps its pattern: a small λ gives a positive ρ at every τ and a large λ a negative ρ;
+P + C alone (λ = 0) gives +0.25, +0.29 and +0.32 at τ = 0.5, 1, 2 (old +0.32, +0.36, +0.39).
+
+## C3 results: S1b, S4 and S3 on `_v2` (added 2026-11-04, after the runs)
+| Step | Rule | Old | New | Verdict |
+|---|---|---|---|---|
+| S1b | R2 baseline: ρ(Φ_TC, log V) | +0.41 [+0.34, +0.48] | +0.34 [+0.27, +0.42] | supported (same) |
+| S1b | TC coefficient, eq / driven / modular (baseline) | −0.118 / −0.034 / −0.045 | −0.156 / −0.047 / −0.059 | negative in all 3 families, also at τ 0.5 and τ 2 (same) |
+| S1b | P + C (baseline), description | +0.36 | +0.29 | Φ_TC is above P + C in all 3 corrected settings |
+| S4 | G1 a_m = 0 | +0.90 [+0.89, +0.91] | +0.95 [+0.94, +0.96] | agree (same, now clear of the 0.9 limit) |
+| S4 | G1 a_m = median V | +0.99 | +0.99 [+0.99, +0.99] | agree (same) |
+| S4 | G2 | V more stable | not run (needs p_out 0.2) | — |
+| S4 | G3: ρ(Φ_TC, r) | +0.41 [+0.35, +0.48] | +0.35 [+0.29, +0.41] | yes (same) |
+| S4 | G4: S / T | +0.009 / −0.001 | +0.008 [+0.005, +0.010] / −0.001 [−0.001, −0.001] | mutation erodes selection (same) |
+| S4 | post-hoc CV of exit times (description) | median 1.015 (0.95–1.09) | median 1.037 (0.97–1.11) | lives stay close to exponential |
+| S3 | R1: mean VoI | +1.27 [+1.16, +1.40] | +1.27 [+1.14, +1.40] | used (same) |
+| S3 | R2: β_P intact / scrambled / difference | +0.75 / +0.38 / +0.37 | +0.76 / +0.37 / +0.38 [+0.25, +0.52] | depends on the loop (same) |
+| S3 | R3, R4, R5, Gate | yes / not present / supported / not triggered | +0.41 / +0.30 / +0.21 [+0.11, +0.31]; same verdicts | same |
+| S3 | S3b R4a / R4b / R4c | +0.36 / −0.13 / −0.00 | +0.35 / −0.13 / −0.04 [−0.13, +0.07] | not present / not present / explained (same) |
+| S3 | organisms kept | 394 | 395 | |
+
+Every C3 verdict is the same as before and as expected. As expected, S3 hardly moves: VoI changes by less than 0.01.
+
+## C4 results: which conclusions of README and ROADMAP stand (added 2026-11-04)
+Based on a claim-by-claim map of README.md and docs/ROADMAP.md against the step documents (67 claims). Settings rerun with
+the corrected exit check: S1 baseline, τ 0.5, τ 2; S1b, S4 (without G2) and S3 on them. Not rerun: p_out 0.01, p_out 0.2,
+N 5, N 7, D-test r 2 and r 3; S2, S2b, S2c; S5 and S6 do not use this exit check.
+
+**Stand, now on corrected data**
+- S1 baseline: Φ_orig does not predict viability (H1 not supported), C does (+0.55 among structures of equal size),
+  P has a small positive effect, the merge criterion fails (H4), driven dynamics shorten life by about 17–22 %.
+- S1: "the verdict of Φ_orig depends on τ" (H1 supported at τ 0.5 only). The ROADMAP S1 gate still triggers.
+- S1b: P + C − 0.25·TC predicts life (baseline, τ 0.5, τ 2), and the TC coefficient is negative in every family.
+- S3: information pays when it is used: VoI +1.27, life about 3.6 times longer; P's effect depends on the loop; the gate is not triggered. S3b unchanged.
+- S4: the growth rate ranks like the mean exit time (ρ 0.95 and 0.99), because lives are near exponential (CV 1.04);
+  selection on Φ_TC is positive (74 % of worlds) and the random-swap transmission term is small and negative (98 %).
+
+**Stand, but partly on old data (wording should say so)**
+- "C predicts life in all 9 settings" and "P + C − 0.25·TC predicts life in all 9 settings": confirmed in the 3 corrected
+  settings; the other 6 still use the old exit check.
+- "H4 fails in every setting": 3 of 9 corrected.
+- "The D-test supports the D = I confound for K_H": the D-test runs are old, and the reference value moved
+  (baseline ρ(−K_H, equal size) −0.70 → −0.74). Not re-evaluated.
+- S2c "hurts where the drive only stirs" (D4 −0.18, D5 −0.52) and "its link to life changes sign with D" (D3 +0.10
+  [+0.01, +0.19]): computed on the old baseline and D-test data; e7 cannot be rerun here (it also needs the S2 data files).
+  The D3 sign is the most fragile, because its CI low was +0.01.
+
+**Changed**
+- H2 at τ 2: "not supported (wrong sign of K_H)" → "partial". The wrong sign was within the bias of the old check.
+- The size of the effects: regression coefficients are 20–100 % larger; ρ(C only) over all structures +0.33 → +0.26;
+  the share of merge pairs with S > 1 is 77 %, not 88 % (with all pairs).
+- The equilibrium control: log R is exactly 0, not "+2 %, plausibly Monte Carlo noise".
+- S0 "the shipped results reproduce (largest change 0.003)": still true for the old code, but the numbers of
+  RESULTS.md are now superseded on purpose.
+
+**Not affected by phase C**: S2 and S2b (own nonlinear simulator, dt = 0.01), S5, S6, S6b, S6c.
+**Already stale before phase C** (code review items 4, 11 and ROADMAP text): "Price identity exact to 1e-16" (true by
+construction), the growth exponent 1.92 (depends on the time origin), and the ROADMAP lines "not measured yet" and
+"no test with mutation", which the S6c status line contradicts.

@@ -23,6 +23,13 @@ then a run, then results. Post-hoc checks are labelled as such. The full history
 
 Overall status, and what would count as support for the theory: end of `docs/ROADMAP.md`.
 
+**Update after the code review (2026-11-04).** A review (`docs/code_review.md`) found that the exit check used for V
+biased life times upward, more for fast structures, and that E4 used only part of the merge pairs. S1 (baseline, τ 0.5,
+τ 2), S1b, S3 and S4 were redone with the fixes (`docs/RERUN.md`). Every conclusion in the table above still holds on the
+corrected data. Two things change: H2 at τ 2 becomes "partial" (it was "not supported"), and the effect sizes move
+(details in `docs/RERUN.md`, section C4). The claims "in all 9 settings" are confirmed in 3 corrected settings; the other
+6 S1 settings and S2c still use the old exit check.
+
 ## Layout
 
 | Path | What |
@@ -37,7 +44,7 @@ Overall status, and what would count as support for the theory: end of `docs/ROA
 | `results/` | Reports (`*_report.md`, `*.json`), figures, logs and simulation data (`*.pkl`) |
 | `results_shipped/` | The results that came with the original zip, kept to compare against |
 | `docs/` | Theory, rules and results of each step, provenance of every formula, references |
-| `tests/` | 36 tests (`pytest`) |
+| `tests/` | ~~36~~ 58 tests (`pytest`); the OpenCL tests also run on a CPU with `pip install "pyopencl[pocl]"` |
 | `legacy/` | The original script that started the project |
 
 ## How to run
