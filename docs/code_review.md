@@ -173,7 +173,7 @@ Nelle famiglie guidate gli stessi numeri casuali ridurrebbero anche il rumore su
 
 **Correzione proposta.** Combinare t e c in due passaggi di hash (per esempio `h(h(t) ^ c)`) o usare un generatore a contatore come Philox.
 
-**Stato:** non ancora corretto, previsto in fase B.
+**Stato:** corretto nel codice (fase B), con una soluzione diversa da quella proposta. Una chiave a 32 bit non può bastare: le coppie (t, c) sono circa 2³⁵, e anche `h(h(t) ^ c)` darebbe ripetizioni strutturate (a XOR fisso). Il kernel ora usa splitmix64 sulla chiave a 64 bit (t << 32 | c), che è biiettiva: due coppie diverse non danno mai lo stesso valore. La funzione è in `src/vlife/gpu_noise.py`, con un riferimento numpy. Test in `tests/test_grayscott.py`: la vecchia chiave si ripete a (t + 10946, c − 41233), la nuova no; nessun doppione su 300 000 coppie; media e deviazione standard del rumore; il kernel OpenCL (eseguito qui con pocl sulla CPU) dà lo stesso rumore del riferimento. S6b e S6c restano calcolati con l'hash vecchio: rifarli richiede il kernel (fase E).
 
 ## 9. Bassa: comportamento con zero uscite
 

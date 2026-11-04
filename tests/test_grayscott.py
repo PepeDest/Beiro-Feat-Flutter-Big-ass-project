@@ -79,3 +79,32 @@ def test_mutation_turns_every_A_daughter_into_B():
     born_of_A = [d for d in kids if info[d["parent"]]["div"]["z"] == 1]
     assert r["mutations"][0] == r["mutations"][1] > 0 and len(born_of_A) > 0
     assert all(d["last"]["z"] == 0 for d in born_of_A if d["div"] is None)
+
+
+def test_reference_noise_has_no_repeats_and_unit_sd():
+    # Fix #8 (docs/code_review.md): the old 32-bit key t*2654435761 + 2c gave identical noise for (t, c) and
+    # (t + 10946, c - 41233). The new 64-bit key cannot repeat.
+    from vlife.gpu_noise import normal, bits
+    K = 2654435761
+    t, c = np.arange(0, 2000), 41233 + np.arange(0, 2000) * 37 % 48000
+    old = lambda t, c: (t * K + 2 * c) % 2 ** 32
+    assert np.array_equal(old(t, c), old(t + 10946, c - 41233))              # the old collision
+    assert not np.any(bits(7, t, c) == bits(7, t + 10946, c - 41233))
+    tt, cc = np.meshgrid(np.arange(300), np.arange(1000), indexing="ij")
+    b = bits(7, tt.ravel(), cc.ravel()); assert len(np.unique(b)) == b.size
+    z = normal(7, tt.ravel(), cc.ravel())
+    assert abs(z.mean()) < 0.01 and abs(z.std() - 1) < 0.01
+
+
+def test_opencl_noise_matches_reference():
+    import pytest
+    try:
+        from vlife.gs_opencl import GPUGrid
+    except Exception:
+        pytest.skip("no OpenCL")
+    from vlife.gpu_noise import normal
+    n = 64; zero = np.zeros((n, n)); g = GPUGrid(zero, zero, zero, zero)
+    g.advance(0.0, 0.0, 0.0, 1, 1.0, 11)                  # u = v = 0, F = k = 0: v after one step = max(noise, 0)
+    v = g.fields(which=(1,))[0].ravel()
+    ref = normal(11, 0, np.arange(n * n))
+    assert np.allclose(v, np.maximum(ref, 0.0), atol=1e-12)
