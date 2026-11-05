@@ -158,3 +158,7 @@ A code review (`docs/code_review.md`) found bugs in the numerics; the fixes and 
 - Superseded wording above: "Price identity exact to 1e-16" (S6b) is true by construction (review item 4); the growth
   exponent 1.92 depends on the time origin (item 11); in "Where the programme stands", "not measured yet" and "no test
   with mutation" are superseded by the S6c status line.
+- S6 night runs (docs/S6.md): S6d, 32 colonies at 600 × 600 (numba; no GPU on this machine). With about twice the
+  generations, f falls above μ_c and holds below; the threshold is not sharper and f(2 μ_c) = 0.16 > 0.1. S6e: the edge
+  explanation of S6c is not supported (dividing spots lean only a little to the edge; type A sits inside). Open: why A
+  survives more than in mean field, and whether f keeps falling with even more generations.

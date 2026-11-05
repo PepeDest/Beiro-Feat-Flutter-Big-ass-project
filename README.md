@@ -32,6 +32,9 @@ corrected data. Two things change: H2 at τ 2 becomes "partial" (it was "not sup
 corrected check (`docs/RERUN.md`, C5). The claims "in all 9 settings" for C and for P + C − 0.25·TC hold. H1 (Φ_orig)
 is now supported at τ 0.5 and in both D-test settings (before: τ 0.5 and r 3), so "its verdict depends on τ and on the
 noise" holds. The D-test shift does not come from the exit-check bias (P5). S2c still uses the old exit check.
+S6, night runs (`docs/S6.md`, S6d and S6e): on a 600 × 600 grid, with about twice the generations, the fraction of the
+faster type falls above μ_c (0.27 → 0.16 at 2 μ_c) and holds below, but there is still no sharp error threshold. The S6c
+idea that the faster type survives because it stays at the colony edge is not supported: it sits inside the colony.
 
 ## Layout
 
@@ -47,7 +50,7 @@ noise" holds. The D-test shift does not come from the exit-check bias (P5). S2c 
 | `results/` | Reports (`*_report.md`, `*.json`), figures, logs and simulation data (`*.pkl`) |
 | `results_shipped/` | The results that came with the original zip, kept to compare against |
 | `docs/` | Theory, rules and results of each step, provenance of every formula, references |
-| `tests/` | ~~36~~ 58 tests (`pytest`); the OpenCL tests also run on a CPU with `pip install "pyopencl[pocl]"` |
+| `tests/` | ~~36~~ ~~58~~ 75 tests (`pytest`); the OpenCL tests also run on a CPU with `pip install "pyopencl[pocl]"` |
 | `legacy/` | The original script that started the project |
 
 ## How to run
