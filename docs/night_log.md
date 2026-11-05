@@ -54,6 +54,9 @@ instructions; experiment rules go in the step documents before each run (phase C
 - 04:28 **Rule broken:** commit 6efebe1 was made with one failing test. The test command was piped into `tail`,
   so its exit code did not stop the commit. The next commit (b678207) fixed the code; all 75 tests pass. From now on the
   test exit code is checked before every code commit.
+- 05:58 New estimate for 8b S2/S2b at dt 0.005, from tonight's speed (this machine is about twice as fast as the one
+  of the S2 runs): e6 10–15 min, e6b about 15 min. Both can end about 06:30, so they run now, e6 first; e6b only if e6
+  ends before 06:35.
 
 ## Rounds
 | Time (UTC) | Finished | Running | Next |
@@ -98,4 +101,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 05:46 | **List item 4 done**: S6d (32 colonies): f falls above μ_c with twice the generations (0.27 → 0.16 at 2 μ_c), holds below; threshold not sharper | 8b S3 at dt 0.025 | final table, PR |
 | 05:52 | 8b S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265 | 8a S2b with new units (seed 2027; estimate 15–25 min) | 8b S2 at dt 0.005 does not fit before 07:00 (40–80 min): not run; final table and PR |
 | 05:53 | — | 8a S2b seed 2027 (V phase) | 8a C phase; complete the summary; PR |
-| 05:59 | **8a done**: S2b replicate, G2 and the gate do not replicate | — | update PR; stop at 07:00 |
+| 05:58 | **8a done**: S2b replicate, G2 and the gate do not replicate | — | update PR; stop at 07:00 |
