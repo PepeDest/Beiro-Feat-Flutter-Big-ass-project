@@ -102,3 +102,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 05:52 | 8b S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265 | 8a S2b with new units (seed 2027; estimate 15–25 min) | 8b S2 at dt 0.005 does not fit before 07:00 (40–80 min): not run; final table and PR |
 | 05:53 | — | 8a S2b seed 2027 (V phase) | 8a C phase; complete the summary; PR |
 | 05:58 | **8a done**: S2b replicate, G2 and the gate do not replicate | — | update PR; stop at 07:00 |
+| 06:07 | — | 8b e6 at dt 0.005 (no output yet) | e6b at dt 0.005 if e6 ends before 06:35; PR; stop at 07:00 |
