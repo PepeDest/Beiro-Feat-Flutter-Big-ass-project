@@ -74,3 +74,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 04:28 | S6d main stopped by the time limit (20 of 32 saved); resume option (tested) | S6d resume (12 runs) | 8b S3, 8a, 8b S2 only if time allows |
 | 04:37 | — | S6d resume (12 runs, first batch running) | 8b S3, 8a |
 | 04:52 | — | S6d resume (22 of 32 in the pkl; end about 06:15–06:30) | when cores free up: 8b S3; 8a and 8b S2 probably do not fit before 07:00 |
+| 05:07 | — | S6d resume (24 of 32 in the pkl; 8 left at μ 0.228, end about 06:20) | S6d analysis; 8b S3 if it fits; final table |
