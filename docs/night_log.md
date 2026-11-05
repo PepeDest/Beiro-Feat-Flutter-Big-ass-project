@@ -104,3 +104,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 05:58 | **8a done**: S2b replicate, G2 and the gate do not replicate | — | update PR; stop at 07:00 |
 | 06:07 | — | 8b e6 at dt 0.005 (no output yet) | e6b at dt 0.005 if e6 ends before 06:35; PR; stop at 07:00 |
 | 06:16 | 8b S2 at dt 0.005: all verdicts hold (936 s) | 8b S2b at dt 0.005 (estimate 15–25 min) | PR; stop at 07:00 |
+| 06:23 | — | 8b e6b at dt 0.005 (V phase) | if it ends before 07:00: record it; else stop it and note it; final commit |
