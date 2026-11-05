@@ -77,3 +77,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 05:07 | — | S6d resume (24 of 32 in the pkl; 8 left at μ 0.228, end about 06:20) | S6d analysis; 8b S3 if it fits; final table |
 | 05:23 | — | S6d resume (28 of 32; last 4 runs, end about 05:55) | S6d analysis, 8b S3, then 8a if it ends before about 06:45 |
 | 05:37 | — | S6d resume (28 of 32; last 4 running) | S6d analysis, 8b S3, final table |
+| 05:46 | **List item 4 done**: S6d (32 colonies): f falls above μ_c with twice the generations (0.27 → 0.16 at 2 μ_c), holds below; threshold not sharper | 8b S3 at dt 0.025 | final table, PR |
