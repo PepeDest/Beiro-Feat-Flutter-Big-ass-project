@@ -1,0 +1,13 @@
+1/4 runs done, 135 s
+2/4 runs done, 139 s
+3/4 runs done, 146 s
+4/4 runs done, 173 s
+# E13 / S6d report (B1 backend check) (auto-generated; rules in docs/S6.md, S6d)
+
+Runs: 4. Time 173 s. Grid 300.
+
+| mu | A->B fraction | f (final fraction of A) | f at 300 x 300 (S6c) | S | T | T all daughters / predicted | median steps | median generation at end (max) |
+|---|---|---|---|---|---|---|---|---|
+| 0.1140 | 0.112 [0.102, 0.123] | 0.598 [0.558, 0.637] | 0.579 [0.552, 0.605] | +0.0660 | -0.0507 | -0.0867 / -0.0879 | 21125 | 8 (15) |
+
+Verdicts: {'B1': 'consistent', 'gen_median_end_300': 8.0}
