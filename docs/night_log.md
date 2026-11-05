@@ -12,7 +12,7 @@
 | 6. S6c edge hypothesis (S6e) | not supported: X1 0.57 (limit 0.6), X2 0.32 | The faster type sits inside the colony, not at its edge, so the S6c explanation is wrong; why A survives more than in mean field is open. | a test of the post-hoc "interior reservoir" reading |
 | 7. Align README, ROADMAP, code_review.md | done for S1, S1b, S3, S4, S6d, S6e; review table has a status column | — | S2c (not rerun) |
 | 8a. More seeds (S2b) | replicate with 120 new units: G0, G1, G3, G4 replicate; **G2 and the gate do not** (AUC 0.46 [0.35, 0.62] against 0.76) | The S2b claim "at a long lag C rates rocks higher" is not robust, and the gate that made a dissipation term mandatory rests on one draw (README and ROADMAP updated). | S6c with more seeds (180 runs) does not fit on this machine in one night |
-| 8b. Half dt | S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265. S2 and S2b at dt 0.005: all verdicts hold, the S2b gate included. | S2, S2b and S3 do not depend on the step. With 8a: the S2b gate depends on the draw of units, not on the step. | S2 and S2b at dt 0.005 done: all verdicts hold (flux ratio −0.08 and −0.01 in log). Nothing left in 8b. |
+| 8b. Half dt | S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265. S2 and S2b at dt 0.005: all verdicts hold, the S2b gate included. | S2, S2b and S3 do not depend on the step. With 8a: the S2b gate depends on the draw of units, not on the step. | — (flux ratio change: −0.08 in S2, −0.01 in S2b, both "small") |
 | 8c. Tests | 13 new tests for functions without one, plus tests for the night's new code: 75 tests pass | — | — |
 
 Problems during the night: S6d main was stopped once by the 2-hour background limit (resumed from the saved runs); one
