@@ -331,7 +331,7 @@ summary `results/c5_summary.md`, `s1_table_v2.md`, `s1b_table_v2.md`, `e9_growth
 | W4: H1 supported in | τ 0.5, **D-test r 2**, D-test r 3 | old: τ 0.5 and D-test r 3. D-test r 2: +0.05 → +0.11 [+0.02, +0.19]. p_out 0.01: −0.01 → +0.10 [−0.00, +0.21], not supported (CI low just below 0) |
 | W5: D-test rule (K_H confound) | supported (as expected) | ρ(−K_H, equal size): baseline −0.74, r 2 −0.28, r 3 −0.04 (old −0.70, −0.29, −0.08) |
 | W6: S1b R2 | supported in 9 of 9 (same) | ρ(Φ_TC) +0.23 to +0.50 (old +0.33 to +0.53) |
-| W6: S1b R3 | not stable (same) | change baseline → r 3: +0.120 (old +0.101), limit 0.1 |
+| W6: S1b R3 | not stable (same) | change baseline → r 3: +0.119 (old +0.101), limit 0.1 |
 | W6: S1b R4 | helps, 9 of 9 (same) | |
 | W6: S1b R5 | stable, negative in 9 of 9 (same) | |
 | W7: S4 G2 | V more stable (same) | −0.066 [−0.076, −0.056] (old −0.04 [−0.05, −0.03]); stability 0.86 (V) and 0.80 (r) |

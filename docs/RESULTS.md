@@ -104,18 +104,28 @@ Sign agreement between ΔΦ > 0 and S > 1 is ~~0.50 (chance)~~ 0.56 (phase C). S
 criterion does not improve on it, and its P-term points the wrong way (merging shrinks the environment, lowering P).
 
 ## Update after S1 (2026-10-21): read docs/S1.md
-The S1 robustness sweep changes the H1 verdict. H1 is supported at τ = 0.5 and when D is not the identity (D-test r = 3).
+The S1 robustness sweep changes the H1 verdict. H1 is supported at τ = 0.5 and when D is not the identity (D-test r = 3; on corrected data also D-test r = 2, see below).
 So the H1 result below holds for this baseline only. It depends on τ, on the fixed λ = 0.25 and on D = I.
 C predicts viability in all 9 settings, and H4 fails in all 9 settings. Details and the corrected claims are in `docs/S1.md`.
 **Note (2026-11-04, phase C, docs/RERUN.md):** baseline, τ 0.5 and τ 2 were redone with the corrected exit check. H1 is
 still supported at τ 0.5 (~~+0.15~~ +0.23 [+0.12, +0.33]) and not at τ 1 or τ 2, C still predicts viability and H4 still
-fails in these 3 settings. The other 6 settings (p_out 0.01, p_out 0.2, N 5, N 7, D-test r 2, r 3) still use the old exit check.
+fails in these 3 settings. ~~The other 6 settings (p_out 0.01, p_out 0.2, N 5, N 7, D-test r 2, r 3) still use the old exit check.~~
+**Superseded (2026-11-05, night run, docs/RERUN.md C5):** now redone, all 9 S1 settings are on corrected data (`_v2`).
+H1 is supported at τ 0.5 (+0.23), D-test r 2 (~~+0.05, not supported~~ +0.11 [+0.02, +0.19]) and D-test r 3
+(~~+0.19~~ +0.24 [+0.16, +0.32]); at p_out 0.01 it is still not supported (+0.10 [−0.00, +0.21], CI low just below 0).
+C predicts viability in all 9 (ρ(C only, equal size) +0.48 to +0.74, old +0.48 to +0.72), H4 fails in all 9 (ρ(ΔΦ)
+−0.21 to −0.01 against ρ(I(A;B)) +0.18 to +0.45), and the equilibrium log R is exactly 0.000 in all 9. The D-test rule
+is "supported" on corrected data (ρ(−K_H, equal size) −0.74 → −0.28 → −0.04, old −0.70 → −0.29 → −0.08), and P5 in
+docs/RERUN.md shows that this shift does not come from the old exit check.
 
 **Update after S1b (2026-10-21): read docs/S1b_unitfree.md.** Replace K_H by the multi-information TC, which does not depend
-on units. Then P + C − 0.25·TC predicts viability in all 9 S1 settings (ρ ~~+0.33 to +0.53~~ +0.27 to +0.53, all CIs exclude 0), and the TC
+on units. Then P + C − 0.25·TC predicts viability in all 9 S1 settings (ρ ~~+0.33 to +0.53~~ ~~+0.27 to +0.53~~ +0.23 to +0.50 (night run, `_v2`), all CIs exclude 0), and the TC
 coefficient is negative everywhere. The K_H term caused the negative H1 result.
 **Note (2026-11-04, phase C):** the new range uses the corrected values for baseline (+0.34), τ 0.5 (+0.27) and τ 2 (+0.47);
-the other 6 settings still use the old exit check.
+~~the other 6 settings still use the old exit check.~~
+**Superseded (2026-11-05):** now redone, all 9 settings are on corrected data. ρ(Φ_TC) is +0.23 (p_out 0.01) to +0.50
+(p_out 0.2), all CIs exclude 0. R3 is still "not stable" (change baseline → r 3 +0.1194, old +0.1008, limit 0.1), the
+TC term helps over P + C in 9 of 9 settings, and the TC coefficient is negative in all 3 families in 9 of 9.
 
 ## What this does and does not show
 - In **passive linear-Gaussian worlds**, with **MFPT out of a Mahalanobis ball** as viability, the proposed Φ is **not** a good predictor of viability, and the merge criterion fails.
@@ -160,7 +170,8 @@ driven world. The size of the gap was partly an artefact: with the old recipe th
 TICA span has dimension k + 1 and is compared with the first k + 1 GIB modes.
 
 ## Update after phase C (2026-11-04)
-Rules and full old/new tables: `docs/RERUN.md` (sections C1, C2, C2b, C3 and their results). The exit check now uses the
+Rules and full old/new tables: `docs/RERUN.md` (sections C1, C2, C2b, C3 and their results; C5 and P5 for the night run
+of 2026-11-05). The exit check now uses the
 Brownian-bridge correction, the equilibrium control uses common random numbers, and E4 uses all merge pairs (tag `_v2`).
 - **Stands:** H1 not supported at the baseline (ρ(Φ_orig) −0.01 [−0.12, +0.10]), C predicts viability (+0.55 among
   structures of equal size, unchanged), H4 not supported with all 24,300 pairs (ρ(ΔΦ) −0.17 against ρ(I(A;B)) +0.36),
@@ -169,5 +180,20 @@ Brownian-bridge correction, the equilibrium control uses common random numbers, 
 - **Sizes changed:** the regression coefficients are 20–100 % larger, ρ(C only) over all structures fell from +0.33 to
   +0.26, ρ(−K_H, equal size) is −0.74 (was −0.70), and the share of merge pairs with S > 1 is 0.77 (was 0.88).
 - **H2:** still "partial", but now because of P in the driven family (CI [−0.0004, +0.021]), not K_H.
-- **Not rerun:** the S1 settings p_out 0.01, p_out 0.2, N 5, N 7 and the D-test r 2, r 3 still use the old exit check.
-  Claims that need all 9 S1 settings are confirmed only in the 3 corrected ones (baseline, τ 0.5, τ 2).
+- ~~**Not rerun:** the S1 settings p_out 0.01, p_out 0.2, N 5, N 7 and the D-test r 2, r 3 still use the old exit check.
+  Claims that need all 9 S1 settings are confirmed only in the 3 corrected ones (baseline, τ 0.5, τ 2).~~
+  **Superseded (2026-11-05):** now redone. The other 6 S1 settings were run with the corrected exit check in the night
+  run (docs/RERUN.md C5, results `results/c5_summary.md`, `s1_table_v2.md`, `s1b_table_v2.md`, `e9_growth_v2.md`).
+- **All 9 S1 settings on corrected data (night run, 2026-11-05):**
+  - C predicts viability in all 9: ρ(C only, equal size) +0.48 to +0.74, every CI low above 0.42 (old +0.48 to +0.72).
+  - H4 fails in all 9: ρ(ΔΦ) −0.21 to −0.01 against ρ(I(A;B)) +0.18 to +0.45, all merge pairs.
+  - Control exact in all 9: equilibrium log R = 0.000.
+  - H1 supported in τ 0.5, D-test r 2 and D-test r 3 (old: τ 0.5 and D-test r 3). D-test r 2: +0.05 → +0.11
+    [+0.02, +0.19]. p_out 0.01: −0.01 → +0.10 [−0.00, +0.21], still not supported (CI low just below 0).
+  - H2: N 5 "partial" → "supported", N 7 "not supported" → "partial", τ 2 "not supported" → "partial" (phase C).
+    No H2 verdict got worse.
+  - D-test rule "supported": ρ(−K_H, equal size) −0.74 (baseline), −0.28 (r 2), −0.04 (r 3) (old −0.70, −0.29, −0.08).
+    P5: the shift is "little from the dt bias" (s = −0.15 and −0.14 for K_H, +0.07 and +0.06 for H1).
+  - S1b: R2 supported in 9 of 9 (ρ(Φ_TC) +0.23 to +0.50, old +0.33 to +0.53); R3 not stable (+0.1194, old +0.1008);
+    R4 helps in 9 of 9; R5 stable, negative in 9 of 9.
+  - S4 G2: "V more stable", −0.066 [−0.076, −0.056] (old −0.04 [−0.05, −0.03]); stability 0.86 (V) and 0.80 (r).
