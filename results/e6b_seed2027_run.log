@@ -1,0 +1,25 @@
+V phase done in 254s
+tau* = 79.49 (median rock V, fixed before any C)
+C phase done in 108s
+# E6b / S2b report (auto-generated; rules in docs/S2.md)
+
+Units: 120. tau* = 79.49. Pairs for C and TC: 4000. dt = 0.01.
+
+| Rule | Value [95% CI] | Verdict |
+|---|---|---|
+| G0: rho(h, log V), rocks | +0.996 [+0.988, +0.998] | valid |
+| G1: median log(V_on/V_off), oscillators | +3.376 [+3.011, +3.806] | yes |
+| G2: stratified AUC of C(tau*) | +0.463 [+0.353, +0.619] | no difference |
+| G3: stratified AUC of Phi_TC | +0.996 [+0.987, +1.000] | Phi_TC mislabels rocks |
+| Gate | | not triggered |
+| G4: rho(C(tau*), log V), rocks | +0.719 [+0.522, +0.858] | yes |
+
+Description only:
+- n_bins: 3
+- auc_C_unstratified: 0.5094444444444445
+- auc_logV_unstratified: 0.6425
+- auc_C_own_lag: 0.2619444444444444
+- C_star_median: {'rock': 0.009386998733524443, 'oscillator': 0.009970488954396117}
+- logV_range: {'rock': [3.9377191264584153, 5.56056799830144], 'oscillator': [2.738210427876845, 6.968619912171829]}
+- min_exits: 1631
+- n_censored_lt5: 0
