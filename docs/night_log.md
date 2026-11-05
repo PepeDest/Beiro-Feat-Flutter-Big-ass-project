@@ -52,3 +52,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 02:23 | README and ROADMAP updated for the 9 corrected S1 settings (item 7, part) | S6e; an agent updates S1, S1b, S4, RESULTS docs (no commit until reviewed) | S6d main |
 | 02:25 | **List item 6 done**: S6e, edge hypothesis not supported (X1 0.57, X2 0.32: type A is inside the colony) | S6d main (32 runs, 600 × 600; estimate about 3 h, end about 05:30) | review the agent's doc edits; item 7 rest |
 | 02:28 | S1, S1b, S4, RESULTS updated for the 9 corrected settings (agent, reviewed) | S6d main | item 7: code_review.md and the S6 parts after S6d |
+| 02:38 | code_review.md: status column in the summary table | S6d main (no run finished yet; first batch of 4 expected about 02:50) | item 7: S6 numbers after S6d |
