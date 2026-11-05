@@ -28,6 +28,14 @@ instructions; experiment rules go in the step documents before each run (phase C
 - 04:07 S6d main is slower at the higher μ (17 of 32 after 102 min); end now about 05:40. After it, in this order:
   8b S3 (about 5–10 min), 8a S2b new units (15–25 min), and 8b S2/S2b at dt 0.005 (40–80 min) only if it can end before
   about 06:45. Reason: keep the final report and the PR update before 07:00, and run the cheapest checks first.
+- 04:28 **Failure 1 of S6d main:** stopped at 04:25 by the 2-hour limit of background jobs. My mistake: I asked for
+  a longer limit than the tool allows. 20 of 32 runs were saved in the pkl (μ 0.057: 8, 0.114: 8, 0.171: 4); the 4 runs
+  in progress were lost. Choice: resume (S6d is list item 4, before item 8), with a new `--resume` option that keeps the
+  saved runs and runs the 12 missing seeds (estimate 80–90 min, end about 06:00). If it fails again, the 20 runs are
+  analysed, as the S6d rule allows.
+- 04:28 **Rule broken:** commit 6efebe1 was made with one failing test. The test command was piped into `tail`,
+  so its exit code did not stop the commit. The next commit (b678207) fixed the code; all 75 tests pass. From now on the
+  test exit code is checked before every code commit.
 
 ## Rounds
 | Time (UTC) | Finished | Running | Next |
@@ -63,3 +71,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 03:52 | — | S6d main (16 of 32 done, 5054 s; end about 05:15) | 8a, 8b |
 | 04:07 | — | S6d main (17 of 32 done, 6104 s; end about 05:40) | 8b S3, 8a, then 8b S2 if time allows |
 | 04:22 | — | S6d main (20 of 32 done, 6727 s) | 8b S3, 8a, 8b S2 if time allows |
+| 04:28 | S6d main stopped by the time limit (20 of 32 saved); resume option (tested) | S6d resume (12 runs) | 8b S3, 8a, 8b S2 only if time allows |
