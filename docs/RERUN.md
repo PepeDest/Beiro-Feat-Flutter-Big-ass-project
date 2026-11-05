@@ -318,7 +318,7 @@ No new run: old results (old exit check) against the corrected `_v2` results, sa
 Expectations: S3 "little" (VoI moved by −0.008, already known from C3). D-test: uncertain; the D-test makes rates up to about
 9, where the old check was worst, so I expect "partly" for the K_H shift.
 
-## C5 results: all 9 S1 settings on corrected data (added 2026-11-05 02:20 UTC, after the runs)
+## C5 results: all 9 S1 settings on corrected data (added 2026-11-05 02:17 UTC, after the runs)
 Reports: `results/e3_report_{p0.2,N5,D2,D3,N7,p0.01}_v2.md` and the matching `e4_report_*_v2.md`, logs `*_v2_run.log`;
 summary `results/c5_summary.md`, `s1_table_v2.md`, `s1b_table_v2.md`, `e9_growth_v2.md`. Run times: 451, 420, 1122, 1281,
 2005 and 3182 s (E3 + E4).
@@ -341,7 +341,7 @@ driven)" → "partial"; τ 2 "not supported" → "partial" (C2b). No H2 verdict 
 **Other expectations that were wrong:** W4: I expected the old list (τ 0.5, r 3); with the corrected check H1 is also
 supported at D-test r 2. The old "verdict depends on τ and on the noise" claim stands and is a little stronger.
 
-## P5 results: share of the D-test shift and of the S3 VoI from the dt bias (added 2026-11-05 02:20 UTC)
+## P5 results: share of the D-test shift and of the S3 VoI from the dt bias (added 2026-11-05 02:17 UTC)
 From `results/c5_summary.md`. s = share of the old shift that came from the old exit check.
 
 | Quantity | Old | New | s | Label |

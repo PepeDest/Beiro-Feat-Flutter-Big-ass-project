@@ -47,3 +47,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 01:38 | — | `_p0.01_v2` (E3 at world 27 of 90; end about 02:25) | C5 analyses; S6d B1, S6e, S6d main |
 | 01:52 | — | `_p0.01_v2` (E3 at world 56 of 90) | C5 analyses; S6d B1, S6e, S6d main |
 | 02:08 | — | `_p0.01_v2` (E3 at world 83 of 90) | C5 analyses; S6d B1, S6e, S6d main |
+| 02:17 | `_p0.01_v2` (3182 s). **List item 2 done**: C5 rules on all 9 settings (W1–W3, W5 as expected; H1 also supported at D-test r 2). **List item 5 done** (P5): little of the D-test shift and of the S3 VoI came from the dt bias. | S6d B1 (4 runs, 300 × 300) | S6e, then S6d main |
