@@ -97,3 +97,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 05:37 | — | S6d resume (28 of 32; last 4 running) | S6d analysis, 8b S3, final table |
 | 05:46 | **List item 4 done**: S6d (32 colonies): f falls above μ_c with twice the generations (0.27 → 0.16 at 2 μ_c), holds below; threshold not sharper | 8b S3 at dt 0.025 | final table, PR |
 | 05:52 | 8b S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265 | 8a S2b with new units (seed 2027; estimate 15–25 min) | 8b S2 at dt 0.005 does not fit before 07:00 (40–80 min): not run; final table and PR |
+| 05:53 | — | 8a S2b seed 2027 (V phase) | 8a C phase; complete the summary; PR |
