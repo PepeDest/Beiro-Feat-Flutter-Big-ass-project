@@ -1,0 +1,17 @@
+# E5 / S3 report (auto-generated; rules in docs/S3.md)
+
+Settings: {'n': 400, 'seed': 2026, 'tau': 1.0, 'n_traj': 600, 't_max': 1000.0, 'workers': 4, 'tag': '_v2_dt0.025', 'bridge': True}. Organisms: 400, kept 395, dropped 5 (fewer than 5 exits).
+
+| Rule | Measure | Value [95% CI] | Verdict |
+|---|---|---|---|
+| R1 | mean VoI = log V_intact - log V_scrambled | +1.262 [+1.134, +1.398] (VoI > 0 in 97%) | used |
+| R2 | beta_P intact / scrambled / difference | +0.758 [+0.618, +0.889] / +0.378 [+0.320, +0.436] / +0.380 [+0.248, +0.511] | depends on the loop |
+| Gate | | | not triggered |
+| R3 | rho(P_intact, VoI) | +0.405 [+0.310, +0.494] | yes |
+| R4 | rho(I(v;h)_intact, log V_intact) | +0.298 [+0.207, +0.389] | not present |
+| R5 | rho(Phi_TC, log V) intact | +0.215 [+0.114, +0.308] (scrambled +0.395 [+0.309, +0.474]) | supported |
+
+Description only:
+- mean log V_intact - log V_nofeedback: +0.733 [+0.597, +0.872] (> 0 in 77%)
+- rho(L, VoI): +0.339 [+0.234, +0.435]
+- rho(leak_intact, log V_intact): -0.043 [-0.149, +0.051]
