@@ -1,5 +1,5 @@
 """E5 / ROADMAP S3 - is information used? Linear homeostat, intact vs scrambled vs no feedback. Rules: docs/S3.md."""
-import argparse, pickle, time
+import argparse, os, pickle, time
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
@@ -7,6 +7,7 @@ from vlife.agency import draw_organism, homeostat, simulate_exit_threshold, ORGA
 from vlife.gaussian import joint_cov, mutual_information, conditional_mutual_information, total_correlation
 
 VERSIONS = ("intact", "scrambled", "nofeedback")
+DT = float(os.environ.get("VLIFE_S3_DT", "0.05"))      # night item 8b: VLIFE_S3_DT=0.025 halves the step (default 0.05)
 
 
 def features(B, S, tau):
@@ -24,7 +25,7 @@ def run_one(job):
     out = dict(i=i, org=o.__dict__, c=c)
     for k, ver in enumerate(VERSIONS):
         B, D, S = sys_[ver]
-        Vv, ev, nv = simulate_exit_threshold(B, S, V, c, n_traj, 0.05, t_max, np.random.default_rng([seed, i, k]), bridge)
+        Vv, ev, nv = simulate_exit_threshold(B, S, V, c, n_traj, DT, t_max, np.random.default_rng([seed, i, k]), bridge)
         out[ver] = dict(V=Vv, ev=ev, nv=nv, **features(B, S, tau))
     return out
 
@@ -94,7 +95,7 @@ if __name__ == "__main__":
     print(f"simulation done in {time.time() - t0:.0f}s", flush=True)
     pickle.dump(rows, open(RES / f"e5_dataset{a.tag}.pkl", "wb"))
     res, verdicts, keep, voi = analyse(rows)
-    save_json(f"e5_summary{a.tag}.json", dict(settings=vars(a), results=res, verdicts=verdicts))
+    save_json(f"e5_summary{a.tag}.json", dict(settings=dict(vars(a), dt=DT), results=res, verdicts=verdicts))
     f3 = lambda x: f"{x[0][0]:+.3f} [{x[1][0]:+.3f}, {x[2][0]:+.3f}]" if isinstance(x[0], list) else f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
     b = res["betaP"]
     L = ["# E5 / S3 report (auto-generated; rules in docs/S3.md)\n",

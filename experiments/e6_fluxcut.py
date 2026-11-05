@@ -1,12 +1,13 @@
 """E6 / ROADMAP S2 - flux cut: rocks vs drive-sustained oscillators vs plain wells. Rules: docs/S2.md."""
-import argparse, pickle, time
+import argparse, os, pickle, time
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
 from vlife.nonlinear import draw_units, initial, run, HDR, exit_times, Unit
 from vlife.estimators import ksg_mi
 
-N_HDR, N_START, N_PAIR, T_BURN, TAU, DT = 16000, 2000, 4000, 200.0, 1.0, 0.01
+N_HDR, N_START, N_PAIR, T_BURN, TAU = 16000, 2000, 4000, 200.0, 1.0
+DT = float(os.environ.get("VLIFE_S2_DT", "0.01"))      # night item 8b: VLIFE_S2_DT=0.005 halves the step (default 0.01)
 
 
 def run_unit(job):
@@ -97,7 +98,7 @@ if __name__ == "__main__":
         res, v, desc = analyse(rows)
         save_json(f"e6_summary{a.tag}.json", dict(results=res, verdicts=v, description=desc))
         f = lambda x: f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
-        L = ["# E6 / S2 report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}. Pairs for C and TC: {a.n_pair}.\n",
+        L = ["# E6 / S2 report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}. Pairs for C and TC: {a.n_pair}. dt = {DT}.\n",
              "| Rule | Value [95% CI] | Verdict |", "|---|---|---|",
              f"| F1: median log(V_on/V_off), oscillators | {f(res['F1'])} (log 2 = 0.693) | {v['F1']} |",
              f"| F2: stratified AUC of C (rock > oscillator) | {f(res['F2'])} | {v['F2']} |",

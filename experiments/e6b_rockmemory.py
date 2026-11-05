@@ -1,12 +1,13 @@
 """E6b / S2b - sharper rock test: well-based and cycle-based viability, C at a long lag tau*. Rules: docs/S2.md (S2b)."""
-import argparse, pickle, time
+import argparse, os, pickle, time
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
 from vlife.nonlinear import draw_units, initial, run, Unit, alive_rule, exit_times_rule
 from vlife.estimators import ksg_mi
 
-N_START, N_PAIR, T_BURN, DT = 2000, 4000, 200.0, 0.01
+N_START, N_PAIR, T_BURN = 2000, 4000, 200.0
+DT = float(os.environ.get("VLIFE_S2_DT", "0.01"))      # night item 8b: VLIFE_S2_DT=0.005 halves the step (default 0.01)
 
 
 def burn(u, n, rng):
@@ -110,11 +111,11 @@ if __name__ == "__main__":
         print(f"C phase done in {time.time() - t0:.0f}s", flush=True)
         for r, c in zip(rows, cs):
             r.update(c)
-        pickle.dump(dict(rows=rows, tau_star=tau_star, n_pair=a.n_pair), open(RES / f"e6b_dataset{a.tag}.pkl", "wb"))
+        pickle.dump(dict(rows=rows, tau_star=tau_star, n_pair=a.n_pair, dt=DT), open(RES / f"e6b_dataset{a.tag}.pkl", "wb"))
         res, v, desc = analyse(rows)
         save_json(f"e6b_summary{a.tag}.json", dict(tau_star=tau_star, results=res, verdicts=v, description=desc))
         f = lambda x: f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
-        L = ["# E6b / S2b report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}. tau* = {tau_star:.2f}. Pairs for C and TC: {a.n_pair}.\n",
+        L = ["# E6b / S2b report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}. tau* = {tau_star:.2f}. Pairs for C and TC: {a.n_pair}. dt = {DT}.\n",
              "| Rule | Value [95% CI] | Verdict |", "|---|---|---|",
              f"| G0: rho(h, log V), rocks | {f(res['G0'])} | {v['G0']} |",
              f"| G1: median log(V_on/V_off), oscillators | {f(res['G1'])} | {v['G1']} |",
