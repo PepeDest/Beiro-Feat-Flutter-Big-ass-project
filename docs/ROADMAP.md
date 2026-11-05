@@ -162,3 +162,7 @@ A code review (`docs/code_review.md`) found bugs in the numerics; the fixes and 
   generations, f falls above μ_c and holds below; the threshold is not sharper and f(2 μ_c) = 0.16 > 0.1. S6e: the edge
   explanation of S6c is not supported (dividing spots lean only a little to the edge; type A sits inside). Open: why A
   survives more than in mean field, and whether f keeps falling with even more generations.
+- S2b night replicate (new units, seed 2027; docs/S2.md): G0, G1, G3, G4 replicate, but G2 (C rates rocks above
+  oscillators at the long lag) does not (AUC 0.46 [0.35, 0.62]), so the gate is not triggered in the replicate. The S2b
+  gate that made a dissipation term "mandatory" (decision point 3) is therefore not robust. S2c's own findings (D1, D2
+  on oscillators) do not depend on it.
