@@ -38,3 +38,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 00:47 | `_D3_v2` (1281 s), committed | `_N7_v2` (estimate 40–80 min: old 11678 s times the ratios 0.19–0.41 measured tonight) | `_p0.01_v2`, then S6d |
 | 00:52 | — | `_N7_v2` (E3 at world 13 of 90, about 35 min in total at this pace) | `_p0.01_v2`, then S6d B1 and main |
 | 01:07 | — | `_N7_v2` (E3 at world 53 of 90) | `_p0.01_v2`, then S6d B1 and main |
+| 01:21 | `_N7_v2` (2005 s; E4 took a large part: 4 · 7 pairs), committed | `_p0.01_v2` (estimate 40–80 min) | then all C5 analyses; S6d B1 and main |
