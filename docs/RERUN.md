@@ -301,3 +301,19 @@ So by the rule fixed before the run, e6, e6b and e7 are not rerun for the estima
 oscillators' median C of 2.71 nats is probably about 0.1–0.2 nats too low, and the rocks' 1.57 a little too low;
 the gap of about 1.1 nats between the classes, and the verdict F2, stand. The validated range of KSG now covers 0.5–3.5
 nats in 4 dimensions.
+
+## P5. How much of the D-test shift and of the S3 VoI came from the dt bias (rules fixed 2026-11-05 00:04 UTC, before the analysis)
+No new run: old results (old exit check) against the corrected `_v2` results, same worlds and seeds.
+- **D-test.** Δ = ρ(−K_H, equal size) in D-test r 3 minus the baseline value. Old Δ_old = −0.08 − (−0.70) = +0.62.
+  Share of the shift that came from the old check: s = 1 − Δ_new / Δ_old. The same for D-test r 2 and for H1 (ρ(Φ_orig)).
+- **S3.** s = (VoI_old − VoI_new) / VoI_old; also for β_P (intact) and for the loop difference of β_P.
+
+| s | Label |
+|---|---|
+| > 0.5 | "mostly from the dt bias" |
+| 0.2 to 0.5 | "partly from the dt bias" |
+| −0.2 to 0.2 | "little from the dt bias" |
+| < −0.2 | "the dt bias hid part of the effect" |
+
+Expectations: S3 "little" (VoI moved by −0.008, already known from C3). D-test: uncertain; the D-test makes rates up to about
+9, where the old check was worst, so I expect "partly" for the K_H shift.
