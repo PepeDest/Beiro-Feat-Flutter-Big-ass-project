@@ -317,3 +317,43 @@ No new run: old results (old exit check) against the corrected `_v2` results, sa
 
 Expectations: S3 "little" (VoI moved by −0.008, already known from C3). D-test: uncertain; the D-test makes rates up to about
 9, where the old check was worst, so I expect "partly" for the K_H shift.
+
+## C5 results: all 9 S1 settings on corrected data (added 2026-11-05 02:20 UTC, after the runs)
+Reports: `results/e3_report_{p0.2,N5,D2,D3,N7,p0.01}_v2.md` and the matching `e4_report_*_v2.md`, logs `*_v2_run.log`;
+summary `results/c5_summary.md`, `s1_table_v2.md`, `s1b_table_v2.md`, `e9_growth_v2.md`. Run times: 451, 420, 1122, 1281,
+2005 and 3182 s (E3 + E4).
+
+| Rule | Verdict | Numbers |
+|---|---|---|
+| W1: C predicts life in all 9 | stands (as expected) | ρ(C only, equal size) +0.48 to +0.74, all CIs low > 0.42 (old +0.48 to +0.72) |
+| W2: H4 fails in all 9 | stands (as expected) | ρ(ΔΦ) −0.21 to −0.01 against ρ(I(A;B)) +0.18 to +0.45 |
+| W3: control exact in all 9 | exact (as expected) | mean log R = 0.000 in the equilibrium family of every setting |
+| W4: H1 supported in | τ 0.5, **D-test r 2**, D-test r 3 | old: τ 0.5 and D-test r 3. D-test r 2: +0.05 → +0.11 [+0.02, +0.19]. p_out 0.01: −0.01 → +0.10 [−0.00, +0.21], not supported (CI low just below 0) |
+| W5: D-test rule (K_H confound) | supported (as expected) | ρ(−K_H, equal size): baseline −0.74, r 2 −0.28, r 3 −0.04 (old −0.70, −0.29, −0.08) |
+| W6: S1b R2 | supported in 9 of 9 (same) | ρ(Φ_TC) +0.23 to +0.50 (old +0.33 to +0.53) |
+| W6: S1b R3 | not stable (same) | change baseline → r 3: +0.120 (old +0.101), limit 0.1 |
+| W6: S1b R4 | helps, 9 of 9 (same) | |
+| W6: S1b R5 | stable, negative in 9 of 9 (same) | |
+| W7: S4 G2 | V more stable (same) | −0.066 [−0.076, −0.056] (old −0.04 [−0.05, −0.03]); stability 0.86 (V) and 0.80 (r) |
+
+H2 verdicts that changed (no W rule covered them): N 5 "partial" → "supported"; N 7 "not supported (K_H wrong sign in
+driven)" → "partial"; τ 2 "not supported" → "partial" (C2b). No H2 verdict got worse.
+**Other expectations that were wrong:** W4: I expected the old list (τ 0.5, r 3); with the corrected check H1 is also
+supported at D-test r 2. The old "verdict depends on τ and on the noise" claim stands and is a little stronger.
+
+## P5 results: share of the D-test shift and of the S3 VoI from the dt bias (added 2026-11-05 02:20 UTC)
+From `results/c5_summary.md`. s = share of the old shift that came from the old exit check.
+
+| Quantity | Old | New | s | Label |
+|---|---|---|---|---|
+| D-test r 2: shift of ρ(−K_H) from baseline | +0.405 | +0.466 | −0.15 | little from the dt bias |
+| D-test r 3: shift of ρ(−K_H) | +0.619 | +0.706 | −0.14 | little from the dt bias |
+| D-test r 2: shift of ρ(Φ_orig) | +0.131 | +0.121 | +0.07 | little from the dt bias |
+| D-test r 3: shift of ρ(Φ_orig) | +0.272 | +0.256 | +0.06 | little from the dt bias |
+| S3: VoI | +1.273 | +1.265 | +0.01 | little from the dt bias |
+| S3: β_P intact | +0.752 | +0.759 | −0.01 | little from the dt bias |
+| S3: β_P loop difference | +0.374 | +0.384 | −0.03 | little from the dt bias |
+
+The expectation "partly from the dt bias" for the D-test was wrong: the K_H shift is slightly larger with the corrected
+check (s ≈ −0.15, inside the "little" band). So the D-test conclusion of S1 (point 5: with D ≠ I, K_H loses its bad
+effect) does not come from the exit check. S3 is unchanged by the check, as expected.
