@@ -27,8 +27,11 @@ Overall status, and what would count as support for the theory: end of `docs/ROA
 biased life times upward, more for fast structures, and that E4 used only part of the merge pairs. S1 (baseline, τ 0.5,
 τ 2), S1b, S3 and S4 were redone with the fixes (`docs/RERUN.md`). Every conclusion in the table above still holds on the
 corrected data. Two things change: H2 at τ 2 becomes "partial" (it was "not supported"), and the effect sizes move
-(details in `docs/RERUN.md`, section C4). The claims "in all 9 settings" are confirmed in 3 corrected settings; the other
-6 S1 settings and S2c still use the old exit check.
+(details in `docs/RERUN.md`, section C4). ~~The claims "in all 9 settings" are confirmed in 3 corrected settings; the other
+6 S1 settings and S2c still use the old exit check.~~ **Update 2026-11-05:** all 9 S1 settings are now redone with the
+corrected check (`docs/RERUN.md`, C5). The claims "in all 9 settings" for C and for P + C − 0.25·TC hold. H1 (Φ_orig)
+is now supported at τ 0.5 and in both D-test settings (before: τ 0.5 and r 3), so "its verdict depends on τ and on the
+noise" holds. The D-test shift does not come from the exit-check bias (P5). S2c still uses the old exit check.
 
 ## Layout
 

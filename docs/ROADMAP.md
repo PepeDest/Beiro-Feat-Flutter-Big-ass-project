@@ -150,8 +150,11 @@ A code review (`docs/code_review.md`) found bugs in the numerics; the fixes and 
 - The statements of "Where we stand" (top of this file) and of the S1, S1b, S3 and S4 status lines still hold on the
   corrected data (S1 baseline, τ 0.5, τ 2). The S1 gate still triggers (H1 supported at τ 0.5 only).
 - Changed: H2 at τ 2 is "partial", not "not supported"; effect sizes moved (regression coefficients 20–100 % larger).
-- "In every setting" claims for S1 are confirmed in 3 corrected settings; p_out 0.01, p_out 0.2, N 5, N 7 and the D-test,
-  and the S2c rules D3–D5, still use the old exit check.
+- ~~"In every setting" claims for S1 are confirmed in 3 corrected settings; p_out 0.01, p_out 0.2, N 5, N 7 and the D-test,
+  and the S2c rules D3–D5, still use the old exit check.~~ **Update 2026-11-05:** all 9 S1 settings are redone with the
+  corrected check (docs/RERUN.md, C5): C predicts life in all 9, H4 fails in all 9, the equilibrium control is exact in
+  all 9, the D-test supports the D = I confound for K_H, and the S1 gate triggers at τ 0.5, D-test r 2 and r 3. S1b R2–R5
+  and S4 G2 keep their verdicts. Only the S2c rules D3–D5 still use the old exit check.
 - Superseded wording above: "Price identity exact to 1e-16" (S6b) is true by construction (review item 4); the growth
   exponent 1.92 depends on the time origin (item 11); in "Where the programme stands", "not measured yet" and "no test
   with mutation" are superseded by the S6c status line.
