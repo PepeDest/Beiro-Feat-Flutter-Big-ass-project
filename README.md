@@ -14,14 +14,27 @@ then a run, then results. Post-hoc checks are labelled as such. The full history
 | S0 | Do the shipped results reproduce? Are the references right? | Yes (largest change 0.003). All 62 references match Crossref. | `docs/RESULTS.md`, `docs/REFERENCES.md` |
 | S1 | Does the result hold when τ, p_out, N and the noise change? | No for the original Φ: its verdict depends on τ and on the noise. Persistence C predicts life in all 9 settings. | `docs/S1.md` |
 | S1b | A complexity term that does not depend on units | P + C − 0.25·TC predicts life in all 9 settings. | `docs/S1b_unitfree.md` |
-| S2 | Does C rate passive "rocks" like drive-sustained oscillators? | Cutting the drive separates the two classes. At a long lag, C rates rocks higher (weak signal). | `docs/S2.md` |
+| S2 | Does C rate passive "rocks" like drive-sustained oscillators? | Cutting the drive separates the two classes. ~~At a long lag, C rates rocks higher (weak signal).~~ ~~At a long lag, C rated rocks higher in one draw of units, but not in a second draw (night check, `docs/S2.md`): not robust.~~ At a long lag, C rates rocks slightly higher (AUC 0.57 [0.51, 0.65] over 7 draws of units); one draw finds it only 2 times in 7. | `docs/S2.md` |
 | S2c | A dissipation term in Φ | Tracks life where the drive builds the structure. Hurts where the drive only stirs it. | `docs/S2c.md` |
-| S3 | Does information pay when it is used? | Yes: breaking the sensor–actuator link shortens life about 3.6 times. | `docs/S3.md` |
+| S3 | Does information pay when it is used? | Yes: breaking the sensor–actuator link shortens life about ~~3.6~~ 3.5 times (corrected rerun). | `docs/S3.md` |
 | S4 | Population growth rate as viability | Ranks like the mean exit time, because lives are near exponential. | `docs/S4.md` |
 | S5 | Boundaries by conditional independence | Planted blankets are found. The static blanket breaks down as the drive grows. The dynamic one stays exact. | `docs/S5.md` |
 | S6 | Replication, heredity, selection, mutation (Gray–Scott spots) | Selection and transmission terms are measured per generation, with a neutral control. No sharp error threshold in finite colonies. | `docs/S6.md` |
 
 Overall status, and what would count as support for the theory: end of `docs/ROADMAP.md`.
+
+**Update after the code review (2026-11-04).** A review (`docs/code_review.md`) found that the exit check used for V
+biased life times upward, more for fast structures, and that E4 used only part of the merge pairs. S1 (baseline, τ 0.5,
+τ 2), S1b, S3 and S4 were redone with the fixes (`docs/RERUN.md`). Every conclusion in the table above still holds on the
+corrected data. Two things change: H2 at τ 2 becomes "partial" (it was "not supported"), and the effect sizes move
+(details in `docs/RERUN.md`, section C4). ~~The claims "in all 9 settings" are confirmed in 3 corrected settings; the other
+6 S1 settings and S2c still use the old exit check.~~ **Update 2026-11-05:** all 9 S1 settings are now redone with the
+corrected check (`docs/RERUN.md`, C5). The claims "in all 9 settings" for C and for P + C − 0.25·TC hold. H1 (Φ_orig)
+is now supported at τ 0.5 and in both D-test settings (before: τ 0.5 and r 3), so "its verdict depends on τ and on the
+noise" holds. The D-test shift does not come from the exit-check bias (P5). S2c still uses the old exit check.
+S6, night runs (`docs/S6.md`, S6d and S6e): on a 600 × 600 grid, with about twice the generations, the fraction of the
+faster type falls above μ_c (0.27 → 0.16 at 2 μ_c) and holds below, but there is still no sharp error threshold. The S6c
+idea that the faster type survives because it stays at the colony edge is not supported: it sits inside the colony.
 
 ## Layout
 
@@ -37,7 +50,7 @@ Overall status, and what would count as support for the theory: end of `docs/ROA
 | `results/` | Reports (`*_report.md`, `*.json`), figures, logs and simulation data (`*.pkl`) |
 | `results_shipped/` | The results that came with the original zip, kept to compare against |
 | `docs/` | Theory, rules and results of each step, provenance of every formula, references |
-| `tests/` | 36 tests (`pytest`) |
+| `tests/` | ~~36~~ ~~58~~ 75 tests (`pytest`); the OpenCL tests also run on a CPU with `pip install "pyopencl[pocl]"` |
 | `legacy/` | The original script that started the project |
 
 ## How to run

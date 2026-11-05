@@ -3,6 +3,7 @@
 import argparse, json, pickle, time
 import numpy as np
 from common import RES, save_json
+from vlife.growthlaw import growth_fits
 from vlife.gs_opencl import run
 
 EPS_GRID = (0.001, 0.002, 0.003)
@@ -58,14 +59,10 @@ def price_run(r):
 
 
 def growth(r):
-    t, N = np.array([(c[0], c[1]) for c in r["counts"]], float).T; Nmax = N.max()
-    i0 = np.argmax(N >= 8); i1 = np.argmax(N >= 0.3 * Nmax)
-    if i1 <= i0 + 3:
-        return None
-    tt, nn = t[i0:i1 + 1], np.log(N[i0:i1 + 1])
-    r2 = lambda x: 1 - np.sum((nn - np.polyval(np.polyfit(x, nn, 1), x)) ** 2) / np.sum((nn - nn.mean()) ** 2)
-    return dict(R2_exp=float(r2(tt)), R2_pow=float(r2(np.log(tt))), power=float(np.polyfit(np.log(tt), nn, 1)[0]),
-                N_max=int(Nmax), N_window=[int(N[i0]), int(N[i1])])
+    """Fix #11: shared fit (vlife.growthlaw). Same window and same R2_exp, R2_pow, power as before; adds t0_fit, power_t0,
+    and returns None if the colony never reaches 8 spots."""
+    t, N = np.array([(c[0], c[1]) for c in r["counts"]], float).T
+    return growth_fits(t, N)
 
 
 def boot(vals, n=1000, rng=np.random.default_rng(0)):
@@ -140,7 +137,7 @@ def main(workers, runs):
            f"| transmission term T | {f(S['T'])} | {f(C['T'])} | measured |",
            f"| H4: final fraction of type A | {f(S['fracA'])} | {f(C['fracA'])} | {v['H4']} |",
            f"| H5: max error of the Price identity | {S['identity_err']:.1e} | {C['identity_err']:.1e} | {v['H5']} |",
-           f"| H6: growth law (exp wins / power wins) | {nexp} / {npow}, power median {np.median([g['power'] for g in G if g]):.2f}, window N {g0['N_window'] if g0 else '-'} | | {v['H6']} |"]
+           f"| H6: growth law (exp wins / power wins) | {nexp} / {npow}, power median {np.median([g['power'] for g in G if g]):.2f} (fitted t0: {np.median([g['power_t0'] for g in G if g]):.2f}, description only), window N {g0['N_window'] if g0 else '-'} | | {v['H6']} |"]
     (RES / "e11_report.md").write_text("\n".join(out) + "\n", encoding="utf-8"); print("\n".join(out))
 
 

@@ -1,5 +1,5 @@
 """E5 / ROADMAP S3 - is information used? Linear homeostat, intact vs scrambled vs no feedback. Rules: docs/S3.md."""
-import argparse, pickle, time
+import argparse, os, pickle, time
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
@@ -7,6 +7,7 @@ from vlife.agency import draw_organism, homeostat, simulate_exit_threshold, ORGA
 from vlife.gaussian import joint_cov, mutual_information, conditional_mutual_information, total_correlation
 
 VERSIONS = ("intact", "scrambled", "nofeedback")
+DT = float(os.environ.get("VLIFE_S3_DT", "0.05"))      # night item 8b: VLIFE_S3_DT=0.025 halves the step (default 0.05)
 
 
 def features(B, S, tau):
@@ -17,14 +18,14 @@ def features(B, S, tau):
 
 
 def run_one(job):
-    i, seed, tau, n_traj, t_max = job
+    i, seed, tau, n_traj, t_max = job[:5]; bridge = job[5] if len(job) > 5 else False
     o = draw_organism(np.random.default_rng([seed, i]))
     sys_ = {ver: homeostat(o, ver) for ver in VERSIONS}
     c = 1.2816 * np.sqrt(sys_["nofeedback"][2][V, V])
     out = dict(i=i, org=o.__dict__, c=c)
     for k, ver in enumerate(VERSIONS):
         B, D, S = sys_[ver]
-        Vv, ev, nv = simulate_exit_threshold(B, S, V, c, n_traj, 0.05, t_max, np.random.default_rng([seed, i, k]))
+        Vv, ev, nv = simulate_exit_threshold(B, S, V, c, n_traj, DT, t_max, np.random.default_rng([seed, i, k]), bridge)
         out[ver] = dict(V=Vv, ev=ev, nv=nv, **features(B, S, tau))
     return out
 
@@ -84,16 +85,17 @@ if __name__ == "__main__":
     ap.add_argument("--tau", type=float, default=1.0); ap.add_argument("--n_traj", type=int, default=600)
     ap.add_argument("--t_max", type=float, default=1000.0); ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--bridge", action="store_true", help="fix #1: Brownian-bridge correction of the exit check")
     a = ap.parse_args()
     from concurrent.futures import ProcessPoolExecutor
     t0 = time.time()
-    jobs = [(i, a.seed, a.tau, a.n_traj, a.t_max) for i in range(a.n)]
+    jobs = [(i, a.seed, a.tau, a.n_traj, a.t_max, a.bridge) for i in range(a.n)]
     with ProcessPoolExecutor(a.workers) as ex:
         rows = list(ex.map(run_one, jobs, chunksize=4))
     print(f"simulation done in {time.time() - t0:.0f}s", flush=True)
     pickle.dump(rows, open(RES / f"e5_dataset{a.tag}.pkl", "wb"))
     res, verdicts, keep, voi = analyse(rows)
-    save_json(f"e5_summary{a.tag}.json", dict(settings=vars(a), results=res, verdicts=verdicts))
+    save_json(f"e5_summary{a.tag}.json", dict(settings=dict(vars(a), dt=DT), results=res, verdicts=verdicts))
     f3 = lambda x: f"{x[0][0]:+.3f} [{x[1][0]:+.3f}, {x[2][0]:+.3f}]" if isinstance(x[0], list) else f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
     b = res["betaP"]
     L = ["# E5 / S3 report (auto-generated; rules in docs/S3.md)\n",

@@ -9,12 +9,13 @@ Identity used for interpretation (static, disjoint):  h(AuB) = h(A) + h(B) - I(A
 hence with K = h:  dPhi = (dP + beta dC) + lambda * I(A_t;B_t).
 Key honest question: is dPhi anything more than the static dependence I(A;B)?  (baseline predictor)
 """
-import argparse, pickle, itertools
+import argparse, pickle
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
 from vlife.viability import mfpt_from
 from vlife.gaussian import mutual_information
+from vlife.functional import merge_pairs
 from vlife.stats import cluster_bootstrap
 
 ap = argparse.ArgumentParser(); ap.add_argument("--tag", default=""); TAG = ap.parse_args().tag
@@ -24,10 +25,9 @@ rows = []     # one dict per pair
 for wi, d in enumerate(data):
     subs = d["subsets"]; idx = {s: i for i, s in enumerate(subs)}; f = d["feat"]
     Phi = f["P"] + beta * f["C"] - lam * f["KH"]
-    for a, b in itertools.combinations(subs, 2):
-        # The merged entity must be a proper subset (it needs a non-empty environment): size <= N - 1, and <= 5 as before.
-        if set(a) & set(b) or len(a) + len(b) > min(5, d["B"].shape[0] - 1) or min(a) > min(b):
-            continue
+    # The merged entity must be a proper subset (it needs a non-empty environment): size <= N - 1, and <= 5 as before.
+    # Fix #2 (docs/code_review.md): the old filter also dropped every pair with min(a) > min(b), 54 % of the pairs.
+    for a, b in merge_pairs(subs, d["B"].shape[0], 5):
         u = tuple(sorted(a + b)); i, j, k = idx[a], idx[b], idx[u]
         both = d["valid"][:, i] & d["valid"][:, j]
         Va, ea, _ = mfpt_from(d["exit_t"][:, i], d["event"][:, i], both)

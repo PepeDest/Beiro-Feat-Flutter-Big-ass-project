@@ -1,22 +1,27 @@
 """E6 / ROADMAP S2 - flux cut: rocks vs drive-sustained oscillators vs plain wells. Rules: docs/S2.md."""
-import argparse, pickle, time
+import argparse, os, pickle, time
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
 from vlife.nonlinear import draw_units, initial, run, HDR, exit_times, Unit
 from vlife.estimators import ksg_mi
 
-N_HDR, N_START, N_PAIR, T_BURN, TAU, DT = 16000, 2000, 4000, 200.0, 1.0, 0.01
+N_HDR, N_START, N_PAIR, T_BURN, TAU = 16000, 2000, 4000, 200.0, 1.0
+DT = float(os.environ.get("VLIFE_S2_DT", "0.01"))      # night item 8b: VLIFE_S2_DT=0.005 halves the step (default 0.01)
 
 
 def run_unit(job):
-    i, kind, p, seed, t_max = job
+    i, kind, p, seed, t_max = job[:5]; n_pair = job[5] if len(job) > 5 else N_PAIR
     u = Unit(kind, p); rng = np.random.default_rng([seed, i])
     x, v = initial(u, N_HDR + N_START + N_PAIR, rng); x, v = run(u, x, v, T_BURN, True, DT, rng)
     hdr = HDR(x[:N_HDR], v[:N_HDR])
     xs, vs = x[N_HDR:N_HDR + N_START], v[N_HDR:N_HDR + N_START]
     xp, vp = x[N_HDR + N_START:], v[N_HDR + N_START:]
     xq, vq = run(u, xp.copy(), vp.copy(), TAU, True, DT, rng)
+    if n_pair > N_PAIR:     # phase D: extra pairs from their own random numbers; set, starts and V stay as before
+        r2 = np.random.default_rng([seed, i, 5]); xe, ve = initial(u, n_pair - N_PAIR, r2); xe, ve = run(u, xe, ve, T_BURN, True, DT, r2)
+        xeq, veq = run(u, xe.copy(), ve.copy(), TAU, True, DT, r2)
+        xp, vp, xq, vq = np.concatenate([xp, xe]), np.concatenate([vp, ve]), np.concatenate([xq, xeq]), np.concatenate([vq, veq])
     C = ksg_mi(np.column_stack([xp, vp]), np.column_stack([xq, vq]), k=4)
     TC = ksg_mi(xp, vp, k=4)
     on = exit_times(u, xs.copy(), vs.copy(), hdr, True, DT, t_max, np.random.default_rng([seed, i, 7]))
@@ -73,9 +78,10 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=2026); ap.add_argument("--t_max", type=float, default=500.0)
     ap.add_argument("--workers", type=int, default=4); ap.add_argument("--pilot", action="store_true")
+    ap.add_argument("--n_pair", type=int, default=N_PAIR, help="pairs for C and TC (phase D: 16000)"); ap.add_argument("--tag", default="")
     a = ap.parse_args()
     units = draw_units(np.random.default_rng([a.seed, 99]))
-    jobs = [(i, u.kind, u.p, a.seed, a.t_max) for i, u in enumerate(units)]
+    jobs = [(i, u.kind, u.p, a.seed, a.t_max, a.n_pair) for i, u in enumerate(units)]
     if a.pilot:
         jobs = [j for j in jobs if j[1] == "oscillator"][:6] + [j for j in jobs if j[1] == "rock"][:2]
     from concurrent.futures import ProcessPoolExecutor
@@ -88,11 +94,11 @@ if __name__ == "__main__":
         L += [f"| {r['kind']} | {r['V_on']:.2f} | {r['V_off']:.2f} | {r['V_on'] / r['V_off']:.2f} | {r['ev_on']}/{r['ev_off']} |" for r in rows]
         (RES / "e6_pilot.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
     else:
-        pickle.dump(rows, open(RES / "e6_dataset.pkl", "wb"))
+        pickle.dump(rows, open(RES / f"e6_dataset{a.tag}.pkl", "wb"))
         res, v, desc = analyse(rows)
-        save_json("e6_summary.json", dict(results=res, verdicts=v, description=desc))
+        save_json(f"e6_summary{a.tag}.json", dict(results=res, verdicts=v, description=desc))
         f = lambda x: f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
-        L = ["# E6 / S2 report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}.\n",
+        L = ["# E6 / S2 report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}. Pairs for C and TC: {a.n_pair}. dt = {DT}.\n",
              "| Rule | Value [95% CI] | Verdict |", "|---|---|---|",
              f"| F1: median log(V_on/V_off), oscillators | {f(res['F1'])} (log 2 = 0.693) | {v['F1']} |",
              f"| F2: stratified AUC of C (rock > oscillator) | {f(res['F2'])} | {v['F2']} |",
@@ -100,4 +106,4 @@ if __name__ == "__main__":
              f"| Gate | | {v['Gate']} |",
              f"| F4: rho(C, log V_on), all units | {f(res['F4'])} | {v['F4']} |",
              "\nDescription only:"] + [f"- {k}: {val}" for k, val in desc.items()]
-        (RES / "e6_report.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
+        (RES / f"e6_report{a.tag}.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))

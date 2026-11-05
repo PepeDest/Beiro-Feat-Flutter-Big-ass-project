@@ -1,0 +1,4 @@
+# S6d M0 (numba port, mu = 0.2, 6000 steps)
+
+A -> B among daughters of A parents: 44 of 186 = 0.237 [0.181, 0.303]; mutations drawn 44 of 186. Verdict M0: as set. Time 34 s.
+

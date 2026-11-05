@@ -1,0 +1,22 @@
+# E6 / S2 report (auto-generated; rules in docs/S2.md)
+
+Units: 150. Pairs for C and TC: 4000. dt = 0.005.
+
+| Rule | Value [95% CI] | Verdict |
+|---|---|---|
+| F1: median log(V_on/V_off), oscillators | +1.624 [+1.484, +1.720] (log 2 = 0.693) | yes |
+| F2: stratified AUC of C (rock > oscillator) | +0.000 [+0.000, +0.000] | C favours oscillators |
+| F3: stratified AUC of Phi_TC | +0.000 [+0.000, +0.000] | Phi_TC favours oscillators |
+| Gate | | not triggered |
+| F4: rho(C, log V_on), all units | -0.436 [-0.556, -0.322] | no |
+
+Description only:
+- n_bins: 3
+- auc_C_unstratified: 0.0
+- auc_logV_unstratified: 0.6419444444444444
+- rho_C_logR_osc: -0.15031953320366773
+- max_abs_logR_passive: 0.0
+- median_power_osc: 0.9537850145394878
+- logV_range: {'rock': [1.787517778281298, 2.4159110011365614], 'oscillator': [1.6148398316063264, 2.4576003959631225], 'well': [2.094941855835265, 2.296692240082717]}
+- C_median: {'rock': 1.5789767578784573, 'oscillator': 2.7140647454188174, 'well': 1.0717215495173251}
+- min_exits_on: 1896

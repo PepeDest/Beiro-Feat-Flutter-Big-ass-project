@@ -101,18 +101,31 @@ class Tracker2:
         new_ids, _ = self.assign(lab, n, t); self.record(lab, n, a, b, new_ids)
 
 
-def run(seed, eps, types=("A", "B", "B", "A"), n=300, F=0.0367, k=0.0649, max_steps=150000, every=10, stall=2000):
+def run(seed, eps, types=("A", "B", "B", "A"), n=300, F=0.0367, k=0.0649, max_steps=150000, every=10, stall=2000, mu=0.0):
+    """CPU (numba) run. mu: one-way mutation, as in gs_opencl.run (S6c): each daughter of a type-A parent becomes type B
+    with probability mu (dyes swapped in its region at the frame where the division is found). Ported for S6d because
+    this machine has no GPU (docs/S6.md, S6d). With mu = 0 the run is the same as before (same random numbers)."""
     _seed_rng(seed)
     q = n // 4; centers = [(q, q), (q, 3 * q), (3 * q, q), (3 * q, 3 * q)]
     u, v, a, b = seed_field(n, centers, types)
-    tr = Tracker2(); counts = []; best, best_t = 0, 0; t = 0
+    mrng = np.random.default_rng([seed, 77])
+    tr = Tracker2(); counts = []; best, best_t = 0, 0; t = 0; muts = [0, 0]      # [mutated, daughters of A parents]
     while t < max_steps:
         advance(u, v, a, b, F, k, eps, every, NOISE); t += every
-        lab, m = label_periodic(v > V_THR); tr.update(lab, m, a, b, t)
+        lab, m = label_periodic(v > V_THR)
+        new_ids, daughters = tr.assign(lab, m, t)
+        if mu > 0:
+            for L, pid in daughters:
+                if tr.info[pid]["last"]["z"] == 1:
+                    muts[1] += 1
+                    if mrng.random() < mu:
+                        r = lab == L; a[r], b[r] = b[r].copy(), a[r].copy(); muts[0] += 1
+        tr.record(lab, m, a, b, new_ids)
         nA = sum(1 for i in tr.ids.values() if tr.info[i]["last"]["z"] == 1)
         counts.append((t, m, nA))
         if m > best:
             best, best_t = m, t
         elif t - best_t >= stall:
             break
-    return dict(counts=counts, info=tr.info, merges=tr.merges, eps=eps, seed=seed, types=types, n=n)
+    return dict(counts=counts, info=tr.info, merges=tr.merges, eps=eps, seed=seed, types=types, n=n, backend="numba",
+                mu=mu, mutations=muts, final_ids=list(tr.ids.values()))     # spots alive at the end (S6d)

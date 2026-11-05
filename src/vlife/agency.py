@@ -50,9 +50,12 @@ def homeostat(o: Organism, version="intact"):
     return B, D, stationary_cov(B, D)
 
 
-def simulate_exit_threshold(B, S, idx, c, n_traj=600, dt=0.05, t_max=1000.0, rng=None):
+def simulate_exit_threshold(B, S, idx, c, n_traj=600, dt=0.05, t_max=1000.0, rng=None, bridge=False):
     """Exit times of |x_idx| >= c, started from the stationary law conditioned on |x_idx| < c.
-    Exact OU propagator [Gillespie96; Gardiner04]. Returns (V, n_exits, n_valid) with V = exposure / exits [CoxOakes84]."""
+    Exact OU propagator [Gillespie96; Gardiner04]. Returns (V, n_exits, n_valid) with V = exposure / exits [CoxOakes84].
+    bridge=True (fix #1, docs/code_review.md): a trajectory inside at both ends of a step is also counted as exited with
+    the Brownian-bridge probability exp(-2 (c - x0)(c - x1)/s2) + exp(-2 (c + x0)(c + x1)/s2), s2 = (2 D dt)_idx,idx and
+    2D = B S + S B^T. bridge=False is the old method with the same random numbers as before."""
     rng = np.random.default_rng() if rng is None else rng
     n = S.shape[0]
     Phi = expm(-B * dt)
@@ -61,11 +64,17 @@ def simulate_exit_threshold(B, S, idx, c, n_traj=600, dt=0.05, t_max=1000.0, rng
     x = rng.normal(size=(n_traj, n)) @ np.linalg.cholesky(S).T
     valid = np.abs(x[:, idx]) < c
     alive = valid.copy(); t_exit = np.full(n_traj, float(t_max)); event = np.zeros(n_traj, bool)
+    s2 = float((B @ S + S @ B.T)[idx, idx] * dt) if bridge else None
     for step in range(1, int(round(t_max / dt)) + 1):
         if not alive.any():
             break
+        x0 = x[:, idx]
         x = x @ Phi.T + rng.normal(size=(n_traj, n)) @ Lc.T
         out = alive & (np.abs(x[:, idx]) >= c)
+        if bridge:
+            x1 = x[:, idx]; u = rng.random(n_traj)
+            p = np.exp(-2 * (c - x0) * (c - x1) / s2) + np.exp(-2 * (c + x0) * (c + x1) / s2)
+            out |= alive & ~out & (u < p)
         t_exit[out] = step * dt; event |= out; alive &= ~out
     ev = int(event[valid].sum())
     return float(t_exit[valid].sum()) / max(ev, 1), ev, int(valid.sum())
