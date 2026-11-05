@@ -1,0 +1,128 @@
+{
+  "per_draw": {
+    "2026": {
+      "G2": [
+        0.7569642857142858,
+        0.5977416796166797,
+        0.8557118967373416
+      ],
+      "verdicts": {
+        "G0": "valid",
+        "G1": "yes",
+        "G2": "C mislabels rocks",
+        "G3": "Phi_TC mislabels rocks",
+        "G4": "yes",
+        "Gate": "triggered: dissipation term mandatory"
+      },
+      "tau_star": 118.30638790673042
+    },
+    "2027": {
+      "G2": [
+        0.4625771995071217,
+        0.352793227833509,
+        0.6192591415099141
+      ],
+      "verdicts": {
+        "G0": "valid",
+        "G1": "yes",
+        "G2": "no difference",
+        "G3": "Phi_TC mislabels rocks",
+        "G4": "yes",
+        "Gate": "not triggered"
+      },
+      "tau_star": 79.4853397965357
+    },
+    "2028": {
+      "G2": [
+        0.637157441324108,
+        0.5305527100937256,
+        0.7956071428571428
+      ],
+      "verdicts": {
+        "G0": "valid",
+        "G1": "yes",
+        "G2": "C mislabels rocks",
+        "G3": "Phi_TC mislabels rocks",
+        "G4": "yes",
+        "Gate": "triggered: dissipation term mandatory"
+      },
+      "tau_star": 100.3289096518941
+    },
+    "2029": {
+      "G2": [
+        0.5184876447477254,
+        0.4135902110806987,
+        0.6400823350749266
+      ],
+      "verdicts": {
+        "G0": "valid",
+        "G1": "yes",
+        "G2": "no difference",
+        "G3": "Phi_TC mislabels rocks",
+        "G4": "yes",
+        "Gate": "not triggered"
+      },
+      "tau_star": 94.73745653347015
+    },
+    "2030": {
+      "G2": [
+        0.4914634839443024,
+        0.35826433206729225,
+        0.5990702047294021
+      ],
+      "verdicts": {
+        "G0": "valid",
+        "G1": "yes",
+        "G2": "no difference",
+        "G3": "Phi_TC mislabels rocks",
+        "G4": "yes",
+        "Gate": "not triggered"
+      },
+      "tau_star": 87.49530849040474
+    },
+    "2031": {
+      "G2": [
+        0.629026784199198,
+        0.4668152299433684,
+        0.7420671922665457
+      ],
+      "verdicts": {
+        "G0": "valid",
+        "G1": "yes",
+        "G2": "no difference",
+        "G3": "Phi_TC mislabels rocks",
+        "G4": "yes",
+        "Gate": "not triggered"
+      },
+      "tau_star": 91.39611342861514
+    },
+    "2032": {
+      "G2": [
+        0.5279637896825397,
+        0.4018058532902283,
+        0.653979591424844
+      ],
+      "verdicts": {
+        "G0": "valid",
+        "G1": "yes",
+        "G2": "no difference",
+        "G3": "Phi_TC mislabels rocks",
+        "G4": "yes",
+        "Gate": "not triggered"
+      },
+      "tau_star": 85.60134889652716
+    }
+  },
+  "verdicts": {
+    "Q2": "not robust",
+    "n_gate": 2,
+    "n_draws": 7,
+    "Q3": "C mislabels rocks",
+    "Q3_value": [
+      0.5748058041598973,
+      0.510325729022122,
+      0.6509505728711427
+    ],
+    "Q4": "yes"
+  }
+}
