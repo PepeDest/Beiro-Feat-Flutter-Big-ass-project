@@ -24,3 +24,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 |---|---|---|---|
 | 23:55 | Phase C points 1–4 (before the night). C5 rules written (docs/RERUN.md). | — | C5: `_p0.2_v2` (estimate 15–25 min), then N 5, D2, D3, N 7, p_out 0.01 |
 | 23:55 | D1 (KSG adequate). e6/e6b/e7 options for more pairs and tags (tested). | `_p0.2_v2` (E3 + E4) | phase E preparation: S6d rules, mutation in grayscott2 (numba), short check |
+| 00:03 | `_p0.2_v2` (451 s). S6d rules, numba mutation port, M0 check (as set: 0.237 [0.181, 0.303] at μ = 0.2). S6e rules and script. Item 5 rules. | `_N5_v2` | `_D2_v2`, `_D3_v2`, `_N7_v2`, `_p0.01_v2`; then S6d B1 and main |
