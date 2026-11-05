@@ -122,3 +122,4 @@ def test_numba_run_mutation_matches_opencl_rule():
     assert all(d["last"]["z"] == 0 for d in born_of_A if d["div"] is None)
     r0 = run(3, 0.001, types=("A",) * 4, n=120, max_steps=3000, stall=10 ** 9, mu=0.0)
     assert r0["mutations"] == [0, 0] and r0["counts"][-1][2] == r0["counts"][-1][1]      # all spots stay type A
+    assert len(r0["final_ids"]) == r0["counts"][-1][1]                                   # spots alive at the end

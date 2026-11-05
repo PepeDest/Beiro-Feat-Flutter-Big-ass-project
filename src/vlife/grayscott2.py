@@ -128,4 +128,4 @@ def run(seed, eps, types=("A", "B", "B", "A"), n=300, F=0.0367, k=0.0649, max_st
         elif t - best_t >= stall:
             break
     return dict(counts=counts, info=tr.info, merges=tr.merges, eps=eps, seed=seed, types=types, n=n, backend="numba",
-                mu=mu, mutations=muts)
+                mu=mu, mutations=muts, final_ids=list(tr.ids.values()))     # spots alive at the end (S6d)
