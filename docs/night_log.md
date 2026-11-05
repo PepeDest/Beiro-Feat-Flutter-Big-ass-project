@@ -51,3 +51,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 02:18 | S6d B1: consistent with S6c (f 0.598 against 0.579; mutation 0.112), 173 s | S6e (8 runs; estimate 5–15 min) | S6d main (32 runs at 600 × 600; new estimate about 2 h from the B1 speed) |
 | 02:23 | README and ROADMAP updated for the 9 corrected S1 settings (item 7, part) | S6e; an agent updates S1, S1b, S4, RESULTS docs (no commit until reviewed) | S6d main |
 | 02:25 | **List item 6 done**: S6e, edge hypothesis not supported (X1 0.57, X2 0.32: type A is inside the colony) | S6d main (32 runs, 600 × 600; estimate about 3 h, end about 05:30) | review the agent's doc edits; item 7 rest |
+| 02:28 | S1, S1b, S4, RESULTS updated for the 9 corrected settings (agent, reviewed) | S6d main | item 7: code_review.md and the S6 parts after S6d |
