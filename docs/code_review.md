@@ -1,7 +1,7 @@
 # Revisione del codice numerico
 
 Data: 4 novembre 2026. Oggetto: `src/vlife/`, `experiments/` e `tests/`, confrontati con `docs/` e `README.md`.
-Il codice di calcolo non è stato modificato. I problemi sono in ordine di gravità, dal più grave.
+Al momento della revisione il codice di calcolo non era stato modificato; le correzioni sono venute dopo, sul branch `review-fixes` (fasi A–E, `docs/RERUN.md`, `docs/night_log.md`). I problemi sono in ordine di gravità, dal più grave.
 
 ## Sintesi
 
@@ -12,21 +12,21 @@ Due problemi possono cambiare risultati dichiarati:
 
 Gli altri problemi sono di gravità media o bassa: un indicatore di E2 calcolato su parti reali di autovettori complessi, un controllo (H5 in S6b) che non può fallire, il controllo H3 senza numeri casuali comuni, l'uso di KSG fuori dall'intervallo validato, e alcuni difetti minori.
 
-| N. | Gravità | Dove | Problema |
-|---|---|---|---|
-| 1 | Alta | `viability.simulate_exits`, `agency.simulate_exit_threshold`, LIMITATIONS §6 | Il bias da monitoraggio discreto dipende dalla struttura |
-| 2 | Alta | `experiments/e4_merging.py:231` | Il filtro `min(a) > min(b)` scarta il 54 % delle coppie in modo sistematico |
-| 3 | Media | `gib.tica_modes`, `gib.subspace_gap`, E2 | Il divario GIB–TICA nei mondi guidati usa parti reali di autovettori complessi |
-| 4 | Media | `experiments/e11_selection.py:50`, S6.md (H5) | L'identità di Price viene "verificata" con una formula che la rende vera per costruzione |
-| 5 | Media | `experiments/e3_phi_vs_viability.py:43-44` | Rapporto di flusso R senza numeri casuali comuni: il controllo H3 è debole |
-| 6 | Media | `estimators.ksg_mi`, E6, E6b | KSG è validato fino a 0,22 nats in 1–3 dimensioni e usato fino a 2,7 nats in 4 dimensioni |
-| 7 | Bassa | `viability.GrowthRateViability.survival`, E9 | La curva calcola P(T ≥ a), non P(T > a); con i dati float32 il criterio cambia da punto a punto |
-| 8 | Bassa | `gs_opencl.py:26` | Il rumore della GPU si ripete esattamente a certi ritardi temporali |
-| 9 | Bassa | `viability.mfpt_from` e copie | Con zero uscite V = esposizione; le interfacce `evaluate` non filtrano le strutture censurate |
-| 10 | Bassa | `gib.gib_projection` | Divisione per zero se un autovalore λ_i = 0 |
-| 11 | Bassa | E10, E11 (`growth`) | L'esponente della legge di potenza dipende dall'origine dei tempi |
-| 12 | Bassa | `nonlinear.draw_units`, S2.md | v₀ non è l'ampiezza del ciclo: la velocità massima sul ciclo è 1,155 v₀ |
-| 13 | Nota | vari documenti | Affermazioni superate o in contrasto tra loro |
+| N. | Gravità | Dove | Problema | Stato (5 novembre) |
+|---|---|---|---|---|
+| 1 | Alta | `viability.simulate_exits`, `agency.simulate_exit_threshold`, LIMITATIONS §6 | Il bias da monitoraggio discreto dipende dalla struttura | corretto (opzione `--bridge`), verificato (C1) e rifatte tutte le 9 impostazioni di S1, S1b, S3, S4; resta S2c |
+| 2 | Alta | `experiments/e4_merging.py:231` | Il filtro `min(a) > min(b)` scarta il 54 % delle coppie in modo sistematico | corretto, E4 rifatto in tutte le 9 impostazioni |
+| 3 | Media | `gib.tica_modes`, `gib.subspace_gap`, E2 | Il divario GIB–TICA nei mondi guidati usa parti reali di autovettori complessi | corretto, E2 rifatto |
+| 4 | Media | `experiments/e11_selection.py:50`, S6.md (H5) | L'identità di Price viene "verificata" con una formula che la rende vera per costruzione | solo documentazione |
+| 5 | Media | `experiments/e3_phi_vs_viability.py:43-44` | Rapporto di flusso R senza numeri casuali comuni: il controllo H3 è debole | corretto (opzione `--crn`), controllo esatto in tutte le 9 impostazioni |
+| 6 | Media | `estimators.ksg_mi`, E6, E6b | KSG è validato fino a 0,22 nats in 1–3 dimensioni e usato fino a 2,7 nats in 4 dimensioni | verificato: KSG adeguato (errore ≤ 6,7 %), nessuna nuova run |
+| 7 | Bassa | `viability.GrowthRateViability.survival`, E9 | La curva calcola P(T ≥ a), non P(T > a); con i dati float32 il criterio cambia da punto a punto | corretto, S4 rifatto |
+| 8 | Bassa | `gs_opencl.py:26` | Il rumore della GPU si ripete esattamente a certi ritardi temporali | corretto; S6b e S6c restano con l'hash vecchio |
+| 9 | Bassa | `viability.mfpt_from` e copie | Con zero uscite V = esposizione; le interfacce `evaluate` non filtrano le strutture censurate | corretto |
+| 10 | Bassa | `gib.gib_projection` | Divisione per zero se un autovalore λ_i = 0 | corretto |
+| 11 | Bassa | E10, E11 (`growth`) | L'esponente della legge di potenza dipende dall'origine dei tempi | corretto nel codice; effetto non misurato (mancano i dati di S6) |
+| 12 | Bassa | `nonlinear.draw_units`, S2.md | v₀ non è l'ampiezza del ciclo: la velocità massima sul ciclo è 1,155 v₀ | solo documentazione |
+| 13 | Nota | vari documenti | Affermazioni superate o in contrasto tra loro | corretto |
 
 Le verifiche numeriche sono state fatte con script brevi fuori dal repository, sugli stessi moduli di `src/vlife`. I comandi principali sono riportati nei singoli punti per poterli ripetere. La suite di test passa (34 test superati, 2 saltati perché manca la GPU).
 
@@ -85,9 +85,9 @@ Conteggio per mondo (script su `functional.all_subsets`):
 
 | N | coppie ammissibili | tenute | scartate, per (|A|, |B|) |
 |---|---|---|---|
-| 5 | 75 | 40 | (1,2): 20, (1,3): 15 |
-| 6 | 270 | 125 | (1,2): 40, (1,3): 45, (1,4): 24, (2,3): 36 |
-| 7 | 686 | 301 | (1,2): 70, (1,3): 105, (1,4): 84, (2,3): 126 |
+| 5 | 75 | 40 | (1,2): 20, (1,3): 15 | corretto (opzione `--crn`), controllo esatto in tutte le 9 impostazioni |
+| 6 | 270 | 125 | (1,2): 40, (1,3): 45, (1,4): 24, (2,3): 36 | verificato: KSG adeguato (errore ≤ 6,7 %), nessuna nuova run |
+| 7 | 686 | 301 | (1,2): 70, (1,3): 105, (1,4): 84, (2,3): 126 | corretto, S4 rifatto |
 
 Con N = 6 restano 125 coppie per mondo: 90 × 125 = 11 250, il numero riportato in RESULTS.md come «11,250 merge pairs», come se fossero tutte.
 
