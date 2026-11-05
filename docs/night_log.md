@@ -72,3 +72,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 04:07 | — | S6d main (17 of 32 done, 6104 s; end about 05:40) | 8b S3, 8a, then 8b S2 if time allows |
 | 04:22 | — | S6d main (20 of 32 done, 6727 s) | 8b S3, 8a, 8b S2 if time allows |
 | 04:28 | S6d main stopped by the time limit (20 of 32 saved); resume option (tested) | S6d resume (12 runs) | 8b S3, 8a, 8b S2 only if time allows |
+| 04:37 | — | S6d resume (12 runs, first batch running) | 8b S3, 8a |
