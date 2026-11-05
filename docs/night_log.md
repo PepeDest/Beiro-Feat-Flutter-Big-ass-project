@@ -1,6 +1,6 @@
 # Night log (unsupervised work, 2026-11-04 23:50 UTC to 2026-11-05 07:00 UTC)
 
-## Summary of the night (written 2026-11-05 about 06:00 UTC)
+## Summary of the night (written 2026-11-05 06:00–06:28 UTC)
 
 | List item | Result | What changes in the conclusions | What is left |
 |---|---|---|---|
@@ -12,7 +12,7 @@
 | 6. S6c edge hypothesis (S6e) | not supported: X1 0.57 (limit 0.6), X2 0.32 | The faster type sits inside the colony, not at its edge, so the S6c explanation is wrong; why A survives more than in mean field is open. | a test of the post-hoc "interior reservoir" reading |
 | 7. Align README, ROADMAP, code_review.md | done for S1, S1b, S3, S4, S6d, S6e; review table has a status column | — | S2c (not rerun) |
 | 8a. More seeds (S2b) | replicate with 120 new units: G0, G1, G3, G4 replicate; **G2 and the gate do not** (AUC 0.46 [0.35, 0.62] against 0.76) | The S2b claim "at a long lag C rates rocks higher" is not robust, and the gate that made a dissipation term mandatory rests on one draw (README and ROADMAP updated). | S6c with more seeds (180 runs) does not fit on this machine in one night |
-| 8b. Half dt | S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265. S2 at dt 0.005: F1–F4 and the gate hold. | S3 does not depend on the step (with the bridge) | S2 at dt 0.005: all verdicts hold, flux ratio −0.08 in log (small); S2b at dt 0.005 running at 06:16, see the last rounds |
+| 8b. Half dt | S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265. S2 and S2b at dt 0.005: all verdicts hold, the S2b gate included. | S2, S2b and S3 do not depend on the step. With 8a: the S2b gate depends on the draw of units, not on the step. | S2 and S2b at dt 0.005 done: all verdicts hold (flux ratio −0.08 and −0.01 in log). Nothing left in 8b. |
 | 8c. Tests | 13 new tests for functions without one, plus tests for the night's new code: 75 tests pass | — | — |
 
 Problems during the night: S6d main was stopped once by the 2-hour background limit (resumed from the saved runs); one
@@ -105,3 +105,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 06:07 | — | 8b e6 at dt 0.005 (no output yet) | e6b at dt 0.005 if e6 ends before 06:35; PR; stop at 07:00 |
 | 06:16 | 8b S2 at dt 0.005: all verdicts hold (936 s) | 8b S2b at dt 0.005 (estimate 15–25 min) | PR; stop at 07:00 |
 | 06:23 | — | 8b e6b at dt 0.005 (V phase) | if it ends before 07:00: record it; else stop it and note it; final commit |
+| 06:28 | 8b S2b at dt 0.005: all verdicts hold. **List done**; item 8d: nothing useful left to run, so the night ends here (no runs only to keep the machine busy). | — | — |
