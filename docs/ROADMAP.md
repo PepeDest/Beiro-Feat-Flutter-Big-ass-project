@@ -166,3 +166,7 @@ A code review (`docs/code_review.md`) found bugs in the numerics; the fixes and 
   oscillators at the long lag) does not (AUC 0.46 [0.35, 0.62]), so the gate is not triggered in the replicate. The S2b
   gate that made a dissipation term "mandatory" (decision point 3) is therefore not robust. S2c's own findings (D1, D2
   on oscillators) do not depend on it.
+- S2b over 7 draws of units (2026-11-05 morning; docs/S2.md): the gate triggers in 2 of 7 draws (not robust per draw),
+  but the pooled AUC of C at the long lag is 0.57 [0.51, 0.65]: C does rate rocks slightly above oscillators. So the
+  night reading "not robust" is superseded by "a weak effect that one draw cannot resolve". Decision point 3 (a
+  dissipation term) rests on this weak effect; S2c already found that raw dissipation is not a good general term.

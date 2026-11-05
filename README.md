@@ -14,7 +14,7 @@ then a run, then results. Post-hoc checks are labelled as such. The full history
 | S0 | Do the shipped results reproduce? Are the references right? | Yes (largest change 0.003). All 62 references match Crossref. | `docs/RESULTS.md`, `docs/REFERENCES.md` |
 | S1 | Does the result hold when τ, p_out, N and the noise change? | No for the original Φ: its verdict depends on τ and on the noise. Persistence C predicts life in all 9 settings. | `docs/S1.md` |
 | S1b | A complexity term that does not depend on units | P + C − 0.25·TC predicts life in all 9 settings. | `docs/S1b_unitfree.md` |
-| S2 | Does C rate passive "rocks" like drive-sustained oscillators? | Cutting the drive separates the two classes. ~~At a long lag, C rates rocks higher (weak signal).~~ At a long lag, C rated rocks higher in one draw of units, but not in a second draw (night check, `docs/S2.md`): not robust. | `docs/S2.md` |
+| S2 | Does C rate passive "rocks" like drive-sustained oscillators? | Cutting the drive separates the two classes. ~~At a long lag, C rates rocks higher (weak signal).~~ ~~At a long lag, C rated rocks higher in one draw of units, but not in a second draw (night check, `docs/S2.md`): not robust.~~ At a long lag, C rates rocks slightly higher (AUC 0.57 [0.51, 0.65] over 7 draws of units); one draw finds it only 2 times in 7. | `docs/S2.md` |
 | S2c | A dissipation term in Φ | Tracks life where the drive builds the structure. Hurts where the drive only stirs it. | `docs/S2c.md` |
 | S3 | Does information pay when it is used? | Yes: breaking the sensor–actuator link shortens life about ~~3.6~~ 3.5 times (corrected rerun). | `docs/S3.md` |
 | S4 | Population growth rate as viability | Ranks like the mean exit time, because lives are near exponential. | `docs/S4.md` |
