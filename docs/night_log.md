@@ -33,3 +33,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 00:07 | — | `_D2_v2` (E3 at world 5 of 90) | `_D3_v2`, `_N7_v2`, `_p0.01_v2` |
 | 00:09 | item 8c tests (13 new, 73 pass) | `_D2_v2` | `_D3_v2`, `_N7_v2`, `_p0.01_v2` |
 | 00:22 | — | `_D2_v2` (E3 at world 87 of 90) | `_D3_v2` |
+| 00:25 | `_D2_v2` (1122 s), committed | `_D3_v2` (estimate about 20 min) | `_N7_v2`, `_p0.01_v2` |
