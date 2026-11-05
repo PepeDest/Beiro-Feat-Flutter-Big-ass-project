@@ -21,6 +21,10 @@ instructions; experiment rules go in the step documents before each run (phase C
 - 00:09 Item 8c (tests for functions without a test) was done early, while the S1 runs use the cores: it needs
   almost no CPU and changes no result. 13 new tests, all pass (73 in total). The bridge test also showed the
   discrete-monitoring effect in the test's own simulated paths; the test accounts for it with the same 0.5826 shift.
+- 01:22 Time plan. `_p0.01_v2` ends about 02:50. S6d main needs about 3.5 h on 4 cores, so S6d main would end about
+  06:30 and S6e (item 6, about 15 min) might not fit before 07:00. Prudent order, so that every list item gets a result:
+  S6d B1 (10 min), then S6e (15 min), then S6d main. S6d main is stopped at about 06:40 if it is not done; its rule
+  (docs/S6.md, S6d) already says that the finished runs are then analysed and their number reported.
 
 ## Rounds
 | Time (UTC) | Finished | Running | Next |
@@ -39,3 +43,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 00:52 | — | `_N7_v2` (E3 at world 13 of 90, about 35 min in total at this pace) | `_p0.01_v2`, then S6d B1 and main |
 | 01:07 | — | `_N7_v2` (E3 at world 53 of 90) | `_p0.01_v2`, then S6d B1 and main |
 | 01:21 | `_N7_v2` (2005 s, E3 + E4; E4 has 61,740 merge pairs with N 7), committed | `_p0.01_v2` (estimate 40–80 min) | then all C5 analyses; S6d B1 and main |
+| 01:22 | — | `_p0.01_v2` (E3 at world 2 of 90, about 85 min) | C5 analyses; S6d B1, S6e, S6d main |
