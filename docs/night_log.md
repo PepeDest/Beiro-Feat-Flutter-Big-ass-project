@@ -1,5 +1,23 @@
 # Night log (unsupervised work, 2026-11-04 23:50 UTC to 2026-11-05 07:00 UTC)
 
+## Summary of the night (written 2026-11-05 about 06:00 UTC)
+
+| List item | Result | What changes in the conclusions | What is left |
+|---|---|---|---|
+| 1. Phase C points 1–4 | done before the night | — | — |
+| 2. The other S1 settings (6 left; τ 0.5 and τ 2 were done in phase C) | all 6 rerun with the corrected exit check (docs/RERUN.md, C5) | Nothing breaks: C predicts life in all 9 settings, H4 fails in all 9, the equilibrium control is exact in all 9, the D-test rule holds (−0.74 → −0.28 → −0.04). H1 (Φ_orig) is now also supported at D-test r 2 (+0.11 [+0.02, +0.19]). H2 improves at N 5 (supported) and N 7 (partial). S1b R2–R5 and S4 G2 keep their verdicts. | S2c rules D3–D5 still use the old exit check (e7 needs the e6/e6b data files) |
+| 3. Phase D: KSG at high MI | D1: KSG adequate, bias ≤ 0.18 nats (6.7 %) at 2–3 nats in 4-D, ring geometry included | S2 numbers stand; the oscillators' C (2.71 nats) is probably 0.1–0.2 nats low; e6/e6b/e7 not rerun (rule) | — |
+| 4. Phase E: S6d, longer colonies | numba port of the mutation (checked: M0, B1); 32 colonies at 600 × 600, twice the generations | With more generations f falls above μ_c (0.27 → 0.16 at 2 μ_c) and holds below; no sharper threshold. "No sharp error threshold in finite colonies" holds. | larger grid or colonies with removal; the GPU runs with the new noise hash |
+| 5. dt bias share (D-test, S3 VoI) | measured (P5): shares between −0.15 and +0.07 | The D-test shift and the S3 VoI are not artefacts of the exit check. | — |
+| 6. S6c edge hypothesis (S6e) | not supported: X1 0.57 (limit 0.6), X2 0.32 | The faster type sits inside the colony, not at its edge, so the S6c explanation is wrong; why A survives more than in mean field is open. | a test of the post-hoc "interior reservoir" reading |
+| 7. Align README, ROADMAP, code_review.md | done for S1, S1b, S3, S4, S6d, S6e; review table has a status column | — | S2c (not rerun) |
+| 8a. More seeds (S2b) | PENDING_8A | PENDING_8A_CHANGE | S6c with more seeds (180 runs) does not fit on this machine in one night |
+| 8b. Half dt | S3 at dt 0.025: all verdicts hold, VoI +1.262 against +1.265 | S3 does not depend on the step (with the bridge) | S2/S2b at dt 0.005 not run (40–80 min, did not fit) |
+| 8c. Tests | 13 new tests for functions without one, plus tests for the night's new code: 75 tests pass | — | — |
+
+Problems during the night: S6d main was stopped once by the 2-hour background limit (resumed from the saved runs); one
+commit (6efebe1) was made with a failing test, fixed in the next commit (b678207). Details below.
+
 Branch `review-fixes` only. One round every 15 minutes (cron at minutes 7, 22, 37, 52). Plan and rules: the night
 instructions; experiment rules go in the step documents before each run (phase C: docs/RERUN.md).
 
