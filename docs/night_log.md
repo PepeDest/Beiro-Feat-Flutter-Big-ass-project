@@ -55,3 +55,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 02:38 | code_review.md: status column in the summary table | S6d main (no run finished yet; first batch of 4 expected about 02:50) | item 7: S6 numbers after S6d |
 | 02:55 | rules for 8a and 8b; dt option for S2/S3 scripts (tested) | S6d main (4 of 32 done at 02:52; end about 04:55) | after S6d: 8a S2b seed 2027, 8b S3 dt 0.025, S2/S2b dt 0.005 |
 | 03:07 | — | S6d main (8 of 32 done, 2030 s; end about 04:50) | 8a, 8b |
+| 03:22 | — | S6d main (10 of 32 done, 3391 s; at this pace end about 05:30) | 8a, 8b (about 1 h together) |
