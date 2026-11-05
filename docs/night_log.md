@@ -35,3 +35,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 00:22 | — | `_D2_v2` (E3 at world 87 of 90) | `_D3_v2` |
 | 00:25 | `_D2_v2` (1122 s), committed | `_D3_v2` (estimate about 20 min) | `_N7_v2`, `_p0.01_v2` |
 | 00:39 | c5_summary.py prepared | `_D3_v2` (E3 at world 48 of 90) | `_N7_v2`, `_p0.01_v2` |
+| 00:47 | `_D3_v2` (1281 s), committed | `_N7_v2` (estimate 40–80 min: old 11678 s times the ratios 0.19–0.41 measured tonight) | `_p0.01_v2`, then S6d |
