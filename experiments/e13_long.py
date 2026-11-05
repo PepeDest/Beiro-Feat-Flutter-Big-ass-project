@@ -53,6 +53,12 @@ def summarise(rs):
                 gen_median_end=float(np.median([r["gen_median_end"] for r in rs])), gen_max=int(max(r["gen_max"] for r in rs)))
 
 
+def pending_jobs(jobs, done):
+    """Jobs whose seed is not in the finished runs (resume after an interruption)."""
+    seeds = {r["seed"] for r in done}
+    return [j for j in jobs if j[0] not in seeds]
+
+
 def se(ci):
     return (ci[2] - ci[1]) / 3.92
 
@@ -60,6 +66,7 @@ def se(ci):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--m0", action="store_true"); ap.add_argument("--b1", action="store_true")
     ap.add_argument("--runs", type=int, default=8); ap.add_argument("--workers", type=int, default=4); ap.add_argument("--n", type=int, default=600)
+    ap.add_argument("--resume", action="store_true", help="keep the runs already in the pkl and run only the missing seeds")
     a = ap.parse_args(); t0 = time.time()
     from concurrent.futures import ProcessPoolExecutor, as_completed
     if a.m0:
@@ -72,11 +79,14 @@ if __name__ == "__main__":
     jobs = [(9500 + i, 0.114, 300, 150000) for i in range(4)] if a.b1 else \
            [(9000 + 100 * j + i, mu, a.n, 300000) for j, mu in enumerate(MUS) for i in range(a.runs)]
     pk = RES / f"e13_runs{tag}.pkl"; rs = []
+    if a.resume and pk.exists():
+        rs = pickle.load(open(pk, "rb")); jobs = pending_jobs(jobs, rs)
+        print(f"resume: {len(rs)} runs kept, {len(jobs)} to run", flush=True)
     with ProcessPoolExecutor(a.workers) as ex:
         futs = [ex.submit(job, j) for j in jobs]
         for f in as_completed(futs):
             rs.append(f.result()); pickle.dump(rs, open(pk, "wb"))
-            print(f"{len(rs)}/{len(jobs)} runs done, {time.time() - t0:.0f} s", flush=True)
+            print(f"{len(rs)} runs in the pkl, {time.time() - t0:.0f} s", flush=True)
     table = [summarise([r for r in rs if r["mu"] == mu]) for mu in sorted({r["mu"] for r in rs})]
     if a.b1:
         t = table[0]; ref = S6C[0.114]
