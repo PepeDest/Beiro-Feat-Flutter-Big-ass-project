@@ -62,3 +62,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 03:37 | — | S6d main (12 of 32 done, 3686 s) | 8a, 8b |
 | 03:52 | — | S6d main (16 of 32 done, 5054 s; end about 05:15) | 8a, 8b |
 | 04:07 | — | S6d main (17 of 32 done, 6104 s; end about 05:40) | 8b S3, 8a, then 8b S2 if time allows |
+| 04:22 | — | S6d main (20 of 32 done, 6727 s) | 8b S3, 8a, 8b S2 if time allows |
