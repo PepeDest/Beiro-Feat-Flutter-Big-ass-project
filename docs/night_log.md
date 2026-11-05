@@ -18,6 +18,9 @@ instructions; experiment rules go in the step documents before each run (phase C
 - 23:55 Phase E (S6d) needs long runs; the S1 settings use all cores until about 04:00–05:00. Prudent order: write the S6d
   rules and port the mutation to the numba version now (no long CPU use), run the short mutation check, and start the
   long S6d runs only when the S1 settings are done.
+- 00:09 Item 8c (tests for functions without a test) was done early, while the S1 runs use the cores: it needs
+  almost no CPU and changes no result. 13 new tests, all pass (73 in total). The bridge test also showed the
+  discrete-monitoring effect in the test's own simulated paths; the test accounts for it with the same 0.5826 shift.
 
 ## Rounds
 | Time (UTC) | Finished | Running | Next |
@@ -28,3 +31,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 00:04 | — | `_N5_v2` (E3 at world 83 of 90) | E4 for N 5, then `_D2_v2` |
 | 00:06 | `_N5_v2` (420 s), committed | `_D2_v2` | `_D3_v2`, `_N7_v2`, `_p0.01_v2` |
 | 00:07 | — | `_D2_v2` (E3 at world 5 of 90) | `_D3_v2`, `_N7_v2`, `_p0.01_v2` |
+| 00:09 | item 8c tests (13 new, 73 pass) | `_D2_v2` | `_D3_v2`, `_N7_v2`, `_p0.01_v2` |
