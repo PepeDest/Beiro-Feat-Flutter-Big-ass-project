@@ -23,3 +23,9 @@ def test_e6b_extra_pairs(monkeypatch):
     p = dict(h=0.3)
     a = e6b.job_C((1, "rock", p, 7, 1.0, 1.0)); b = e6b.job_C((1, "rock", p, 7, 1.0, 1.0, 600))
     assert np.isfinite(a["C_star"]) and np.isfinite(b["C_star"]) and a["C_star"] != b["C_star"]
+
+
+def test_e13_resume_skips_finished_seeds():
+    import e13_long
+    jobs = [(9000, 0.057, 600, 300000), (9001, 0.057, 600, 300000), (9300, 0.228, 600, 300000)]
+    assert e13_long.pending_jobs(jobs, [{"seed": 9001}]) == [jobs[0], jobs[2]]
