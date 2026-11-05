@@ -25,6 +25,9 @@ instructions; experiment rules go in the step documents before each run (phase C
   06:30 and S6e (item 6, about 15 min) might not fit before 07:00. Prudent order, so that every list item gets a result:
   S6d B1 (10 min), then S6e (15 min), then S6d main. S6d main is stopped at about 06:40 if it is not done; its rule
   (docs/S6.md, S6d) already says that the finished runs are then analysed and their number reported.
+- 04:07 S6d main is slower at the higher μ (17 of 32 after 102 min); end now about 05:40. After it, in this order:
+  8b S3 (about 5–10 min), 8a S2b new units (15–25 min), and 8b S2/S2b at dt 0.005 (40–80 min) only if it can end before
+  about 06:45. Reason: keep the final report and the PR update before 07:00, and run the cheapest checks first.
 
 ## Rounds
 | Time (UTC) | Finished | Running | Next |
@@ -58,3 +61,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 03:22 | — | S6d main (10 of 32 done, 3391 s; at this pace end about 05:30) | 8a, 8b (about 1 h together) |
 | 03:37 | — | S6d main (12 of 32 done, 3686 s) | 8a, 8b |
 | 03:52 | — | S6d main (16 of 32 done, 5054 s; end about 05:15) | 8a, 8b |
+| 04:07 | — | S6d main (17 of 32 done, 6104 s; end about 05:40) | 8b S3, 8a, then 8b S2 if time allows |
