@@ -50,3 +50,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 02:17 | `_p0.01_v2` (3182 s). **List item 2 done**: C5 rules on all 9 settings (W1–W3, W5 as expected; H1 also supported at D-test r 2). **List item 5 done** (P5): little of the D-test shift and of the S3 VoI came from the dt bias. | S6d B1 (4 runs, 300 × 300) | S6e, then S6d main |
 | 02:18 | S6d B1: consistent with S6c (f 0.598 against 0.579; mutation 0.112), 173 s | S6e (8 runs; estimate 5–15 min) | S6d main (32 runs at 600 × 600; new estimate about 2 h from the B1 speed) |
 | 02:23 | README and ROADMAP updated for the 9 corrected S1 settings (item 7, part) | S6e; an agent updates S1, S1b, S4, RESULTS docs (no commit until reviewed) | S6d main |
+| 02:25 | **List item 6 done**: S6e, edge hypothesis not supported (X1 0.57, X2 0.32: type A is inside the colony) | S6d main (32 runs, 600 × 600; estimate about 3 h, end about 05:30) | review the agent's doc edits; item 7 rest |
