@@ -5,11 +5,11 @@
 | baseline (tau 1, p_out 0.05, N 6) | not supported: -0.01 [-0.12, +0.10] | partial (some CI includes 0) | supported: eq +0.000, driven -0.190, modular -0.245 | not supported: dPhi -0.17, I(A;B) +0.36 | +0.55 [+0.49, +0.61] | -0.74 [-0.78, -0.70] |
 | tau 0.5 | supported: +0.23 [+0.12, +0.33] | supported (all CIs exclude 0) | supported: eq +0.000, driven -0.190, modular -0.245 | not supported: dPhi -0.16, I(A;B) +0.36 | +0.69 [+0.65, +0.73] | -0.74 [-0.78, -0.70] |
 | tau 2 | not supported: -0.16 [-0.26, -0.07] | partial (some CI includes 0) | supported: eq +0.000, driven -0.190, modular -0.245 | not supported: dPhi -0.01, I(A;B) +0.36 | +0.48 [+0.42, +0.55] | -0.74 [-0.78, -0.70] |
-| p_out 0.01 | not run yet (e3_summary_p0.01_v2.json) | | | | |
-| p_out 0.2 | not run yet (e3_summary_p0.2_v2.json) | | | | |
-| N 5 | not run yet (e3_summary_N5_v2.json) | | | | |
-| N 7 | not run yet (e3_summary_N7_v2.json) | | | | |
-| D-test r 2 | not run yet (e3_summary_D2_v2.json) | | | | |
-| D-test r 3 | not run yet (e3_summary_D3_v2.json) | | | | |
+| p_out 0.01 | not supported: +0.10 [-0.00, +0.21] | partial (some CI includes 0) | supported: eq +0.000, driven -0.186, modular -0.231 | not supported: dPhi -0.18, I(A;B) +0.36 | +0.54 [+0.48, +0.60] | -0.74 [-0.79, -0.70] |
+| p_out 0.2 | not supported: -0.19 [-0.30, -0.10] | partial (some CI includes 0) | supported: eq +0.000, driven -0.172, modular -0.219 | not supported: dPhi -0.06, I(A;B) +0.18 | +0.53 [+0.47, +0.59] | -0.74 [-0.79, -0.70] |
+| N 5 | not supported: -0.01 [-0.11, +0.09] | supported (all CIs exclude 0) | supported: eq +0.000, driven -0.199, modular -0.220 | not supported: dPhi -0.16, I(A;B) +0.35 | +0.59 [+0.52, +0.65] | -0.77 [-0.81, -0.72] |
+| N 7 | not supported: -0.04 [-0.15, +0.08] | partial (some CI includes 0) | supported: eq +0.000, driven -0.230, modular -0.233 | not supported: dPhi -0.16, I(A;B) +0.36 | +0.57 [+0.53, +0.61] | -0.77 [-0.79, -0.74] |
+| D-test r 2 | supported: +0.11 [+0.02, +0.19] | supported (all CIs exclude 0) | supported: eq +0.000, driven -0.185, modular -0.237 | not supported: dPhi -0.20, I(A;B) +0.42 | +0.63 [+0.58, +0.68] | -0.28 [-0.36, -0.20] |
+| D-test r 3 | supported: +0.24 [+0.16, +0.32] | supported (all CIs exclude 0) | supported: eq +0.000, driven -0.179, modular -0.228 | not supported: dPhi -0.21, I(A;B) +0.45 | +0.74 [+0.69, +0.77] | -0.04 [-0.13, +0.05] |
 
-Gate: H1 supported in tau 0.5.
+Gate: H1 supported in tau 0.5, D-test r 2, D-test r 3.
