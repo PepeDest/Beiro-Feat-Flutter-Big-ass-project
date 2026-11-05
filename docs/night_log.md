@@ -45,3 +45,4 @@ instructions; experiment rules go in the step documents before each run (phase C
 | 01:21 | `_N7_v2` (2005 s, E3 + E4; E4 has 61,740 merge pairs with N 7), committed | `_p0.01_v2` (estimate 40–80 min) | then all C5 analyses; S6d B1 and main |
 | 01:22 | — | `_p0.01_v2` (E3 at world 2 of 90, about 85 min) | C5 analyses; S6d B1, S6e, S6d main |
 | 01:38 | — | `_p0.01_v2` (E3 at world 27 of 90; end about 02:25) | C5 analyses; S6d B1, S6e, S6d main |
+| 01:52 | — | `_p0.01_v2` (E3 at world 56 of 90) | C5 analyses; S6d B1, S6e, S6d main |
