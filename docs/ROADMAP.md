@@ -144,3 +144,29 @@ pre-registered version, dividing daughters only, is 50–60 % of it, so M2 faile
 of the faster type falls smoothly and crosses 0.1 at μ = 0.33, about 3 times the mean-field 0.114. A finite-time mean field
 keeps much less of the faster type than the colonies do, so space appears to protect it (not tested).
 Update to "Where the programme stands", condition 4: a nonzero transmission term from real copying errors is now measured.
+
+## Update after the code review (2026-11-04)
+A code review (`docs/code_review.md`) found bugs in the numerics; the fixes and reruns are in `docs/RERUN.md`.
+- The statements of "Where we stand" (top of this file) and of the S1, S1b, S3 and S4 status lines still hold on the
+  corrected data (S1 baseline, τ 0.5, τ 2). The S1 gate still triggers (H1 supported at τ 0.5 only).
+- Changed: H2 at τ 2 is "partial", not "not supported"; effect sizes moved (regression coefficients 20–100 % larger).
+- ~~"In every setting" claims for S1 are confirmed in 3 corrected settings; p_out 0.01, p_out 0.2, N 5, N 7 and the D-test,
+  and the S2c rules D3–D5, still use the old exit check.~~ **Update 2026-11-05:** all 9 S1 settings are redone with the
+  corrected check (docs/RERUN.md, C5): C predicts life in all 9, H4 fails in all 9, the equilibrium control is exact in
+  all 9, the D-test supports the D = I confound for K_H, and the S1 gate triggers at τ 0.5, D-test r 2 and r 3. S1b R2–R5
+  and S4 G2 keep their verdicts. Only the S2c rules D3–D5 still use the old exit check.
+- Superseded wording above: "Price identity exact to 1e-16" (S6b) is true by construction (review item 4); the growth
+  exponent 1.92 depends on the time origin (item 11); in "Where the programme stands", "not measured yet" and "no test
+  with mutation" are superseded by the S6c status line.
+- S6 night runs (docs/S6.md): S6d, 32 colonies at 600 × 600 (numba; no GPU on this machine). With about twice the
+  generations, f falls above μ_c and holds below; the threshold is not sharper and f(2 μ_c) = 0.16 > 0.1. S6e: the edge
+  explanation of S6c is not supported (dividing spots lean only a little to the edge; type A sits inside). Open: why A
+  survives more than in mean field, and whether f keeps falling with even more generations.
+- S2b night replicate (new units, seed 2027; docs/S2.md): G0, G1, G3, G4 replicate, but G2 (C rates rocks above
+  oscillators at the long lag) does not (AUC 0.46 [0.35, 0.62]), so the gate is not triggered in the replicate. The S2b
+  gate that made a dissipation term "mandatory" (decision point 3) is therefore not robust. S2c's own findings (D1, D2
+  on oscillators) do not depend on it.
+- S2b over 7 draws of units (2026-11-05 morning; docs/S2.md): the gate triggers in 2 of 7 draws (not robust per draw),
+  but the pooled AUC of C at the long lag is 0.57 [0.51, 0.65]: C does rate rocks slightly above oscillators. So the
+  night reading "not robust" is superseded by "a weak effect that one draw cannot resolve". Decision point 3 (a
+  dissipation term) rests on this weak effect; S2c already found that raw dissipation is not a good general term.

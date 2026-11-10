@@ -27,11 +27,18 @@ def gib_modes(Sx, Sy, Sxy):
     Msym = Sx_is @ Sxgy @ Sx_is
     lam, U = eigh((Msym + Msym.T) / 2)
     V = (Sx_is @ U).T                       # row i = v_i, with r_i = v_i^T Sx v_i = 1
-    return lam, V, 1.0 / (1.0 - lam)
+    with np.errstate(divide="ignore"):
+        bc = 1.0 / (1.0 - lam)                  # inf for lambda = 1 (a direction of X that carries no information on Y)
+    return lam, V, bc
 
 
-def gib_projection(Sx, Sy, Sxy, beta):
+def gib_projection(Sx, Sy, Sxy, beta, tol=1e-12):
+    """Optimal GIB map at trade-off beta (rows alpha_i v_i of the active modes). If an active mode has lambda_i ~ 0
+    (Y determines that direction of X), alpha_i is infinite and no finite optimum exists: raise ValueError
+    (fix #10, docs/code_review.md)."""
     lam, V, bc = gib_modes(Sx, Sy, Sxy)
+    if np.any((beta >= bc) & (lam <= tol)):
+        raise ValueError("GIB mode with lambda ~ 0 is active: Y determines a direction of X, the optimal gain is infinite")
     rows = [np.sqrt((beta * (1 - l) - 1) / l) * v for l, v, b in zip(lam, V, bc) if beta >= b]
     return np.array(rows).reshape(len(rows), Sx.shape[0])
 
@@ -53,6 +60,22 @@ def tica_modes(C_tica, S):
     mu, V = eig(C_tica, S)
     order = np.argsort(-np.abs(mu))
     return mu[order], V[:, order].T
+
+
+def tica_subspace(C_tica, S, k, tol=1e-9):
+    """Real basis of the span of the k leading TICA modes (by |mu|), for non-symmetric C_tica.
+    A complex mode v spans a real plane {Re v, Im v}; taking np.real(v) alone gives a direction that depends on the
+    arbitrary phase LAPACK gives to v (docs/code_review.md, item 3). If the k-th mode is complex and its conjugate is
+    the (k+1)-th, the pair is kept together, so the dimension m can be k + 1.
+    Returns (mu of the m modes, basis rows (m x n, orthonormal), m). The span is invariant under S^-1 C_tica."""
+    mu, V = eig(C_tica, S)
+    order = np.argsort(-np.abs(mu), kind="stable"); mu, V = mu[order], V[:, order]
+    m = k
+    if m < len(mu) and abs(mu[m - 1].imag) > tol * abs(mu[m - 1]) and np.isclose(mu[m], np.conj(mu[m - 1])):
+        m += 1
+    R = np.hstack([V[:, :m].real, V[:, :m].imag])
+    U, s, _ = np.linalg.svd(R, full_matrices=False)
+    return mu[:m], U[:, :m].T, m
 
 
 def subspace_gap(A_rows, B_rows):

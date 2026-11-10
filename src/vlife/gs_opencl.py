@@ -1,14 +1,18 @@
 """S6b - the grayscott2 equations on the GPU (OpenCL, float64). The CPU does only the spot tracking.
 Noise: a counter-based hash (seed, step, cell) gives two uniforms, then Box-Muller. A test checks the kernel against
-the numba kernel with the noise off."""
+the numba kernel with the noise off.
+Fix #8 (docs/code_review.md): the hash is now splitmix64 on the 64-bit key (step << 32 | cell), see gpu_noise.py, with a
+numpy reference that a test compares with the kernel. The old 32-bit key repeated exactly at lags of 10946, 21892, ...
+steps. S6b and S6c (results/e11_*, e12_*) were run with the old hash."""
 import numpy as np
 import pyopencl as cl
 from .grayscott import label_periodic, DU, DV, DC, DELTA, V_THR, NOISE
 from .grayscott2 import GAMMA, Tracker2, seed_field
+from .gpu_noise import OPENCL_SRC as NOISE_SRC
 
 SRC = r"""
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
-uint h(uint x){ x ^= x >> 16; x *= 0x7feb352dU; x ^= x >> 15; x *= 0x846ca68bU; x ^= x >> 16; return x; }
+//NOISE
 __kernel void gs_step(__global const double* u, __global const double* v, __global const double* a, __global const double* b,
                    __global double* u2, __global double* v2, __global double* a2, __global double* b2,
                    const double F, const double k, const double eps, const double noise, const uint seed, const uint t, const int n){
@@ -23,9 +27,7 @@ __kernel void gs_step(__global const double* u, __global const double* v, __glob
   u2[c] = uu + DU*lu - uvv + F*(1.0 - uu);
   double vn = vv + DV*lv + uvv - (F + k - eps*aa)*vv;
   if (noise > 0.0){
-    uint s = h(seed ^ h(t * 2654435761U + (uint)c * 2U));
-    double r1 = ((double)h(s) + 1.0) / 4294967297.0, r2 = ((double)h(s ^ 0x9e3779b9U) + 1.0) / 4294967297.0;
-    vn += noise * sqrt(-2.0*log(r1)) * cos(6.283185307179586*r2);
+    vn += noise * gauss(seed, t, c);
   }
   v2[c] = vn > 0.0 ? vn : 0.0;
   if (vv > V_THR){ a2[c] = aa + DC*la + GAMMA*aa*(1.0 - aa - 2.0*bb); b2[c] = bb + DC*lb + GAMMA*bb*(1.0 - bb - 2.0*aa); }
@@ -45,7 +47,7 @@ class GPUGrid:
     def __init__(self, u, v, a, b):
         self.n = u.shape[0]; self.ctx = _ctx(); self.q = cl.CommandQueue(self.ctx)
         consts = dict(DU=DU, DV=DV, DC=DC, DELTA=DELTA, V_THR=V_THR, GAMMA=GAMMA)
-        src = "".join(f"#define {k} {repr(float(v))}\n" for k, v in consts.items()) + SRC
+        src = "".join(f"#define {k} {repr(float(v))}\n" for k, v in consts.items()) + SRC.replace("//NOISE", NOISE_SRC)
         self.prg = cl.Program(self.ctx, src).build()
         mf = cl.mem_flags
         self.buf = [[cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=np.ascontiguousarray(x, np.float64)) for x in (u, v, a, b)],

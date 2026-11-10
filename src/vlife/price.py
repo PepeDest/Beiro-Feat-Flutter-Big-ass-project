@@ -4,8 +4,10 @@
         selection term    ^           transmission term ^
 with w_i the fitness of entity i, z_i its trait (here: an organisational score such as Phi),
 and Delta z_i = z'_i - z_i the change between entity i and its offspring.
-The identity is exact for any population. In this project only the SELECTION term can be measured
-(structures in a world do not reproduce); the transmission term is the open 'heredity' chapter.
+The identity is exact for any population. (Superseded 2026-11-04: "In this project only the SELECTION term can be
+measured (structures in a world do not reproduce); the transmission term is the open 'heredity' chapter.")
+Now: S4 measures a transmission term with a random-swap offspring map (docs/S4.md), and S6 measures both terms per
+generation in dividing Gray-Scott spots (docs/S6.md). Within one world of S0-S1 the structures still do not reproduce.
 Using Cov(w, Phi) over structures of one world as a descriptive 'selection differential' is a
 NOVEL use (docs/PROVENANCE.md): structures are not a reproducing population."""
 import numpy as np

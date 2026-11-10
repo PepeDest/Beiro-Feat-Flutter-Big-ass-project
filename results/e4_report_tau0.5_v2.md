@@ -1,0 +1,32 @@
+# E4 report (auto-generated)
+
+pairs analysed: 24300;  fraction with S>1: 0.77;  identity max|dKH + I(A;B)| = 2.55e-15
+
+Mean within-world Spearman rho between predictor and log S (95% cluster-bootstrap CI)
+
+| family | predictor | rho | CI low | CI high |
+|---|---|---|---|---|
+| all | dPhi_orig | -0.163 | -0.229 | -0.096 |
+| all | static MI I(A;B) | +0.364 | +0.321 | +0.404 |
+| all | dP | -0.582 | -0.613 | -0.545 |
+| all | dC | +0.230 | +0.105 | +0.337 |
+| all | -lam*dKH (=lam*I(A;B)) | +0.364 | +0.321 | +0.404 |
+| all | sign agreement dPhi>0 <-> S>1 | 0.56 | | |
+| equilibrium | dPhi_orig | -0.506 | -0.563 | -0.431 |
+| equilibrium | static MI I(A;B) | +0.521 | +0.444 | +0.576 |
+| equilibrium | dP | -0.506 | -0.561 | -0.432 |
+| equilibrium | dC | -0.513 | -0.571 | -0.436 |
+| equilibrium | -lam*dKH (=lam*I(A;B)) | +0.521 | +0.444 | +0.576 |
+| equilibrium | sign agreement dPhi>0 <-> S>1 | 0.53 | | |
+| driven | dPhi_orig | -0.044 | -0.144 | +0.049 |
+| driven | static MI I(A;B) | +0.300 | +0.237 | +0.360 |
+| driven | dP | -0.611 | -0.661 | -0.557 |
+| driven | dC | +0.584 | +0.536 | +0.633 |
+| driven | -lam*dKH (=lam*I(A;B)) | +0.300 | +0.237 | +0.360 |
+| driven | sign agreement dPhi>0 <-> S>1 | 0.52 | | |
+| modular_driven | dPhi_orig | +0.060 | -0.018 | +0.139 |
+| modular_driven | static MI I(A;B) | +0.269 | +0.206 | +0.325 |
+| modular_driven | dP | -0.628 | -0.673 | -0.576 |
+| modular_driven | dC | +0.617 | +0.567 | +0.667 |
+| modular_driven | -lam*dKH (=lam*I(A;B)) | +0.269 | +0.206 | +0.325 |
+| modular_driven | sign agreement dPhi>0 <-> S>1 | 0.62 | | |

@@ -1,12 +1,13 @@
 """E6b / S2b - sharper rock test: well-based and cycle-based viability, C at a long lag tau*. Rules: docs/S2.md (S2b)."""
-import argparse, pickle, time
+import argparse, os, pickle, time
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
 from vlife.nonlinear import draw_units, initial, run, Unit, alive_rule, exit_times_rule
 from vlife.estimators import ksg_mi
 
-N_START, N_PAIR, T_BURN, DT = 2000, 4000, 200.0, 0.01
+N_START, N_PAIR, T_BURN = 2000, 4000, 200.0
+DT = float(os.environ.get("VLIFE_S2_DT", "0.01"))      # night item 8b: VLIFE_S2_DT=0.005 halves the step (default 0.01)
 
 
 def burn(u, n, rng):
@@ -26,9 +27,13 @@ def job_V(job):
 
 
 def job_C(job):
-    i, kind, p, seed, tau_star, tau_own = job
+    i, kind, p, seed, tau_star, tau_own = job[:6]; n_pair = job[6] if len(job) > 6 else N_PAIR
     u = Unit(kind, p); rng = np.random.default_rng([seed, i, 23])
-    x, v = burn(u, N_PAIR, rng); z0 = np.column_stack([x, v])
+    x, v = burn(u, N_PAIR, rng)
+    if n_pair > N_PAIR:     # phase D: extra pairs from their own random numbers
+        r2 = np.random.default_rng([seed, i, 24]); xe, ve = burn(u, n_pair - N_PAIR, r2)
+        x, v = np.concatenate([x, xe]), np.concatenate([v, ve])
+    z0 = np.column_stack([x, v])
     TC = ksg_mi(x, v, k=4)
     out = {"i": i, "TC": TC}
     for name, tau in (("C_star", tau_star), ("C_own", tau_own)):
@@ -82,6 +87,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=2026); ap.add_argument("--t_max", type=float, default=3000.0)
     ap.add_argument("--workers", type=int, default=4); ap.add_argument("--pilot", action="store_true")
+    ap.add_argument("--n_pair", type=int, default=N_PAIR, help="pairs for C and TC (phase D: 16000)"); ap.add_argument("--tag", default="")
     a = ap.parse_args()
     units = [(i, u) for i, u in enumerate(draw_units(np.random.default_rng([a.seed, 99]))) if u.kind != "well"]
     if a.pilot:
@@ -101,15 +107,15 @@ if __name__ == "__main__":
         print(f"tau* = {tau_star:.2f} (median rock V, fixed before any C)", flush=True)
         t0 = time.time()
         with ProcessPoolExecutor(a.workers) as ex:
-            cs = list(ex.map(job_C, [(r["i"], r["kind"], r["p"], a.seed, tau_star, min(r["V_on"] / 2, a.t_max / 2)) for r in rows]))
+            cs = list(ex.map(job_C, [(r["i"], r["kind"], r["p"], a.seed, tau_star, min(r["V_on"] / 2, a.t_max / 2), a.n_pair) for r in rows]))
         print(f"C phase done in {time.time() - t0:.0f}s", flush=True)
         for r, c in zip(rows, cs):
             r.update(c)
-        pickle.dump(dict(rows=rows, tau_star=tau_star), open(RES / "e6b_dataset.pkl", "wb"))
+        pickle.dump(dict(rows=rows, tau_star=tau_star, n_pair=a.n_pair, dt=DT), open(RES / f"e6b_dataset{a.tag}.pkl", "wb"))
         res, v, desc = analyse(rows)
-        save_json("e6b_summary.json", dict(tau_star=tau_star, results=res, verdicts=v, description=desc))
+        save_json(f"e6b_summary{a.tag}.json", dict(tau_star=tau_star, results=res, verdicts=v, description=desc))
         f = lambda x: f"{x[0]:+.3f} [{x[1]:+.3f}, {x[2]:+.3f}]"
-        L = ["# E6b / S2b report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}. tau* = {tau_star:.2f}.\n",
+        L = ["# E6b / S2b report (auto-generated; rules in docs/S2.md)\n", f"Units: {len(rows)}. tau* = {tau_star:.2f}. Pairs for C and TC: {a.n_pair}. dt = {DT}.\n",
              "| Rule | Value [95% CI] | Verdict |", "|---|---|---|",
              f"| G0: rho(h, log V), rocks | {f(res['G0'])} | {v['G0']} |",
              f"| G1: median log(V_on/V_off), oscillators | {f(res['G1'])} | {v['G1']} |",
@@ -118,4 +124,4 @@ if __name__ == "__main__":
              f"| Gate | | {v['Gate']} |",
              f"| G4: rho(C(tau*), log V), rocks | {f(res['G4'])} | {v['G4']} |",
              "\nDescription only:"] + [f"- {k}: {val}" for k, val in desc.items()]
-        (RES / "e6b_report.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
+        (RES / f"e6b_report{a.tag}.md").write_text("\n".join(L) + "\n", encoding="utf-8"); print("\n".join(L))
