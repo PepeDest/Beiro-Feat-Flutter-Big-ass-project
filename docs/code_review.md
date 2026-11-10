@@ -21,10 +21,10 @@ Gli altri problemi sono di gravità media o bassa: un indicatore di E2 calcolato
 | 5 | Media | `experiments/e3_phi_vs_viability.py:43-44` | Rapporto di flusso R senza numeri casuali comuni: il controllo H3 è debole | corretto (opzione `--crn`), controllo esatto in tutte le 9 impostazioni |
 | 6 | Media | `estimators.ksg_mi`, E6, E6b | KSG è validato fino a 0,22 nats in 1–3 dimensioni e usato fino a 2,7 nats in 4 dimensioni | verificato: KSG adeguato (errore ≤ 6,7 %), nessuna nuova run |
 | 7 | Bassa | `viability.GrowthRateViability.survival`, E9 | La curva calcola P(T ≥ a), non P(T > a); con i dati float32 il criterio cambia da punto a punto | corretto, S4 rifatto |
-| 8 | Bassa | `gs_opencl.py:26` | Il rumore della GPU si ripete esattamente a certi ritardi temporali | corretto; S6b e S6c restano con l'hash vecchio |
+| 8 | Bassa | `gs_opencl.py:26` | Il rumore della GPU si ripete esattamente a certi ritardi temporali | corretto; S6b e S6c rifatti con l'hash nuovo (S6f, 11 novembre): stessi verdetti |
 | 9 | Bassa | `viability.mfpt_from` e copie | Con zero uscite V = esposizione; le interfacce `evaluate` non filtrano le strutture censurate | corretto |
 | 10 | Bassa | `gib.gib_projection` | Divisione per zero se un autovalore λ_i = 0 | corretto |
-| 11 | Bassa | E10, E11 (`growth`) | L'esponente della legge di potenza dipende dall'origine dei tempi | corretto nel codice; effetto non misurato (mancano i dati di S6) |
+| 11 | Bassa | E10, E11 (`growth`) | L'esponente della legge di potenza dipende dall'origine dei tempi | corretto nel codice; effetto misurato (S6f, 11 novembre): nessuno, il t0 migliore è 0 e l'esponente resta 1,92 |
 | 12 | Bassa | `nonlinear.draw_units`, S2.md | v₀ non è l'ampiezza del ciclo: la velocità massima sul ciclo è 1,155 v₀ | solo documentazione |
 | 13 | Nota | vari documenti | Affermazioni superate o in contrasto tra loro | corretto |
 
