@@ -76,3 +76,23 @@ sign of K_H did in S1. I did not test why.
 - One nonlinear drive model. In it, σ counts only the heat into the bath, not the energy taken from the depot.
 - σ_A is our decomposition of the linear entropy production. Other decompositions exist.
 - The weight of the term (1) and the time unit (τ) are fixed choices, not tuned.
+
+## D3–D5 on the corrected S1 data (rules fixed 2026-11-11, before the runs)
+Code review item 1: D3–D5 used S1 data made with the old exit check. This section repeats them on data made with the
+corrected check (`--crn --bridge`, docs/RERUN.md). Part A (D1, D2) uses the nonlinear units of S2 and S2b, which item 1
+does not touch, so it is not repeated.
+
+Runs (same seeds and settings as before, one at a time, all cores):
+1. `python e3_phi_vs_viability.py --crn --bridge --tag _v2` (S1 baseline)
+2. `python e3_phi_vs_viability.py --noise_range 3 --crn --bridge --tag _D3_v2` (S1 D-test r = 3)
+3. `python e7_dissipation.py --s1_suffix _v2` (report `results/e7_dissipation_s1_v2.md`)
+
+| Rule | Verdict |
+|---|---|
+| V1 | For each of D3, D4, D5 (D3) and D5 (D4): "same" if the new label equals the old label, else "changed" |
+| V2 (description) | Old and new values with their CIs |
+
+**Expectations written before the runs.** D4 "hurts" and D5 (D4) "hurts" stay the same, because the effects are large
+(−0.18 and −0.52). D5 (D3) "shortens life" stays the same (−0.25). D3 is the least certain: +0.10 [+0.01, +0.19] is close
+to 0, so it can become "no effect". The conclusion "raw dissipation is not a good general term" holds if D4 and D5 (D4)
+stay "hurts".
