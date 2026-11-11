@@ -96,3 +96,23 @@ Runs (same seeds and settings as before, one at a time, all cores):
 (−0.18 and −0.52). D5 (D3) "shortens life" stays the same (−0.25). D3 is the least certain: +0.10 [+0.01, +0.19] is close
 to 0, so it can become "no effect". The conclusion "raw dissipation is not a good general term" holds if D4 and D5 (D4)
 stay "hurts".
+
+### Results on the corrected S1 data (added 2026-11-11, after the runs)
+Report: `results/e7_dissipation_s1_v2.md` and `.json`. Logs: `results/e3_v2_local_run.log` (1375 s),
+`results/e3_D3_v2_local_run.log` (1569 s), `results/e7_s1_v2_run.log`, `results/s2c_rerun.status`.
+Check of the data: the two S1 datasets were made again on this PC with the same seeds as the cloud runs of docs/RERUN.md.
+All point estimates in `e3_summary_v2.json` and `e3_summary_D3_v2.json` are the same (differences below 1e-15). Only the
+ends of the bootstrap CIs differ, by 0.003 at most, so the committed cloud reports are kept.
+
+| Rule | Old exit check | Corrected exit check | V1 |
+|---|---|---|---|
+| D3: ρ(σ_A, log V), equal size, S1 baseline | +0.10 [+0.01, +0.19], lengthens life | +0.09 [−0.01, +0.19], no effect | changed |
+| D4: ρ(Φ_D) − ρ(Φ_TC), S1 baseline | −0.18 [−0.23, −0.13], hurts | −0.19 [−0.25, −0.13], hurts | same |
+| D5 (D3), S1 D-test r 3 | −0.25 [−0.33, −0.16], shortens life | −0.27 [−0.36, −0.17], shortens life | same |
+| D5 (D4), S1 D-test r 3 | −0.52 [−0.59, −0.46], hurts | −0.54 [−0.60, −0.47], hurts | same |
+
+**Expectations.** All four came out as written before the runs: D4 and both D5 rules are the same, and D3, the least
+certain, moves from "lengthens life" to "no effect" (the CI now includes 0).
+**What changes.** In the baseline, dissipation has no clear link to life. In the D-test worlds it shortens life. The sign
+of the link still depends on the noise structure D, and as a bonus in Φ it still hurts in both settings. The conclusion
+"raw dissipation is not a good general term" holds on the corrected data.

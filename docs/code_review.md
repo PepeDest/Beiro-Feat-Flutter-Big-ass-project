@@ -14,7 +14,7 @@ Gli altri problemi sono di gravità media o bassa: un indicatore di E2 calcolato
 
 | N. | Gravità | Dove | Problema | Stato (5 novembre) |
 |---|---|---|---|---|
-| 1 | Alta | `viability.simulate_exits`, `agency.simulate_exit_threshold`, LIMITATIONS §6 | Il bias da monitoraggio discreto dipende dalla struttura | corretto (opzione `--bridge`), verificato (C1) e rifatte tutte le 9 impostazioni di S1, S1b, S3, S4; resta S2c |
+| 1 | Alta | `viability.simulate_exits`, `agency.simulate_exit_threshold`, LIMITATIONS §6 | Il bias da monitoraggio discreto dipende dalla struttura | corretto (opzione `--bridge`), verificato (C1) e rifatte tutte le 9 impostazioni di S1, S1b, S3, S4 e S2c (11 novembre: D3 passa da "lengthens life" a "no effect", gli altri verdetti restano) |
 | 2 | Alta | `experiments/e4_merging.py:231` | Il filtro `min(a) > min(b)` scarta il 54 % delle coppie in modo sistematico | corretto, E4 rifatto in tutte le 9 impostazioni |
 | 3 | Media | `gib.tica_modes`, `gib.subspace_gap`, E2 | Il divario GIB–TICA nei mondi guidati usa parti reali di autovettori complessi | corretto, E2 rifatto |
 | 4 | Media | `experiments/e11_selection.py:50`, S6.md (H5) | L'identità di Price viene "verificata" con una formula che la rende vera per costruzione | solo documentazione |
