@@ -79,6 +79,9 @@ S0 → everything (credibility). S1 independent. S2 and S3 independent of each o
 Φ-like scores predict viability **and** the effect survives (i) the flux cut (not mere memory), (ii) removal of the feedback loop's benefit (information is used), (iii) a positive Price selection term in most worlds, and (iv) a measured, nonzero transmission term. Anything less is partial support.
 
 ---
+The status sections below are dated snapshots, written when each step ended. Some of their numbers changed after
+the code review. The current state is in the last section, "Where the programme stands".
+
 ## Status of S3 (2026-10-22)
 Done for a linear homeostat with a Gaussian hidden state (docs/S3.md). Information is used (mean VoI +1.27). P's effect
 depends on the loop (β_P +0.75 intact against +0.38 scrambled). The gate is not triggered, so P stays in Φ.
@@ -126,47 +129,33 @@ Two heritable types in Gray–Scott spots, type A divides 24 % faster (docs/S6.m
 polynomial (exponent 1.92). The transmission term is 0 because there is no mutation. Open: mutation and error threshold,
 an organisational trait, active droplets.
 
-## Where the programme stands (2026-11-04)
-All seven steps S0–S6 have a first result. Against the four conditions of "What would count as support for T3":
-1. Φ-like scores predict viability: yes for P + C − 0.25 TC in passive linear worlds (S1b), not for Φ_orig (S1).
-   It survives the flux cut only partly: C alone cannot tell drive-sustained structures from passive memory (S2, S2b).
-2. Information that is used pays: yes (S3, VoI +1.27, P's effect depends on the loop).
-3. A positive Price selection term: yes, in spot colonies with a heritable type that divides faster (S6b), and for
-   Φ_TC in linear worlds with a common birth rule (S4, 78 % of worlds).
-4. A measured transmission term: measured, but 0 with perfect heredity (S6b) or small and negative with a random-swap
-   map (S4). A nonzero term from real copying errors is not measured yet.
-So T3 has partial support. The main gaps: no single score that is right in all test beds, and no test with mutation.
-
 ## Status of S6c (2026-11-04)
 One-way mutation A → B at division (docs/S6.md, S6c), 180 GPU runs. The mutation rate is as set. A nonzero transmission
 term from copying errors is measured: it matches the mutation rate within about 3 % when it counts all daughters (the
 pre-registered version, dividing daughters only, is 50–60 % of it, so M2 failed). No sharp error threshold: the fraction
 of the faster type falls smoothly and crosses 0.1 at μ = 0.33, about 3 times the mean-field 0.114. A finite-time mean field
 keeps much less of the faster type than the colonies do, so space appears to protect it (not tested).
-Update to "Where the programme stands", condition 4: a nonzero transmission term from real copying errors is now measured.
 
-## Update after the code review (2026-11-04)
-A code review (`docs/code_review.md`) found bugs in the numerics; the fixes and reruns are in `docs/RERUN.md`.
-- The statements of "Where we stand" (top of this file) and of the S1, S1b, S3 and S4 status lines still hold on the
-  corrected data (S1 baseline, τ 0.5, τ 2). The S1 gate still triggers (H1 supported at τ 0.5 only).
-- Changed: H2 at τ 2 is "partial", not "not supported"; effect sizes moved (regression coefficients 20–100 % larger).
-- ~~"In every setting" claims for S1 are confirmed in 3 corrected settings; p_out 0.01, p_out 0.2, N 5, N 7 and the D-test,
-  and the S2c rules D3–D5, still use the old exit check.~~ **Update 2026-11-05:** all 9 S1 settings are redone with the
-  corrected check (docs/RERUN.md, C5): C predicts life in all 9, H4 fails in all 9, the equilibrium control is exact in
-  all 9, the D-test supports the D = I confound for K_H, and the S1 gate triggers at τ 0.5, D-test r 2 and r 3. S1b R2–R5
-  and S4 G2 keep their verdicts. Only the S2c rules D3–D5 still use the old exit check.
-- Superseded wording above: "Price identity exact to 1e-16" (S6b) is true by construction (review item 4); the growth
-  exponent 1.92 depends on the time origin (item 11); in "Where the programme stands", "not measured yet" and "no test
-  with mutation" are superseded by the S6c status line.
-- S6 night runs (docs/S6.md): S6d, 32 colonies at 600 × 600 (numba; no GPU on this machine). With about twice the
-  generations, f falls above μ_c and holds below; the threshold is not sharper and f(2 μ_c) = 0.16 > 0.1. S6e: the edge
-  explanation of S6c is not supported (dividing spots lean only a little to the edge; type A sits inside). Open: why A
-  survives more than in mean field, and whether f keeps falling with even more generations.
-- S2b night replicate (new units, seed 2027; docs/S2.md): G0, G1, G3, G4 replicate, but G2 (C rates rocks above
-  oscillators at the long lag) does not (AUC 0.46 [0.35, 0.62]), so the gate is not triggered in the replicate. The S2b
-  gate that made a dissipation term "mandatory" (decision point 3) is therefore not robust. S2c's own findings (D1, D2
-  on oscillators) do not depend on it.
-- S2b over 7 draws of units (2026-11-05 morning; docs/S2.md): the gate triggers in 2 of 7 draws (not robust per draw),
-  but the pooled AUC of C at the long lag is 0.57 [0.51, 0.65]: C does rate rocks slightly above oscillators. So the
-  night reading "not robust" is superseded by "a weak effect that one draw cannot resolve". Decision point 3 (a
-  dissipation term) rests on this weak effect; S2c already found that raw dissipation is not a good general term.
+## Where the programme stands (2026-11-11)
+All seven steps S0–S6 have results. Every step that the code review touched was run again with the corrected code
+(`docs/code_review.md`, `docs/RERUN.md`, `docs/night_log.md`, and S6f in `docs/S6.md`). The four conditions of
+"What would count as support for T3":
+1. **Φ-like scores predict viability: in part.** P + C − 0.25·TC and C alone predict life in all 9 S1 settings (S1, S1b).
+   Φ_orig predicts life in 3 of 9 settings only (τ 0.5 and the two D-test settings). The flux cut separates
+   drive-sustained structures from passive ones (S2). C alone does not: at a long lag it rates passive rocks slightly
+   above oscillators (AUC 0.57 [0.51, 0.65] over 7 draws of units, a weak effect). A raw dissipation term is not a fix: it tracks life among oscillators, but as a bonus in Φ it hurts in linear worlds
+   (S2c, also on the corrected data).
+2. **Information that is used pays: yes.** Breaking the sensor–actuator link shortens life about 3.5 times (S3, VoI
+   +1.27). The result is the same at half the step.
+3. **A positive Price selection term: yes.** In spot colonies with a heritable type that divides faster (S6b, +0.04 per
+   generation, the same with the corrected GPU noise), and for Φ_TC in linear worlds with a common birth rule (S4).
+4. **A measured, nonzero transmission term: yes.** With one-way mutation at division, the term matches the mutation rate
+   (S6c, S6d).
+
+So T3 has partial support: conditions 2, 3 and 4 hold, condition 1 holds in part.
+
+Open questions:
+- No single score is right in all test beds. The best candidate, P + C − 0.25·TC, is tested in linear worlds only.
+- Why does the faster type survive better than a mean-field model predicts? It does not stay at the colony edge (S6e).
+- Is there an error threshold with many more generations (a larger grid, or colonies with removal of spots)?
+- A term for "dissipation that builds the structure" that does not need a drive-off simulation.

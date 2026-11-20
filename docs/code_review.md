@@ -14,17 +14,17 @@ Gli altri problemi sono di gravità media o bassa: un indicatore di E2 calcolato
 
 | N. | Gravità | Dove | Problema | Stato (5 novembre) |
 |---|---|---|---|---|
-| 1 | Alta | `viability.simulate_exits`, `agency.simulate_exit_threshold`, LIMITATIONS §6 | Il bias da monitoraggio discreto dipende dalla struttura | corretto (opzione `--bridge`), verificato (C1) e rifatte tutte le 9 impostazioni di S1, S1b, S3, S4; resta S2c |
+| 1 | Alta | `viability.simulate_exits`, `agency.simulate_exit_threshold`, LIMITATIONS §6 | Il bias da monitoraggio discreto dipende dalla struttura | corretto (opzione `--bridge`), verificato (C1) e rifatte tutte le 9 impostazioni di S1, S1b, S3, S4 e S2c (11 novembre: D3 passa da "lengthens life" a "no effect", gli altri verdetti restano) |
 | 2 | Alta | `experiments/e4_merging.py:231` | Il filtro `min(a) > min(b)` scarta il 54 % delle coppie in modo sistematico | corretto, E4 rifatto in tutte le 9 impostazioni |
 | 3 | Media | `gib.tica_modes`, `gib.subspace_gap`, E2 | Il divario GIB–TICA nei mondi guidati usa parti reali di autovettori complessi | corretto, E2 rifatto |
 | 4 | Media | `experiments/e11_selection.py:50`, S6.md (H5) | L'identità di Price viene "verificata" con una formula che la rende vera per costruzione | solo documentazione |
 | 5 | Media | `experiments/e3_phi_vs_viability.py:43-44` | Rapporto di flusso R senza numeri casuali comuni: il controllo H3 è debole | corretto (opzione `--crn`), controllo esatto in tutte le 9 impostazioni |
 | 6 | Media | `estimators.ksg_mi`, E6, E6b | KSG è validato fino a 0,22 nats in 1–3 dimensioni e usato fino a 2,7 nats in 4 dimensioni | verificato: KSG adeguato (errore ≤ 6,7 %), nessuna nuova run |
 | 7 | Bassa | `viability.GrowthRateViability.survival`, E9 | La curva calcola P(T ≥ a), non P(T > a); con i dati float32 il criterio cambia da punto a punto | corretto, S4 rifatto |
-| 8 | Bassa | `gs_opencl.py:26` | Il rumore della GPU si ripete esattamente a certi ritardi temporali | corretto; S6b e S6c restano con l'hash vecchio |
+| 8 | Bassa | `gs_opencl.py:26` | Il rumore della GPU si ripete esattamente a certi ritardi temporali | corretto; S6b e S6c rifatti con l'hash nuovo (S6f, 11 novembre): stessi verdetti |
 | 9 | Bassa | `viability.mfpt_from` e copie | Con zero uscite V = esposizione; le interfacce `evaluate` non filtrano le strutture censurate | corretto |
 | 10 | Bassa | `gib.gib_projection` | Divisione per zero se un autovalore λ_i = 0 | corretto |
-| 11 | Bassa | E10, E11 (`growth`) | L'esponente della legge di potenza dipende dall'origine dei tempi | corretto nel codice; effetto non misurato (mancano i dati di S6) |
+| 11 | Bassa | E10, E11 (`growth`) | L'esponente della legge di potenza dipende dall'origine dei tempi | corretto nel codice; effetto misurato (S6f, 11 novembre): nessuno, il t0 migliore è 0 e l'esponente resta 1,92 |
 | 12 | Bassa | `nonlinear.draw_units`, S2.md | v₀ non è l'ampiezza del ciclo: la velocità massima sul ciclo è 1,155 v₀ | solo documentazione |
 | 13 | Nota | vari documenti | Affermazioni superate o in contrasto tra loro | corretto |
 

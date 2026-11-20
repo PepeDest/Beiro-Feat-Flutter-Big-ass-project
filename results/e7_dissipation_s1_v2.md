@@ -1,0 +1,15 @@
+# E7 / S2c report (auto-generated; rules in docs/S2c.md)
+
+| Rule | Data | Value [95% CI] | Verdict |
+|---|---|---|---|
+| D1: rho(sigma, log V_on), oscillators | S2b | +0.703 [+0.550, +0.799] | yes |
+| D2: rho(sigma, log V_on/V_off), oscillators | S2b | +0.579 [+0.387, +0.706] | yes |
+| D3: rho(sigma_A, log V), equal size | S1 baseline (60 worlds) | +0.089 [-0.011, +0.191] | no effect |
+| D4: rho(Phi_D) - rho(Phi_TC) | S1 baseline | -0.189 [-0.248, -0.134] | hurts |
+| D5: D3 | S1 D-test r 3 (60 worlds) | -0.273 [-0.359, -0.173] | shortens life |
+| D5: D4 | S1 D-test r 3 | -0.536 [-0.604, -0.474] | hurts |
+
+Description only:
+- S2 (outer-edge viability): rho(sigma, log V_on) +0.360 [+0.094, +0.562], rho(sigma, log R) +0.827 [+0.710, +0.893]
+- median sigma of oscillators: 9.46 per time unit
+- check by construction, S2b: AUC of Phi_D (rock > oscillator) = 0.00

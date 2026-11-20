@@ -38,4 +38,6 @@ def test_e3_defaults_match_the_documented_settings():
     from e3_phi_vs_viability import make_parser
     a = make_parser().parse_args([])
     assert (a.n_traj, a.t_max, a.dt, a.n_worlds, a.seed, a.tau, a.p_out, a.N) == (600, 200.0, 0.05, 30, 2026, 1.0, 0.05, 6)
-    assert not a.crn and not a.bridge
+    assert a.crn and a.bridge                      # corrected method by default (2026-11-11)
+    old = make_parser().parse_args(["--no-crn", "--no-bridge"])
+    assert not old.crn and not old.bridge          # the old method stays available
