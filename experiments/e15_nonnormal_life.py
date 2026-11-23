@@ -120,6 +120,7 @@ def main():
         axs[0].legend(fontsize=8); fig.tight_layout(); fig.savefig(out / "e15_nonnormal_life.png", dpi=150)
     except ImportError:
         pass
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     print("\n".join(L))
 
 

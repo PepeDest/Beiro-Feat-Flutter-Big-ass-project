@@ -80,3 +80,51 @@ and a scatter plot of y against s.
 - σ_osc and σ_nn are properties of the whole world. y is a mean over structures, so this is a world-level test. The
   structure-level test is A4.
 - The two families have different designs. Pooling them can hide a family effect. The per-family description shows it.
+
+## A2. Results (added 2026-11-23, after the analysis)
+Report: `results/e15_nonnormal_life.md`, `.json` and `.png`. Log: `results/e15_run.log`. The first run stopped at the
+screen print, after it wrote the report files. Only the print changed, and the second run gave the same report (fixed
+seed).
+
+| Rule | Statistic | S1 baseline (60 worlds) | S1 D-test r = 3 (60 worlds) |
+|---|---|---|---|
+| R1 | ρ(s, y) | +0.71 [+0.56, +0.82], lengthens life | +0.78 [+0.62, +0.86], lengthens life |
+| R2 | β_osc | −0.09 [−0.10, −0.07], shortens life | −0.07 [−0.09, −0.06], shortens life |
+| R2 | β_nn | −0.00 [−0.01, +0.01], no effect | −0.01 [−0.02, +0.00], no effect |
+| R3 | β_nn − β_osc | +0.09 [+0.06, +0.11], the parts differ | +0.07 [+0.04, +0.09], the parts differ |
+| description | ρ(x, y), total dissipation | −0.95 [−0.97, −0.91] | −0.95 [−0.97, −0.91] |
+
+R4: **the decomposition adds information.** The gate does not trigger.
+
+The per-family values have the same signs in all four cases (ρ(s, y) from +0.63 to +0.75, β_osc from −0.06 to −0.10,
+β_nn from −0.01 to 0.00).
+
+### The expectations were wrong
+I expected the nonnormal part to shorten life. It does not: β_nn shows no effect in both datasets. The **oscillatory**
+part carries the whole effect. So a larger nonnormal share goes with a **longer** life (R1), because at a fixed total a
+larger share means a smaller oscillatory part. Only R3 and R4 came out as expected.
+
+### What A2 shows
+1. **Total dissipation per relaxation time predicts what the drive costs in life.** Across worlds, ρ = −0.95 in both
+   datasets. This is a world-level description, not a rule.
+2. **The cost comes from the oscillatory part.** At a fixed nonnormal part, one standard deviation of log x_osc shortens
+   the mean life by about 7–9 % (β_osc −0.07 to −0.09 in log units). At a fixed oscillatory part, the nonnormal part has
+   no effect that we can see.
+3. **The result is the same with D = I and with a random diagonal D.**
+
+### A post-hoc reading (not tested)
+Our viability set is fixed by the stationary law, and V_eq has the same stationary law. So only the dynamics can change
+the life. Oscillations rotate the state among coordinates. A rotation brings values from outside a structure into it,
+so the structure loses memory of its own state faster. Nonnormal transient amplification changes the variance in
+Troude–Sornette, but here the set is calibrated to the variance. This reading is a guess. Step A3 can test it.
+
+### Limits
+- 60 worlds per dataset, world-level predictors, structure-level lives averaged in each world.
+- Both datasets use the same B_s and G draws (the D-test draws D after them). So the two datasets are not independent
+  samples of B.
+- The predictors are divided by λ̄ = tr(B)/N. Another time unit can change the sizes of the β values.
+
+### Next: A3 (rules to write before the runs)
+Controlled worlds that change one part at a time:
+- fix the eigenvalues of B and change only the nonnormality. A2 predicts **no change** in life.
+- fix the nonnormality and change only the imaginary parts of the eigenvalues. A2 predicts a **shorter** life.
