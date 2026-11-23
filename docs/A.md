@@ -286,3 +286,48 @@ total entropy production along the coordinates of A), for comparison.
 - Alternative, also written now: the post-hoc reading of A2 says that the cost comes from mixing with coordinates
   **outside** A. The local block cannot see that mixing. If P1 is "no effect", the cost is a property of the coupling
   of A to the world, not of the own dynamics of A. Then the next step is a coupling measure, not A4 again.
+
+## A4. Results (added 2026-11-24, after the analysis)
+Report: `results/e17_structure_level.md` and `.json`. Log: `results/e17_run.log`.
+
+| Rule | Statistic | S1 baseline | S1 D-test r = 3 | Expected |
+|---|---|---|---|---|
+| P1 | mean ρ(x_osc,A, log R_A) | +0.21 [+0.15, +0.26], lengthens life | +0.17 [+0.11, +0.23], lengthens life | **no** ("shortens life") |
+| P2 | mean ρ(x_nn,A, log R_A) | +0.04 [−0.01, +0.10], no effect | +0.02 [−0.03, +0.08], no effect | yes |
+| P3 | β_osc | +0.19 [+0.14, +0.24], lengthens life | +0.16 [+0.10, +0.22], lengthens life | **no** |
+| P3 | β_nn | +0.01 [−0.04, +0.06], no effect | +0.01 [−0.05, +0.06], no effect | yes |
+| P4 | β_nn − β_osc | −0.18 [−0.25, −0.11], the parts differ | −0.15 [−0.24, −0.06], the parts differ | yes |
+| description | mean ρ(σ_A/λ̄_A, log R_A), S2c measure | −0.00 [−0.05, +0.05] | −0.10 [−0.16, −0.04] | |
+
+Per size (description): P1 grows with size, from about +0.04 at size 2 to +0.21–0.30 at size 5. P2 stays between
+−0.02 and +0.10.
+
+### The main expectation was wrong, in sign
+Across worlds, more oscillation means a larger life cost (A2, A3). Across structures **inside** a world, the opposite
+holds: structures whose **own** block oscillates more lose **less** life to the drive. The local nonnormal part has no
+effect, as expected.
+
+### A post-hoc reading (not tested)
+This fits the alternative written before the analysis, and makes it sharper. A rotation that stays inside A does not
+change the distance of A from the edge of its set. With S = I, a rotation inside a block keeps the norm of that block
+exactly. A rotation that crosses the boundary of A moves values from outside into A. So:
+- the cost of a drive comes from oscillations that **cross** the boundary of a structure;
+- a structure that **contains** its oscillations is protected.
+
+A structure with a strong own oscillation contains more of the rotation of the world. Larger structures contain more,
+and P1 grows with size. This reading also explains why total dissipation predicts the cost at world level: more
+rotation means more rotation across boundaries.
+
+### Limits
+- The local block ignores the coupling of A to the world. P1 shows that this matters, but A4 does not measure the
+  coupling.
+- Ranks inside strata: A4 says nothing about the size of the effect in life units.
+
+## A5. Proposal (rules not written yet)
+A clean test of the reading above, with the controlled worlds of A3 and **no rotation Q** (Q = I), so each oscillating
+pair is a known 2 × 2 block:
+- A structure made of whole blocks: at η = 0, its norm does not feel the rotation, so log R = 0 in distribution for
+  every ω. This is a prediction from the algebra, before any simulation.
+- A structure that cuts a block: log R < 0, and more negative at a larger ω.
+- A measure of "oscillation across the boundary" that can be computed for any structure in any world, then tested on
+  the S1 data.
