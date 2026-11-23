@@ -128,3 +128,69 @@ Troude–Sornette, but here the set is calibrated to the variance. This reading 
 Controlled worlds that change one part at a time:
 - fix the eigenvalues of B and change only the nonnormality. A2 predicts **no change** in life.
 - fix the nonnormality and change only the imaginary parts of the eigenvalues. A2 predicts a **shorter** life.
+
+## A3. Rules (fixed 2026-11-23, before the runs)
+**Question.** A2 is a correlation across random worlds. A3 changes one part of the dissipation at a time, in worlds
+made for the test, and measures the life.
+
+**Worlds** (`src/vlife/controlled.py`, our construction). N = 6, stationary covariance S = I. The drift is
+B = Q (Bdiag(ω) + η U) Qᵀ with three 2 × 2 blocks [[r_k, ω r_k], [−ω r_k, r_k]], a block-upper-triangular coupling U
+and a random rotation Q. D = (B + Bᵀ)/2.
+- The eigenvalues are r_k (1 ± iω) for every η. So σ_osc = 2ω² Σ r_k does not change with η.
+- η = 0 gives a normal B (σ_nn = 0). A larger η gives a larger σ_nn.
+- Q mixes the coordinates, so a structure does not match one block.
+- Rates r_k are log-uniform in [0.3, 3], as in S1. η_cap keeps the smallest eigenvalue of D at 0.25 · min r_k or above.
+
+**Grid.** ω ∈ {0, 1, 2, 4} and η ∈ {0, 1/3, 2/3, 1} · η_cap. In S1 the median of max |Im λ / Re λ| per world is 3.9,
+so ω = 4 is a typical S1 value. 20 worlds, seeds [2027, k].
+
+**What we looked at before writing the rules.** Only the dissipation of the grid, not the lives. Medians over 20 worlds:
+
+| ω | σ_osc | σ_nn at η = 0, 1/3, 2/3, 1 (· η_cap) |
+|---|---|---|
+| 0 | 0 | 0, 0.26, 1.30, 5.49 |
+| 1 | 7.06 | 0, 0.53, 2.75, 12.8 |
+| 2 | 28.2 | 0, 1.32, 6.97, 33.4 |
+| 4 | 113 | 0, 4.47, 23.6, 114 |
+
+So at η_cap the nonnormal part is as large as the oscillatory part, or larger. In S1 it was 5–17 % of the total. A
+2-world smoke test (60 trajectories, t_max 40) checked that the code runs and that the sanity checks pass. Its results
+were not read and its files were deleted.
+
+**Simulation.** As in S1: 62 structures, p_out = 0.05, 600 trajectories, dt = 0.05, t_max = 200, Brownian-bridge exit
+check. Life with the drive V_on, and life under B_eq = D, the reversible dynamics with the same stationary law. One seed
+per world for every run of that world (common random numbers). y = mean over structures with at least 5 exits in both
+runs of log(V_on/V_eq).
+
+**Sanity checks (the run is not valid if one fails).** y = 0 exactly at ω = 0, η = 0 (then B = B_eq). σ_osc does not
+change with η. σ_nn = 0 at η = 0.
+
+**Rules.** 2000 bootstrap resamples of worlds, seed 2026, 95 % percentile intervals. Labels for Q1–Q3: "shortens life"
+if CI high < 0, "lengthens life" if CI low > 0, "no effect within ±0.05" if the CI is inside [−0.05, +0.05], else
+"inconclusive". 0.05 in log units is a 5 % change in life.
+
+| Rule | Question | Contrast |
+|---|---|---|
+| Q1 | Do oscillations alone shorten life? | y(ω 4, η 0) − y(ω 0, η 0) |
+| Q2 | Does nonnormality alone, with real eigenvalues, change life? | y(ω 0, η_cap) − y(ω 0, η 0) |
+| Q3 | Does nonnormality change life at a fixed oscillation? | y(ω, η_cap) − y(ω, η 0), mean over ω = 1, 2, 4 |
+| Q4 | Is the oscillatory effect larger? | \|Q1\| − \|Q3\|: "oscillation dominates" if CI low > 0, else "not separated" |
+
+Also reported (description only): the mean y for each of the 16 grid points.
+
+**Expectations written before the runs** (from A2):
+- Q1 "shortens life".
+- Q2 and Q3 "no effect within ±0.05".
+- Q4 "oscillation dominates".
+
+**What a different result means.**
+- If Q2 or Q3 is "shortens life", the A2 null for σ_nn came from the small nonnormal share of S1 worlds. Then
+  nonnormality also costs life when it is large, as Troude and Sornette suggest for escape.
+- If Q1 is not "shortens life", the A2 link between σ_osc and life does not come from the oscillations as such. Then it
+  can come from a feature of S1 worlds that goes with σ_osc.
+
+**Known limits, before the runs.**
+- S = I, so structures have no static correlations. This removes the information terms of S1, but A3 does not need them.
+- Changing η also changes D, so the reference B_eq = D changes with η. log R always compares a world with its own
+  reversible counterpart, as in A2.
+- 20 worlds. The grid is the same for all worlds, so the contrasts are paired.
