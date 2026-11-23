@@ -246,3 +246,43 @@ mixes outside values into a structure) fits Q1, but A3 does not test it directly
 ### Next
 A4 (structure level) is still open. Before A4, the result of A2 and A3 is enough for a short note to Nagayama,
 Kolchinsky and Ito, after a check by the author.
+
+## A4. Rules (fixed 2026-11-23, before the analysis)
+**Question.** A2 and A3 are about whole worlds. A4 asks the same question for single structures in the same world:
+do the structures whose own dynamics oscillate more lose more life to the drive?
+
+**Data.** The S1 datasets of A2 (`_v2` and `_D3_v2`), driven and modular worlds, 60 worlds each. No new simulation.
+
+**Local parts (our choice, a "novel" flag).** For a structure A, take the local block (B_AA, D_AA) and its own stationary
+covariance. Then σ_osc,A and σ_nn,A come from `oscillatory_nonnormal_ep(B_AA, D_AA)`. Divide by λ̄_A = tr(B_AA)/|A|:
+x_osc,A and x_nn,A. The local block ignores the coupling of A to the rest of the world. This is a real limit, see the
+expectations.
+
+**Outcome.** log R_A = log(V_on/V_eq) of structure A, for structures with at least 5 exits in both runs.
+
+**Strata.** World × size, for sizes 2 to 5 (size 1 has no dissipation in its own block). Ranks are taken inside each
+stratum, so world and size effects do not enter.
+
+**What we looked at before writing the rules.** Only the local predictors. All 6720 local blocks are stable. The median
+nonnormal share is 5–11 % (baseline) and 11–28 % (D-test). For size 2, x_osc,A is zero in 19 % (baseline) and 32 %
+(D-test) of the structures (real eigenvalues). Inside strata, the mean ρ(x_osc,A, x_nn,A) is 0.15 and 0.05.
+
+**Statistics.** 2000 cluster-bootstrap resamples of worlds, seed 2026, 95 % percentile intervals.
+
+| Rule | Question | Statistic | Verdict |
+|---|---|---|---|
+| P1 | Do structures with more local oscillation lose more life? | mean over strata of ρ(x_osc,A, log R_A) | "shortens life" if CI high < 0, "lengthens life" if CI low > 0, else "no effect" |
+| P2 | Same for the local nonnormal part | mean over strata of ρ(x_nn,A, log R_A) | same labels |
+| P3 | Each part at a fixed other part | least squares on ranks standardized inside strata: rank(log R) = β_osc rank(x_osc) + β_nn rank(x_nn) | the labels of P1, for β_osc and for β_nn |
+| P4 | Do the two parts act differently? | Δβ = β_nn − β_osc | "the parts differ" if the CI excludes 0, else "not separated" |
+
+Also reported (description only): P1 and P2 for each size, and the same ρ for the S2c measure σ_A (the part of the
+total entropy production along the coordinates of A), for comparison.
+
+**Expectations written before the analysis.**
+- P1 "shortens life", with a smaller ρ than the world-level effect.
+- P2 "no effect", or "shortens life" with a smaller size than P1.
+- P4 "the parts differ".
+- Alternative, also written now: the post-hoc reading of A2 says that the cost comes from mixing with coordinates
+  **outside** A. The local block cannot see that mixing. If P1 is "no effect", the cost is a property of the coupling
+  of A to the world, not of the own dynamics of A. Then the next step is a coupling measure, not A4 again.

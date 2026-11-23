@@ -86,3 +86,4 @@ Not searched: rows 7, 8, 21, 22, 34 and 35. These rows are design choices or def
 | 59 | Oscillatory and nonnormal parts of the OU entropy production | gaussian.oscillatory_nonnormal_ep | A (NagayamaKolchinskyIto26) | Tests check the sum, the projection definition and three special cases |
 | 60 | Nonnormal share of dissipation against the life change log(V_on/V_eq) at a fixed stationary law | E15, docs/A.md | N (use for persistence). Related: TroudeSornette25 (nonnormality speeds up escape through a larger variance) | Search log in docs/A.md, A0 |
 | 61 | Controlled OU worlds with a fixed spectrum, S = I, and a tunable nonnormal coupling | controlled.py, E16 | N (construction) | Block Schur form idea: NagayamaKolchinskyIto26. Tests check the spectrum, S = I and the two parts |
+| 62 | Local oscillatory and nonnormal parts of a structure from its own block (B_AA, D_AA) | E17, docs/A.md | N (our choice) | Ignores the coupling of A to the rest of the world |
