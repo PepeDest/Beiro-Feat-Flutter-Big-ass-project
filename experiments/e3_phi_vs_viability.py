@@ -168,8 +168,10 @@ def make_parser():
     ap.add_argument("--seed", type=int, default=2026); ap.add_argument("--tag", default="")
     ap.add_argument("--reuse", action="store_true")
     ap.add_argument("--N", type=int, default=6)
-    ap.add_argument("--crn", action="store_true", help="fix #5: common random numbers for the driven and equilibrium runs")
-    ap.add_argument("--bridge", action="store_true", help="fix #1: Brownian-bridge correction of the exit check")
+    ap.add_argument("--crn", action=argparse.BooleanOptionalAction, default=True,
+                    help="fix #5: common random numbers for the driven and equilibrium runs (default on since 2026-11-11; --no-crn = old method)")
+    ap.add_argument("--bridge", action=argparse.BooleanOptionalAction, default=True,
+                    help="fix #1: Brownian-bridge correction of the exit check (default on since 2026-11-11; --no-bridge = old method)")
     ap.add_argument("--noise_range", type=float, default=None, help="S1 D-test: D = diag(d), d log-uniform in [1/r, r]")
     ap.add_argument("--sim_from", default=None,
                     help="tag of an existing dataset: reuse its exit data and recompute only the features with --tau "

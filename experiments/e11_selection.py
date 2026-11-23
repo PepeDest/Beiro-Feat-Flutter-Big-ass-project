@@ -96,7 +96,7 @@ def pilot(workers):
         (RES / "e11_eps.json").write_text(json.dumps(chosen))
 
 
-def main(workers, runs):
+def main(workers, runs, tag=""):
     t0 = time.time()
     from concurrent.futures import ProcessPoolExecutor
     ch = json.loads((RES / "e11_eps.json").read_text()); sign = ch["predicted_sign"]
@@ -106,7 +106,7 @@ def main(workers, runs):
     with ProcessPoolExecutor(workers) as ex:
         rs = list(ex.map(job, jobs))
     print(f"runs done in {time.time() - t0:.0f} s", flush=True)
-    pickle.dump(rs, open(RES / "e11_runs.pkl", "wb"))
+    pickle.dump(rs, open(RES / f"e11_runs{tag}.pkl", "wb"))
     sel, ctl = rs[:runs], rs[runs:]
     P = {"selection": [price_run(r) for r in sel], "control": [price_run(r) for r in ctl]}
     R = {}
@@ -126,7 +126,7 @@ def main(workers, runs):
              H2="control clean" if C["S"][1] <= 0 <= C["S"][2] else "control not clean", H3=lab_sel, H4=h4,
              H5="exact" if max(S["identity_err"], C["identity_err"]) < 1e-9 else "not exact",
              H6="exponential" if nexp >= 0.75 * len(G) else "polynomial" if npow >= 0.75 * len(G) else "mixed")
-    save_json("e11_summary.json", dict(eps=ch, results=R, growth=G, verdicts=v))
+    save_json(f"e11_summary{tag}.json", dict(eps=ch, results=R, growth=G, verdicts=v))
     f = lambda x: f"{x[0]:+.4f} [{x[1]:+.4f}, {x[2]:+.4f}]"
     g0 = next((g for g in G if g), None)
     out = ["# E11 / S6b report (auto-generated; rules in docs/S6.md)\n",
@@ -138,11 +138,12 @@ def main(workers, runs):
            f"| H4: final fraction of type A | {f(S['fracA'])} | {f(C['fracA'])} | {v['H4']} |",
            f"| H5: max error of the Price identity | {S['identity_err']:.1e} | {C['identity_err']:.1e} | {v['H5']} |",
            f"| H6: growth law (exp wins / power wins) | {nexp} / {npow}, power median {np.median([g['power'] for g in G if g]):.2f} (fitted t0: {np.median([g['power_t0'] for g in G if g]):.2f}, description only), window N {g0['N_window'] if g0 else '-'} | | {v['H6']} |"]
-    (RES / "e11_report.md").write_text("\n".join(out) + "\n", encoding="utf-8"); print("\n".join(out))
+    (RES / f"e11_report{tag}.md").write_text("\n".join(out) + "\n", encoding="utf-8"); print("\n".join(out))
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--pilot", action="store_true")
     ap.add_argument("--workers", type=int, default=4); ap.add_argument("--runs", type=int, default=32)
+    ap.add_argument("--tag", default="", help="suffix of the output files (the S6f rerun uses _hash2)")
     a = ap.parse_args()
-    pilot(a.workers) if a.pilot else main(a.workers, a.runs)
+    pilot(a.workers) if a.pilot else main(a.workers, a.runs, a.tag)

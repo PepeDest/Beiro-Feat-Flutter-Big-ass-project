@@ -76,3 +76,43 @@ sign of K_H did in S1. I did not test why.
 - One nonlinear drive model. In it, σ counts only the heat into the bath, not the energy taken from the depot.
 - σ_A is our decomposition of the linear entropy production. Other decompositions exist.
 - The weight of the term (1) and the time unit (τ) are fixed choices, not tuned.
+
+## D3–D5 on the corrected S1 data (rules fixed 2026-11-11, before the runs)
+Code review item 1: D3–D5 used S1 data made with the old exit check. This section repeats them on data made with the
+corrected check (`--crn --bridge`, docs/RERUN.md). Part A (D1, D2) uses the nonlinear units of S2 and S2b, which item 1
+does not touch, so it is not repeated.
+
+Runs (same seeds and settings as before, one at a time, all cores):
+1. `python e3_phi_vs_viability.py --crn --bridge --tag _v2` (S1 baseline)
+2. `python e3_phi_vs_viability.py --noise_range 3 --crn --bridge --tag _D3_v2` (S1 D-test r = 3)
+3. `python e7_dissipation.py --s1_suffix _v2` (report `results/e7_dissipation_s1_v2.md`)
+
+| Rule | Verdict |
+|---|---|
+| V1 | For each of D3, D4, D5 (D3) and D5 (D4): "same" if the new label equals the old label, else "changed" |
+| V2 (description) | Old and new values with their CIs |
+
+**Expectations written before the runs.** D4 "hurts" and D5 (D4) "hurts" stay the same, because the effects are large
+(−0.18 and −0.52). D5 (D3) "shortens life" stays the same (−0.25). D3 is the least certain: +0.10 [+0.01, +0.19] is close
+to 0, so it can become "no effect". The conclusion "raw dissipation is not a good general term" holds if D4 and D5 (D4)
+stay "hurts".
+
+### Results on the corrected S1 data (added 2026-11-11, after the runs)
+Report: `results/e7_dissipation_s1_v2.md` and `.json`. Logs: `results/e3_v2_local_run.log` (1375 s),
+`results/e3_D3_v2_local_run.log` (1569 s), `results/e7_s1_v2_run.log`, `results/s2c_rerun.status`.
+Check of the data: the two S1 datasets were made again on this PC with the same seeds as the cloud runs of docs/RERUN.md.
+All point estimates in `e3_summary_v2.json` and `e3_summary_D3_v2.json` are the same (differences below 1e-15). Only the
+ends of the bootstrap CIs differ, by 0.003 at most, so the committed cloud reports are kept.
+
+| Rule | Old exit check | Corrected exit check | V1 |
+|---|---|---|---|
+| D3: ρ(σ_A, log V), equal size, S1 baseline | +0.10 [+0.01, +0.19], lengthens life | +0.09 [−0.01, +0.19], no effect | changed |
+| D4: ρ(Φ_D) − ρ(Φ_TC), S1 baseline | −0.18 [−0.23, −0.13], hurts | −0.19 [−0.25, −0.13], hurts | same |
+| D5 (D3), S1 D-test r 3 | −0.25 [−0.33, −0.16], shortens life | −0.27 [−0.36, −0.17], shortens life | same |
+| D5 (D4), S1 D-test r 3 | −0.52 [−0.59, −0.46], hurts | −0.54 [−0.60, −0.47], hurts | same |
+
+**Expectations.** All four came out as written before the runs: D4 and both D5 rules are the same, and D3, the least
+certain, moves from "lengthens life" to "no effect" (the CI now includes 0).
+**What changes.** In the baseline, dissipation has no clear link to life. In the D-test worlds it shortens life. The sign
+of the link still depends on the noise structure D, and as a bonus in Φ it still hurts in both settings. The conclusion
+"raw dissipation is not a good general term" holds on the corrected data.

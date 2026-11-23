@@ -58,6 +58,7 @@ def boot(v, n=1000, rng=np.random.default_rng(0)):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--workers", type=int, default=5); ap.add_argument("--runs", type=int, default=20)
+    ap.add_argument("--tag", default="", help="suffix of the output files (the S6f rerun uses _hash2)")
     a = ap.parse_args(); t0 = time.time()
     mus = [round(MU_C * f, 4) for f in FACTORS]
     jobs = [(7000 + 100 * j + i, mu) for j, mu in enumerate(mus) for i in range(a.runs)]
@@ -65,7 +66,7 @@ if __name__ == "__main__":
     with ProcessPoolExecutor(a.workers) as ex:
         rs = list(ex.map(job, jobs, chunksize=1))
     print(f"{len(rs)} runs done in {time.time() - t0:.0f} s", flush=True)
-    pickle.dump(rs, open(RES / "e12_runs.pkl", "wb"))
+    pickle.dump(rs, open(RES / f"e12_runs{a.tag}.pkl", "wb"))
     A = [analyse_run(r) for r in rs]; table = []
     for mu in mus:
         L = [x for x in A if x["mu"] == mu]
@@ -85,11 +86,11 @@ if __name__ == "__main__":
     closer = "regular cycles (0.114)" if np.isnan(mu_hat) or abs(mu_hat - MU_C) <= abs(mu_hat - MU_C_EXP) else "exponential cycles (0.088)"
     v = dict(M1="as set" if M1 else "not as set", M2="matches" if M2 else "does not match", M3="threshold present" if M3 else "no clear threshold",
              M4=M4, closer=closer, mu_hat=mu_hat)
-    save_json("e12_summary.json", dict(table=table, verdicts=v))
+    save_json(f"e12_summary{a.tag}.json", dict(table=table, verdicts=v))
     g = lambda x: f"{x[0]:.3f} [{x[1]:.3f}, {x[2]:.3f}]"
     out = ["# E12 / S6c report (auto-generated; rules in docs/S6.md)\n", f"Runs: {len(rs)} ({a.runs} per mu). mu_c predicted 0.114 (regular cycles), 0.088 (exponential cycles).\n",
            "| mu | measured A->B fraction | final fraction of A | S per generation | T measured | T predicted | median steps | median spots |", "|---|---|---|---|---|---|---|---|"]
     out += [f"| {t['mu']:.4f} | {g(t['mut'])} ({t['n_pairs']}) | {g(t['fracA'])} | {t['S'][0]:+.4f} | {t['T'][0]:+.4f} | {t['Tpred']:+.4f} | {t['steps']:.0f} | {t['n_end']:.0f} |" for t in table]
     out += ["", f"- M1 (mutation as set): {v['M1']}", f"- M2 (T matches the mutation): {v['M2']}", f"- M3 (error threshold): {v['M3']}",
             f"- M4: mu where f crosses 0.1 = {mu_hat:.4f}: {v['M4']}; closer mean-field value: {closer}"]
-    (RES / "e12_report.md").write_text("\n".join(out) + "\n", encoding="utf-8"); print("\n".join(out))
+    (RES / f"e12_report{a.tag}.md").write_text("\n".join(out) + "\n", encoding="utf-8"); print("\n".join(out))

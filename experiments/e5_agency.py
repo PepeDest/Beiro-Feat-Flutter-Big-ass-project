@@ -85,7 +85,8 @@ if __name__ == "__main__":
     ap.add_argument("--tau", type=float, default=1.0); ap.add_argument("--n_traj", type=int, default=600)
     ap.add_argument("--t_max", type=float, default=1000.0); ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--tag", default="")
-    ap.add_argument("--bridge", action="store_true", help="fix #1: Brownian-bridge correction of the exit check")
+    ap.add_argument("--bridge", action=argparse.BooleanOptionalAction, default=True,
+                    help="fix #1: Brownian-bridge correction of the exit check (default on since 2026-11-11; --no-bridge = old method)")
     a = ap.parse_args()
     from concurrent.futures import ProcessPoolExecutor
     t0 = time.time()
