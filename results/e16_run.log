@@ -1,0 +1,42 @@
+world 0: done, 255 s
+world 1: done, 449 s
+world 2: done, 643 s
+world 3: done, 919 s
+world 4: done, 1046 s
+world 5: done, 1179 s
+world 6: done, 1316 s
+world 7: done, 1412 s
+world 8: done, 1637 s
+world 9: done, 1699 s
+world 10: done, 2010 s
+world 11: done, 2115 s
+world 12: done, 2189 s
+world 13: done, 2284 s
+world 14: done, 2446 s
+world 15: done, 2537 s
+world 16: done, 2600 s
+world 17: done, 2703 s
+world 18: done, 2807 s
+world 19: done, 2916 s
+# E16: controlled worlds (niche A, step A3)
+
+Rules: docs/A.md. 95 % bootstrap intervals over worlds.
+
+Sanity checks: {'y_zero_at_equilibrium': True, 'sigma_osc_fixed_in_eta': True, 'sigma_nn_zero_at_eta0': True, 'min_structures': 62}
+
+| Rule | Contrast | Value [95 % CI] | Verdict |
+|---|---|---|---|
+| Q1 | y(ω 4, η 0) − y(ω 0, η 0) | -0.308 [-0.322, -0.295] | shortens life |
+| Q2 | y(ω 0, η cap) − y(ω 0, η 0) | -0.053 [-0.061, -0.046] | shortens life |
+| Q3 | y(ω, η cap) − y(ω, η 0), mean over ω 1, 2, 4 | -0.055 [-0.065, -0.044] | shortens life |
+| Q4 | |Q1| − |Q3| | +0.253 [+0.233, +0.275] | oscillation dominates |
+
+Mean y over worlds (rows ω, columns η / η_cap):
+
+| ω | 0.00 | 0.33 | 0.67 | 1.00 |
+|---|---|---|---|---|
+| 0 | +0.000 | -0.004 | -0.019 | -0.053 |
+| 1 | -0.078 | -0.084 | -0.101 | -0.132 |
+| 2 | -0.183 | -0.189 | -0.203 | -0.236 |
+| 4 | -0.308 | -0.315 | -0.330 | -0.365 |
+exit=0

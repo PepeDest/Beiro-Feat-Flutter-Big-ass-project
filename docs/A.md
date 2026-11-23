@@ -194,3 +194,55 @@ Also reported (description only): the mean y for each of the 16 grid points.
 - Changing η also changes D, so the reference B_eq = D changes with η. log R always compares a world with its own
   reversible counterpart, as in A2.
 - 20 worlds. The grid is the same for all worlds, so the contrasts are paired.
+
+## A3. Results (added 2026-11-23, after the run)
+Report: `results/e16_controlled.md` and `.json`. Log: `results/e16_run.log` (2916 s, 20 worlds). The data file
+`results/e16_controlled.pkl` is not in git (`*.pkl`). All sanity checks pass: y = 0 exactly at ω = 0, η = 0, σ_osc does
+not change with η, σ_nn = 0 at η = 0, and every grid point keeps all 62 structures.
+
+| Rule | Contrast | Value [95 % CI] | Verdict | Expected |
+|---|---|---|---|---|
+| Q1 | y(ω 4, η 0) − y(ω 0, η 0) | −0.308 [−0.322, −0.295] | shortens life | yes |
+| Q2 | y(ω 0, η_cap) − y(ω 0, η 0) | −0.053 [−0.061, −0.046] | shortens life | **no** ("no effect within ±0.05") |
+| Q3 | y(ω, η_cap) − y(ω, η 0), mean over ω 1, 2, 4 | −0.055 [−0.065, −0.044] | shortens life | **no** ("no effect within ±0.05") |
+| Q4 | \|Q1\| − \|Q3\| | +0.253 [+0.233, +0.275] | oscillation dominates | yes |
+
+Mean y over the 20 worlds (description):
+
+| ω | η = 0 | η = 1/3 η_cap | η = 2/3 η_cap | η = η_cap |
+|---|---|---|---|---|
+| 0 | +0.000 | −0.004 | −0.019 | −0.053 |
+| 1 | −0.078 | −0.084 | −0.101 | −0.132 |
+| 2 | −0.183 | −0.189 | −0.203 | −0.236 |
+| 4 | −0.308 | −0.315 | −0.330 | −0.365 |
+
+### The expectations were partly wrong
+Q1 and Q4 came out as expected. Q2 and Q3 did not: nonnormality **also** shortens life, at a fixed spectrum and at a
+fixed oscillatory part. The effect is small. At η_cap it is about 5 % of the life, and the CIs exclude zero.
+
+### What A3 shows
+1. **Oscillations alone shorten life a lot.** At ω = 4, a typical S1 value, the mean life falls by about 27 %
+   (y = −0.31), with the stationary law fixed.
+2. **Nonnormality alone shortens life a little.** At η_cap the mean life falls by about 5 %, even with real eigenvalues.
+3. **The two effects add up.** At every ω the step from η = 0 to η_cap is between −0.053 and −0.057. So the interaction
+   is below 0.01 in y (description, not a rule).
+4. **Per unit of dissipation, oscillations cost more** (description). At ω = 4 the two parts are about equal at η_cap
+   (σ_osc 113, σ_nn 114, medians), but the oscillatory part costs −0.31 and the nonnormal part −0.06.
+5. **This explains the null of A2.** In S1 worlds the nonnormal share is 5–17 % (medians). An effect this small at that
+   share is below what 60 worlds can detect.
+
+### Combined reading of A2 and A3
+At a fixed stationary law, the life cost of a drive comes mainly from the oscillatory part of its dissipation. The
+nonnormal part also costs life, but much less per unit of dissipation. So total dissipation is a good predictor of the
+cost (A2, ρ = −0.95) because in typical random worlds most of it is oscillatory. The post-hoc reading of A2 (rotation
+mixes outside values into a structure) fits Q1, but A3 does not test it directly.
+
+### Limits
+- One construction (S = I, block Schur form, one random rotation per world). Other constructions can give other sizes.
+- The size of "per unit of dissipation" depends on the grid. Point 4 is a description, not a rule.
+- 20 worlds. The CIs are narrow because the grid is paired within worlds.
+- Structures here have no static correlations (S = I).
+
+### Next
+A4 (structure level) is still open. Before A4, the result of A2 and A3 is enough for a short note to Nagayama,
+Kolchinsky and Ito, after a check by the author.
