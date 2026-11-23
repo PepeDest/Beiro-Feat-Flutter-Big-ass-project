@@ -159,3 +159,7 @@ Open questions:
 - Why does the faster type survive better than a mean-field model predicts? It does not stay at the colony edge (S6e).
 - Is there an error threshold with many more generations (a larger grid, or colonies with removal of spots)?
 - A term for "dissipation that builds the structure" that does not need a drive-off simulation.
+
+## Next programme (2026-11-20)
+The next goals are in `ROADMAP_ABC.md`: three small results for three research groups (dissipation parts and life,
+exact semantic information in linear systems, negative controls).

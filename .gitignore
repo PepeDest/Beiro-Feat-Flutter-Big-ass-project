@@ -3,3 +3,12 @@ __pycache__/
 *.pyc
 .pytest_cache/
 *.pkl
+
+# Paper build outputs (rebuild from paper/main.tex)
+paper/paper_overleaf.*
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/main.pdf
