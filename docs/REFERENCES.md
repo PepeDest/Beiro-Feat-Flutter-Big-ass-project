@@ -99,3 +99,8 @@ Keys match the `[Key]` tags used in the source code and in `PROVENANCE.md`.
 - **Romanczuk12** — P. Romanczuk, M. Bär, W. Ebeling, B. Lindner, L. Schimansky-Geier, "Active Brownian particles", *Eur. Phys. J. Spec. Top.* 202, 1 (2012). DOI: 10.1140/epjst/e2012-01529-y.
 - **Kramers40** — H. A. Kramers, "Brownian motion in a field of force and the diffusion model of chemical reactions", *Physica* 7, 284 (1940). DOI: 10.1016/S0031-8914(40)90098-2.
 - **AguileraMillidgeTschantzBuckley22** — M. Aguilera, B. Millidge, A. Tschantz, C. L. Buckley, "How particular is the physics of the free energy principle?", *Phys. Life Rev.* 40, 24 (2022). DOI: 10.1016/j.plrev.2021.11.001. (Added for S5, checked on Crossref 2026-10-24.)
+
+## Added for niche A (2026-11-23)
+- **NagayamaKolchinskyIto26** — R. Nagayama, A. Kolchinsky, S. Ito, "Oscillatory-nonnormal decomposition of dissipation in Ornstein-Uhlenbeck processes", arXiv:2606.07263 (2026). Checked on the arXiv API (v2, no journal reference yet).
+- **TroudeSornette25** — V. Troude, D. Sornette, "Unifying framework for amplification mechanisms: spectral criticality, resonance, and nonnormality", *Phys. Rev. Research* 7, L042048 (2025). DOI: 10.1103/kdgw-shxf. Checked on Crossref.
+- **TroudeSornette25b** — V. Troude, D. Sornette, "Non-normal phase transitions: a new universality in complex systems", arXiv:2502.05251 (2025). Checked on the arXiv API (v3, no journal reference yet).
