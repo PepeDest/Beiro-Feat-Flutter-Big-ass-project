@@ -104,3 +104,11 @@ Keys match the `[Key]` tags used in the source code and in `PROVENANCE.md`.
 - **NagayamaKolchinskyIto26** — R. Nagayama, A. Kolchinsky, S. Ito, "Oscillatory-nonnormal decomposition of dissipation in Ornstein-Uhlenbeck processes", arXiv:2606.07263 (2026). Checked on the arXiv API (v2, no journal reference yet).
 - **TroudeSornette25** — V. Troude, D. Sornette, "Unifying framework for amplification mechanisms: spectral criticality, resonance, and nonnormality", *Phys. Rev. Research* 7, L042048 (2025). DOI: 10.1103/kdgw-shxf. Checked on Crossref.
 - **TroudeSornette25b** — V. Troude, D. Sornette, "Non-normal phase transitions: a new universality in complex systems", arXiv:2502.05251 (2025). Checked on the arXiv API (v3, no journal reference yet).
+
+## Added for niche B (2026-11-24)
+- **Sowinski23** — D. R. Sowinski, J. Carroll-Nellenback, R. N. Markwick, J. Piñero, M. Gleiser, A. Kolchinsky, G. Ghoshal, A. Frank, "Semantic information in a model of resource gathering agents", *PRX Life* 1, 023003 (2023). DOI: 10.1103/prxlife.1.023003. arXiv:2304.03286. Checked on Crossref.
+- **SowinskiFrankGhoshal24** — D. R. Sowinski, A. Frank, G. Ghoshal, "Information-theoretic description of a feedback-control Kuramoto model", *Phys. Rev. Research* 6, 043188 (2024). DOI: 10.1103/physrevresearch.6.043188. arXiv:2404.02221. Checked on Crossref.
+- **TanakaEsfahaniMitter18** — T. Tanaka, P. Mohajerin Esfahani, S. K. Mitter, "LQG control with minimum directed information: semidefinite programming approach", *IEEE Trans. Autom. Control* 63, 37 (2018). DOI: 10.1109/tac.2017.2709618. arXiv:1510.04214. Checked on Crossref.
+- **SabagTianKostinaHassibi23** — O. Sabag, P. Tian, V. Kostina, B. Hassibi, "Reducing the LQG cost with minimal communication", *IEEE Trans. Autom. Control* 68, 5258 (2023). DOI: 10.1109/tac.2022.3220511. arXiv:2109.12246. Checked on Crossref.
+- **Kolchinsky26** — A. Kolchinsky, "Redundancy and synergy in multivariate Gaussians via the Blackwell order", arXiv:2610.07360 (2026). Checked on the arXiv page (v1, 5 Oct 2026, no journal reference yet).
+- **VanLoan78** — C. F. Van Loan, "Computing integrals involving the matrix exponential", *IEEE Trans. Autom. Control* 23, 395 (1978). DOI: 10.1109/tac.1978.1101743. Checked on Crossref. (Used in semantic.propagator.)
