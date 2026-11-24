@@ -290,3 +290,112 @@ same S_proj as the optimizer to four decimals in the five systems with the large
 ### Next: B3
 The dynamic case: observed semantic information, with interventions at each step, and its link to the minimal directed
 information of TanakaEsfahaniMitter18. The rules come first.
+
+## B3. The dynamic case: rules (written 2026-11-24, before the runs)
+
+### What KolchinskyWolpert18 defines (Sec. V B, checked in the PDF text)
+- Eq. (16): the transfer entropy TE = Σ_{t=0}^{τ−1} I(X_{t+1}; Y_t | X_t).
+- Eqs. (17)–(18): one coarse-graining φ for all times. The intervened channel is p̂(x_{t+1} | x_t, φ(y_t)). It uses
+  the actual p(x_{t+1} | x_t, y_t) and the **intervened** joint p̂(x_t, y_t) at time t. The response of the
+  environment p(y_{t+1} | x_t, y_t, x_{t+1}) does not change. At t = 0 the intervened joint is the actual one.
+- Eqs. (20)–(22): ΔV_obs = V(actual) − V(full scrambling). The optimal intervention has the smallest TE with
+  V = V_act. The observed semantic information S_obs is the TE of the optimal intervention.
+
+### Setting (ours)
+- Discrete time: z_{t+1} = F z_t + w_t, w_t ~ N(0, W), W = blockdiag(W_x, W_y). Agent x (dx coordinates),
+  environment y (dy coordinates). The start z_0 has the stationary law. τ = 4 steps.
+- W is block diagonal, so x_{t+1} and y_{t+1} are independent given (x_t, y_t). Thus the intervention keeps
+  p(y_{t+1} | x_t, y_t, x_{t+1}), as Eq. (18) requires.
+
+### Gaussian form of Eq. (18) (ours)
+One fixed sensor Z_t = K y_t + N_t, N_t ~ N(0, Σ_N), for all t. With the intervened joint law at time t:
+- M_t = Cov(y, x) Cov(x)^{-1}, L_t = Cov(y | x)^{1/2}, K_w = K L_t, J_t = K_wᵀ (K_w K_wᵀ + Σ_N)^{-1}, P_t = J_t K_w.
+- x_{t+1} = F_xx x_t + F_xy [M_t x_t + L_t (J_t (z_t − K M_t x_t) + e_t)] + w_x, with e_t ~ N(0, I − P_t).
+- We use K = diag(√s) Rᵀ and Σ_N = diag(1 − s), with R a rotation and s in [0, 1]^dy. These give every sensor, up to
+  an invertible change of z. s = 1 is the actual dynamics. s = 0 is the full scrambling. s in {0, 1}^dy is a
+  deterministic coarse-graining φ(y) = Uᵀ y, as in KolchinskyWolpert18.
+- The intervened law stays Gaussian. A recursion of the joint covariance gives V and TE exactly.
+
+### Three facts (ours, with proofs)
+- **F1. One step does not change the viability.** Under Eq. (18), Σ_y p̂(x' | x, y) p̂(y | x) = Σ_y p(x' | x, y) p̂(y | x).
+  So the intervention keeps the law of x_{t+1} given x_t under the intervened joint. At t = 0 the joint is the actual
+  one, so p̂(x_1) = p(x_1). Thus ΔV_obs = 0 and S_obs = 0 at τ = 1. This holds for every system, not only Gaussian
+  ones. The effect needs τ ≥ 2.
+- **F2. The directed information is at most the transfer entropy.** Let DI = Σ_t I(Y_0..t; X_{t+1} | X_0..t). The
+  intervened process is Markov in (x_t, y_t), because each step uses new noise. So H(X_{t+1} | X_0..t, Y_0..t) =
+  H(X_{t+1} | X_t, Y_t). Also H(X_{t+1} | X_0..t) ≤ H(X_{t+1} | X_t). Thus DI_t ≤ TE_t at each step. Let S_DI be the
+  smallest DI with V = V_act. Then S_DI ≤ S_TE.
+- **F3. At the first step the sensor carries at least what the agent receives.** Given X_0, the chain
+  Y_0 → Z_0 → X_1 holds. So I(Y_0; X_1 | X_0) ≤ I(Y_0; Z_0 | X_0) = I(Y_0; Z_0) − I(X_0; Z_0) ≤ I(Y_0; Z_0). We have
+  no proof for t ≥ 1. There, X_t is a noisy record of Z_0..t−1, and the two conditions differ.
+
+### The link to TanakaEsfahaniMitter18
+- In Tanaka, the optimal policy is a memoryless linear Gaussian sensor and a Kalman filter. The information is the
+  directed information from the source to the sensor output.
+- The Gaussian intervention above uses the same class of sensors. But the decoder is the fixed agent (Eq. (18)), not a
+  Kalman filter.
+- We use the measure of Tanaka on our sensor: DT = Σ_t I(Y_0..t; Z_t | Z_0..t−1). Let D_T* be the smallest DT with
+  V = V_act. This is the smallest sensor information, in the measure of Tanaka, that keeps the viability of the agent.
+- D_T* is not the problem of Tanaka. Our decoder is fixed, V = −H(X_τ) is not a quadratic cost, τ is finite, and the
+  sensor does not change with time.
+- A noiseless row of the sensor gives DT = ∞. So D_T* exists only when a noisy sensor reaches V_act.
+
+**Conjecture B3-T.** S_DI ≤ S_TE ≤ D_T*. The first inequality is F2. The second follows if TE ≤ DT at every sensor:
+then S_TE ≤ TE(sensor of D_T*) ≤ D_T*. "Equal" means S_TE = D_T*.
+
+### Systems and searches
+- Group D1: dx = 1, dy = 2, seeds 501–540. Group D2: dx = 2, dy = 2, seeds 601–630.
+- F = 0.85 A / ρ(A), with A a matrix of standard normal entries and ρ the spectral radius. W diagonal, entries
+  U(0.3, 1.5). We skip a system if |ΔV_obs| < 10^-3 nats.
+- S_TE and S_DI: SLSQP with the constraint V = V_act, from 24 random starts and the start s = 1. The actual sensor is
+  always added.
+- D_T*: SLSQP from 8 random starts, at most 100 iterations, s ≤ 1 − 10^-6. D_T* is "attained" if all s ≤ 1 − 10^-3.
+  Otherwise the search goes to a noiseless row, and we report D_T* as not attained (infinite).
+- S_proj (dy = 2): the rank-1 coarse-grainings φ(y) = cos(a) y_1 + sin(a) y_2 with V = V_act. We find the roots in a
+  on a grid of 360 points in [0, π), with bisection. We add the actual sensor (rank 2).
+- Points for T1 and H3: 20 random noisy sensors (s ≤ 1 − 10^-6) and the optima of the three searches.
+
+### Rules
+| Rule | Pass condition |
+|---|---|
+| Sanity A | At τ = 1, five random sensors in each system give |V − V_act| < 10^-10. If it fails, the recursion is wrong and we stop. |
+| Sanity T1 | TE − DI ≥ −10^-10 at all tested points. If it fails, the code or the proof F2 is wrong. |
+| H1 | Projections suffice: S_proj − S_TE ≤ 10^-4 in all systems. |
+| H2 | The actual sensor is not optimal: S_TE < TE_act − 10^-4 in all systems. |
+| H3 | TE ≤ DT + 10^-10 at all tested noisy sensors, in all systems. |
+| H4 | D_T* is attained and D_T* − S_TE ≤ 10^-4, in all systems. |
+
+**Statement for the roadmap.** If H4 holds: "equal". If H3 holds and H4 fails: "a bound, S_DI ≤ S_TE ≤ D_T*". If H3
+fails: "false as a bound", with the systems where TE > DT.
+
+### Expectations (before the runs)
+- Sanity A and T1: pass (F1 and F2).
+- H1: fails. In B2 noisy garblings beat projections.
+- H2: for dx = 1, the agent reads one direction g = P w of the environment, with w the drive. TE depends only on |g|,
+  but V also depends on the direction of g. So the set V = V_act generally contains sensors with a smaller |g|. We
+  expect H2 to hold in D1. In D2 it fails at least once: the trial seed 998 (below) has S_TE = TE_act.
+- H3: F3 proves the first step. We expect H3 to hold, with low confidence.
+- H4: fails. The trial seeds give D_T* well above S_TE, or not attained.
+
+### What we saw before the rules
+We ran the code on three seeds outside the two groups (997, 998, 999), to measure the time.
+| Seed | dx | TE_act | S_TE | D_T* |
+|---|---|---|---|---|
+| 999 | 1 | 2.937 | 0.434 | 2.234 |
+| 997 | 2 | 1.458 | 0.203 | 3.329 |
+| 998 | 2 | 0.437 | 0.437 (the actual sensor) | not attained (the search ends at s = 1 − 10^-6, value 55.7) |
+
+On seed 998 the D_T* search took 110 s for 8 starts, and 189 s for 4 starts with 300 iterations. So we set the D_T*
+search to 8 starts and 100 iterations. We made this choice after the trials and before the runs on the two groups.
+
+### Limits
+- Gaussian sensors only. KolchinskyWolpert18 uses deterministic φ, and B2 showed that a non-Gaussian φ can do better.
+  So S_TE is an upper bound over all interventions, as in B2.
+- The sensor does not change with time, as in KolchinskyWolpert18. A sensor that changes with time can do better. For
+  example, by F1 it can fully scramble the last step at no cost.
+- One value of τ and one family of F.
+
+**Code.** `src/vlife/semantic_dynamic.py`. Tests: `tests/test_semantic_b3.py` (7 tests: the actual sensor keeps the
+stationary law, the full scrambling gives TE = 0, F1, the trajectory covariance against the recursion, F2, a sampling
+check of Eq. (18) that gets p̂(y | x, z) by regression on the samples, and the feasibility of the search results).
+Run: `experiments/e22_b3_observed.py`.
