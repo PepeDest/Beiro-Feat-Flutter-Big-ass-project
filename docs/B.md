@@ -399,3 +399,51 @@ search to 8 starts and 100 iterations. We made this choice after the trials and 
 stationary law, the full scrambling gives TE = 0, F1, the trajectory covariance against the recursion, F2, a sampling
 check of Eq. (18) that gets p̂(y | x, z) by regression on the samples, and the feasibility of the search results).
 Run: `experiments/e22_b3_observed.py`.
+
+## B3. Results (run 2026-11-24, `results/e22_b3_observed.md`, log `results/e22_run.log`)
+
+69 of 70 systems count. We skipped seed 502 (|ΔV_obs| = 0.0005).
+
+| Rule | Result | Expectation |
+|---|---|---|
+| Sanity A | Pass. The largest gap is 8.9e-16 nats. | pass, correct |
+| Sanity T1 | Pass. The smallest TE − DI is 5.7e-7 nats. | pass, correct |
+| H1 | Fails in 31 of 69: 14 of 39 in D1, 17 of 30 in D2. | fails, correct |
+| H2 | Holds in all 39 of D1. Fails in 10 of 30 of D2, where S_TE = TE_act. | correct for both groups |
+| H3 | Holds at all 1508 tested sensors. The smallest DT − TE is +0.030 nats. | holds, correct |
+| H4 | Fails in all 69. D_T* is not attained in 11 systems. | fails, correct |
+
+**Statement for the roadmap: a bound, S_DI ≤ S_TE ≤ D_T*, not equal.** The first inequality is the theorem F2. The
+second is a numerical result at 1508 sensors, and F3 proves it only for the first step.
+
+### Description
+- Size of the H1 failures. In D1 they are small: the median gap is 0.0006 nats, the largest 0.11 nats. In D2 they
+  are large: the median gap is 0.11 nats, the largest 0.63 nats.
+- Semantic efficiency S_TE / TE_act: median 0.56 in D1, 0.68 in D2. The range is 0.001 to 1.
+- S_DI / S_TE: median 0.84 in D1, 0.75 in D2, smallest 0.47. So the choice of the measure matters.
+- S_TE / D_T*, where D_T* is attained: median 0.15 in D1, 0.17 in D2, largest 0.47. The sensor must carry about six
+  times more information than the agent uses.
+- In D2, the 10 systems where the actual sensor is optimal (H2 fails) are the same 10 systems where D_T* is not
+  attained. In D1, D_T* is not attained only in seed 536. We have no proof of this link. A possible reason: if no
+  sensor with less TE reaches V_act, the feasible set stays near the noiseless actual sensor.
+- Search quality: in D1 at least 10 starts end at the best S_TE. In D2 the smallest count is 2 starts.
+
+### What B3 means
+1. **One step is never enough.** The observed semantic information of KolchinskyWolpert18 is zero at τ = 1 in every
+   system (F1). It comes from correlations that the agent builds over two or more steps.
+2. **An agent with one variable always uses more transfer entropy than it needs.** In D1 the actual sensor is never
+   optimal. With two variables this is not always true.
+3. **The link to Tanaka is a bound, not an equality.** The smallest sensor information in the measure of Tanaka is
+   always larger than the observed semantic information, about six times in the median. The fixed agent loses most
+   of what the sensor gives.
+
+### Limits
+- The bound S_TE ≤ D_T* is numerical after the first step. A proof or a counterexample is open.
+- D_T* uses a fixed decoder, so it is not the problem of Tanaka. With a Kalman filter as decoder, the gap can be
+  smaller.
+- Gaussian sensors that do not change with time, τ = 4, one family of F. The D_T* search has a limit of 8 starts and
+  100 iterations, so a D_T* value can be too high. This does not change H3, which we test at each sensor.
+
+### Next: B4
+Apply the method: (a) the S3 homeostat, the semantic threshold against our VoI, (b) the S1 worlds, semantic
+information against Φ_TC. The rules come first.

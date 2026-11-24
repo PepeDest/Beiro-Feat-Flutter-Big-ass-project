@@ -1,0 +1,86 @@
+system 501 (dx = 1): done, 32 s
+system 502 (dx = 1): done, 32 s
+system 503 (dx = 1): done, 45 s
+system 504 (dx = 1): done, 60 s
+system 505 (dx = 1): done, 84 s
+system 506 (dx = 1): done, 101 s
+system 507 (dx = 1): done, 128 s
+system 508 (dx = 1): done, 163 s
+system 509 (dx = 1): done, 186 s
+system 510 (dx = 1): done, 202 s
+system 511 (dx = 1): done, 221 s
+system 512 (dx = 1): done, 241 s
+system 513 (dx = 1): done, 258 s
+system 514 (dx = 1): done, 277 s
+system 515 (dx = 1): done, 297 s
+system 516 (dx = 1): done, 336 s
+system 517 (dx = 1): done, 374 s
+system 518 (dx = 1): done, 414 s
+system 519 (dx = 1): done, 434 s
+system 520 (dx = 1): done, 452 s
+system 521 (dx = 1): done, 492 s
+system 522 (dx = 1): done, 516 s
+system 523 (dx = 1): done, 541 s
+system 524 (dx = 1): done, 558 s
+system 525 (dx = 1): done, 583 s
+system 526 (dx = 1): done, 603 s
+system 527 (dx = 1): done, 621 s
+system 528 (dx = 1): done, 638 s
+system 529 (dx = 1): done, 655 s
+system 530 (dx = 1): done, 671 s
+system 531 (dx = 1): done, 690 s
+system 532 (dx = 1): done, 708 s
+system 533 (dx = 1): done, 728 s
+system 534 (dx = 1): done, 762 s
+system 535 (dx = 1): done, 772 s
+system 536 (dx = 1): done, 788 s
+system 537 (dx = 1): done, 813 s
+system 538 (dx = 1): done, 831 s
+system 539 (dx = 1): done, 860 s
+system 540 (dx = 1): done, 880 s
+system 601 (dx = 2): done, 905 s
+system 602 (dx = 2): done, 927 s
+system 603 (dx = 2): done, 951 s
+system 604 (dx = 2): done, 1021 s
+system 605 (dx = 2): done, 1079 s
+system 606 (dx = 2): done, 1100 s
+system 607 (dx = 2): done, 1164 s
+system 608 (dx = 2): done, 1186 s
+system 609 (dx = 2): done, 1218 s
+system 610 (dx = 2): done, 1248 s
+system 611 (dx = 2): done, 1268 s
+system 612 (dx = 2): done, 1292 s
+system 613 (dx = 2): done, 1318 s
+system 614 (dx = 2): done, 1392 s
+system 615 (dx = 2): done, 1443 s
+system 616 (dx = 2): done, 1502 s
+system 617 (dx = 2): done, 1557 s
+system 618 (dx = 2): done, 1585 s
+system 619 (dx = 2): done, 1594 s
+system 620 (dx = 2): done, 1604 s
+system 621 (dx = 2): done, 1615 s
+system 622 (dx = 2): done, 1630 s
+system 623 (dx = 2): done, 1641 s
+system 624 (dx = 2): done, 1678 s
+system 625 (dx = 2): done, 1715 s
+system 626 (dx = 2): done, 1727 s
+system 627 (dx = 2): done, 1740 s
+system 628 (dx = 2): done, 1767 s
+system 629 (dx = 2): done, 1775 s
+system 630 (dx = 2): done, 1786 s
+# E22: observed semantic information in discrete-time linear Gaussian systems (niche B, step B3)
+
+Rules: docs/B.md, B3.
+
+Sanity A (tau = 1 does not depend on the sensor): pass, largest gap 8.88e-16 nats.
+Sanity T1 (DI <= TE): pass.
+
+| Rule | Question | Verdict | Systems |
+|---|---|---|---|
+| H1 | Do deterministic coarse-grainings reach the minimum, S_proj = S_TE? | fails in 31 of 69 systems | 69 (skipped 1) |
+| H2 | Is the actual sensor not optimal, S_TE < TE_act? | fails in 10 of 69 systems | 69 |
+| H3 | Is TE <= DT at every tested noisy sensor (so S_TE <= D_T*)? | TE <= DT at all tested sensors | 69 |
+| H4 | Is the minimum of DT equal to S_TE? | fails in 69 of 69 systems (11 with D_T* not attained) | 69 |
+
+Statement for the roadmap: **a bound: S_DI <= S_TE <= D_T*, not equal**.
+
