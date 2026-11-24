@@ -5,7 +5,7 @@ Before this script: `python experiments/e5_agency.py --tag _b4 --workers 4` rebu
 `.pkl` files are not in git). Check A0 compares its summary with results/e5_summary_v2.json.
 Rules (A0, R1-R3) and the expectations are in docs/B.md (fixed before this script ran).
 """
-import json, pickle
+import json, pickle, sys
 import numpy as np
 from scipy.stats import spearmanr
 from common import RES, save_json
@@ -36,6 +36,7 @@ def same(a, b):
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     new = json.load(open(RES / "e5_summary_b4.json")); old = json.load(open(RES / "e5_summary_v2.json"))
     A0 = same(new["results"], old["results"]) and new["verdicts"] == old["verdicts"]
     if not A0:

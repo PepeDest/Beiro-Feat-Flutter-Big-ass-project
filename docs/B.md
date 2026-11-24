@@ -539,3 +539,72 @@ over all structures, and the pooled ρ for each family.
 semantic.py, the half-value point of a homeostat, the root search with dy = 1 against a fine grid, and the dx = 1
 case). Runs: `experiments/e5_agency.py --tag _b4`, then `experiments/e23_b4a_homeostat.py` and
 `experiments/e24_b4b_worlds.py`.
+
+## B4. Results (run 2026-11-24)
+
+Files: `results/e23_b4a_homeostat.md` (log `results/e23_run.log`), `results/e24_b4b_worlds.md` (log
+`results/e24_run.log`). The rebuild of the S3 data is in `results/e5_summary_b4.json` and `results/e5_b4_run.log`.
+
+**A rerun of e23.** The first run of e23 wrote the JSON and md files, but it stopped at the last print with an encoding
+error for "ρ" in the Windows console. We added `sys.stdout.reconfigure(encoding="utf-8")` and ran e23 again. The
+script has no random step outside the fixed bootstrap seed, so the second run gives the same numbers.
+
+### B4a. The S3 homeostat (395 organisms)
+
+| Rule | Result | Expectation |
+|---|---|---|
+| A0 | Pass. The rebuilt summary equals phase C. | pass, correct |
+| R1 | ρ(ΔV_KW, VoI) = +0.363 [+0.274, +0.449]. Ranks the value. | ranks, correct |
+| R2 | The signs agree in 0.471 of organisms. ΔV_KW > 0 in only 0.466. Signs do not agree. | fails, correct |
+| R3 | ρ(ΔV_KW, VoI) − ρ(P, VoI) = −0.045 [−0.173, +0.074]. No clear difference. | no firm expectation |
+
+Description:
+- ΔV on the whole organism ranks VoI better: ρ = +0.651 [+0.593, +0.709].
+- ρ(ΔV_KW, VoI) changes with τ: +0.174 at τ = 0.5, +0.363 at τ = 1, +0.493 at τ = 2, +0.298 at τ = 5.
+- ρ(L, ΔV_KW) = +0.833. The loop gain L sets most of ΔV_KW.
+- R_½ / I_act: median 0.142 (10 %: 0.086, 90 %: 0.200). It does not rank VoI (ρ = −0.047).
+
+### B4b. The S1 worlds (90 worlds, 5580 structures)
+
+| Rule | Result | Expectation |
+|---|---|---|
+| W0 | Pass. Φ_TC gives +0.343 pooled and +0.572 equal size, as in S1b. | pass, correct |
+| W1 | Pass. | pass, correct |
+| Q1 | ρ(S_G, log V) = +0.197 [+0.167, +0.226]. Ranks structures. | ranks weakly, correct |
+| Q2 | ρ(ΔV_KW, log V) = −0.161 [−0.205, −0.112]. Does not rank structures. The sign is negative. | no firm expectation |
+| Q3 | ρ(Φ_TC) − ρ(S_G) = +0.146 [+0.085, +0.209], pooled. Φ_TC better. | Φ_TC better, correct |
+| Q4 | ρ(Φ_TC) − ρ(S_G) = +0.402 [+0.344, +0.464], equal size. Φ_TC better. | Φ_TC better, correct |
+
+Description:
+- Other scores, pooled and equal size: I_act +0.124 and +0.201, efficiency S_G / I_act −0.006 and +0.038.
+  ΔV_KW is −0.174 with equal size.
+- Methods: 4500 searches, 540 structures with dx = 1, 540 with dy = 1. In 529 of the 540 cases with dy = 1, only
+  p = 1 gives V_act, so S_G = I_act there (as F4 says for one target coordinate).
+- Semantic efficiency: median 0.556. ΔV_KW > 0 in only 0.311 of structures.
+- Over all structures: ρ(S_G, Φ_TC) = +0.460, ρ(S_G, size) = +0.180.
+- By family (pooled): in driven worlds, Φ_TC +0.419 and S_G +0.181. In modular driven worlds, Φ_TC +0.604 and
+  S_G +0.213. In equilibrium worlds, Φ_TC +0.006 [−0.065, +0.077] and S_G +0.198 [+0.170, +0.229].
+
+### What B4 means
+1. **In the homeostat, the closed form ranks the value, but its sign is wrong in half of the organisms.** VoI > 0 in 0.990
+   of organisms. ΔV_KW is positive only when the loop gain L is large (median L 1.15, against 0.46 when ΔV_KW ≤ 0). The cause is the one we expected:
+   without feedback, the correlation of v_0 with h_0 makes Var(v_τ) larger, and the scrambling removes it.
+2. **ΔV_KW is not a better proxy of VoI than P.** The two have about the same rank correlation with VoI.
+3. **In the S1 worlds, Φ_TC ranks structures better than the stored semantic information.** The gap is small when
+   all sizes are pooled, and large among structures of equal size. This answers open question 6 of the paper for
+   these worlds: S_G does not replace Φ_TC.
+4. **The value of information of KolchinskyWolpert18 has the wrong sign as a score of persistence.** Structures with a
+   large ΔV_KW persist less. In most structures, the correlation with the rest of the world makes V lower, not
+   higher.
+5. **In equilibrium worlds, S_G ranks structures and Φ_TC does not.** This is a description, not a rule. It is the
+   only place where S_G adds something to Φ_TC.
+
+### Limits
+- V = −H(X_τ) is not the exit-time viability. The weak ranks of S_G and ΔV_KW can come from this difference.
+- Stored information only, Gaussian garblings only, 8 starts for the search. A better search can only make S_G
+  smaller.
+- One τ in the rules (τ = 1). In B4a, ρ changes with τ, so τ = 1 is not special.
+- The result 5 on equilibrium worlds was not a rule. A test needs new worlds.
+
+### Next
+Niche C, or the paper: add B1 to B4 to the paper text.
