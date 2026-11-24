@@ -59,7 +59,7 @@ def main():
     for seed in (101, 102, 103, 104):
         B, D, S, rng = system(seed)
         U = rng.normal(size=(DY, 1)); K = rng.normal(size=(2, DY)); SN = np.diag(rng.uniform(0.2, 3.0, 2))
-        Ps = dict(actual=np.eye(DY), full=np.zeros((DY, DY)), projection=projection(U), garbling=garbling_matrix(K, SN, S[DX:, DX:]))
+        Ps = dict(actual=np.eye(DY), full=np.zeros((DY, DY)), projection=projection(U), garbling=garbling_matrix(K @ np.linalg.inv(sqrtm(S[DX:, DX:])), SN, S[DX:, DX:]))   # K acts on whitened y
         for kind, P in Ps.items():
             Kk = U.T if kind == "projection" else K
             SNk = np.zeros((1, 1)) if kind == "projection" else SN
