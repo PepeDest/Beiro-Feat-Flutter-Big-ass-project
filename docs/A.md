@@ -398,3 +398,57 @@ Also reported (description only): β_osc in the same model, and T1 for each size
 - Alternative, also written now: the S1 modes spread over many coordinates, so x_cross,A can be close to the world σ_osc
   for most structures. If part 1 passes and T1 is "no effect", the reading holds for block worlds, but this measure
   does not carry it to S1 worlds.
+
+## A5. Results (added 2026-11-24, after the runs)
+Reports: `results/e18_unrotated.md` and `.json`, `results/e19_cross_oscillation_s1.md` and `.json`. Logs:
+`results/e18_run.log`, `results/e19_run.log`. The runs used commit 9106337 (the rules).
+
+### Part 1: controlled worlds without rotation
+All sanity checks pass: log R = 0 exactly at ω = 0, σ_nn = 0, and all 62 structures have at least 5 exits in every run.
+
+| Rule | Statistic | Value [95 % CI] | Verdict | Expected |
+|---|---|---|---|---|
+| W1 | W, whole structures, mean over ω 1, 2, 4 | −0.003 [−0.013, +0.007] | no effect within ±0.05 | yes |
+| W1 | W_1 / W_2 / W_4 | −0.002 / −0.001 / −0.006, all CIs inside [−0.020, +0.009] | no effect within ±0.05 | yes |
+| C1 | C_1, cut structures | −0.082 [−0.090, −0.074] | shortens life | yes |
+| C1 | C_2 | −0.183 [−0.194, −0.172] | shortens life | yes |
+| C1 | C_4 | −0.287 [−0.302, −0.273] | shortens life | yes |
+| C2 | C_4 − C_1 | −0.205 [−0.219, −0.191] | shortens life | yes |
+| C3 | mean ρ(x_cross,A, log R_A), ω 4 | −0.54 [−0.62, −0.47] | shortens life | yes |
+
+Sensitivity (description), worlds 0 to 4 at ω = 4: with dt 0.01, W_4 = +0.022 and C_4 = −0.291. With dt 0.05 on the
+same worlds, W_4 = −0.009 and C_4 = −0.276. The time step changes the loss of cut structures by about 5 %.
+
+### Part 2: oscillation across the boundary, S1 data
+
+| Rule | Statistic | S1 baseline | S1 D-test r = 3 | Expected |
+|---|---|---|---|---|
+| T1 | mean ρ(x_cross,A, log R_A) | −0.31 [−0.37, −0.26], shortens life | −0.39 [−0.44, −0.33], shortens life | yes |
+| T2 | β_cross, at a fixed x_osc,A | −0.30 [−0.35, −0.25], shortens life | −0.38 [−0.43, −0.32], shortens life | yes |
+| description | β_osc,A, at a fixed x_cross,A | +0.18 [+0.13, +0.23], lengthens life | +0.14 [+0.09, +0.19], lengthens life | |
+
+Per size (description): T1 is between −0.24 and −0.41 (baseline) and between −0.34 and −0.49 (D-test) at every size.
+
+For comparison (from A4): the local oscillation gave ρ = +0.21 and +0.17, and the S2c measure σ_A gave −0.00 and
+−0.10. The new measure is the strongest structure-level predictor of the life cost in this project so far.
+
+**Post-hoc check (not a rule, point values only).** Does the division by λ̄_A carry T1? Without the division,
+ρ(σ_cross,A, log R_A) is −0.31 and −0.35. The division alone, ρ(1/λ̄_A, log R_A), gives −0.08 and −0.17. So the
+effect comes from σ_cross,A. Script: `experiments/e19b_posthoc_normalisation.py`.
+
+### What A5 shows
+All 6 rules of A5 give the expected verdict. So the post-hoc reading of A4 passes a test, in two kinds of worlds:
+- In worlds where the oscillating pairs are known, a structure that contains whole pairs loses no life to the drive, at
+  every speed of oscillation. A structure that cuts a pair loses life, more at a faster oscillation.
+- In the S1 worlds, the share of oscillation that crosses the boundary of a structure predicts its life cost. At a
+  fixed crossing share, more local oscillation still means a longer life, as in A4.
+
+So the oscillatory part σ_osc of Nagayama, Kolchinsky and Ito costs life only through the modes that a structure cuts.
+The world-level effect of A2 and A3 follows: more rotation in a world means more rotation across boundaries.
+
+### Limits
+- Part 1 uses one construction (2 × 2 blocks, S = I, η = 0) and 20 worlds.
+- The measure has two choices of ours: the split factor 4 w (1 − w) and the scaling by diag S. We did not test others.
+- The S1 data is the same as in A2 and A4. The measure was written after A4 showed the effect, so part 2 is a test of a
+  measure built for this reading, on old data. Part 1 is the new evidence.
+- The eigenvectors of a nonnormal B are not orthogonal. The measure uses right eigenvectors only.
