@@ -182,7 +182,66 @@ the full scrambling, a deterministic coarse-graining and a random Gaussian garbl
 cases where the true value is not 0. At 0, the only gap is the known bias of the estimator. We do not change the verdict
 of the criterion. We report it as written, with this explanation.
 
-### Next: B2
-Partial scrambling: the information/viability curve D(R) and the stored semantic information S of
-KolchinskyWolpert18, Eqs. (9)–(10), with P in {0 ⪯ P ⪯ I}. B2 has a real hypothesis (the conjecture of B0: the optimum
-lies on projections), so its rules come first.
+## B2. Rules (fixed 2026-11-24, before the runs)
+
+**Question.** In linear Gaussian systems, what is the stored semantic information S of KolchinskyWolpert18 (Eqs. (9)
+and (10))? S is the smallest I_P(X_0; Y_0) over the interventions P that keep V(P) = V(actual). Two sub-questions:
+- B2a: inside the Gaussian garblings 0 ⪯ P ⪯ I, do the deterministic ones (the projections) reach the minimum? Is there
+  a closed form?
+- B2b: can a non-Gaussian intervention (a nonlinear partition of y) reach V(actual) with less information than the
+  best Gaussian garbling? This is the gate of `ROADMAP_ABC.md`.
+
+**Candidate closed form (ours).** Let W = Φ_XY Σ_Y^{1/2}: the directions of the environment that drive the agent up to
+time τ (whitened y). Let Π_W be the projector on the row space of W. Then P = Π_W keeps Σ_{X_τ} exactly, because
+Π_W Wᵀ = Wᵀ. So I_C = I(X_0; Π_W Y_0) = −½ log det(I − C Π_W Cᵀ) is always feasible, and S_G ≤ S_proj ≤ I_C.
+
+**A proof for dx = 1 (ours, a sketch).** With one agent coordinate, Σ_{X_τ}(P) is a scalar affine in cᵀ P w, with c the
+whitened cross-covariance and w = Wᵀ. So V(P) = V(I) means cᵀ P w = cᵀ w (if cᵀ w ≠ 0). And I_P grows with ‖P c‖².
+Cauchy–Schwarz gives cᵀ w = (P c)ᵀ w ≤ ‖P c‖ ‖w‖, so ‖P c‖² ≥ (cᵀ w)² / ‖w‖². The projection P = w wᵀ / ‖w‖² reaches
+this bound. So for dx = 1, **S = I_C = −½ log(1 − (cᵀ ŵ)²)**, with ŵ = w / ‖w‖: the stored semantic information is the
+information of the agent about the one direction of the environment that drives it. For dx ≥ 2, the condition
+V(P) = V(I) fixes only the determinant of Σ_{X_τ}, not the whole matrix. So the sketch does not carry over.
+
+**Code.** `semantic.drive_projection`, `semantic.drive_information`, `semantic.min_information` (SLSQP with 32 random
+starts, plus P = I and P = Π_W, equality tolerance 10⁻⁷ nats). `semantic_nonlinear.py` for B2b (quadrature on grids).
+Tests: `tests/test_semantic_b2.py`. Script: `experiments/e21_b2_semantic.py`. τ = 1. Systems as in B1 (stationary
+start). Systems with |ΔV| < 10⁻³ nats are skipped and counted.
+
+### B2a: Gaussian garblings (dx = 2, dy = 3, seeds 201 to 250)
+- S_G: the minimum over all 0 ⪯ P ⪯ I. S_proj: the minimum over the rank-1 and rank-2 projections, together with P = I
+  and P = Π_W.
+- **Sanity check (the optimizer is not valid if it fails):** 20 systems with dx = 1 (seeds 401 to 420), where the proof
+  above gives S_G = I_C. Pass if |S_G − I_C| ≤ 10⁻⁴ nats in all of them.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| H1 | Do projections reach the minimum? | "projections suffice" if S_proj − S_G ≤ 10⁻⁴ nats in every system, else "fails in N systems" |
+| H2 | Is the drive projection the best projection? | "the drive projection is optimal" if I_C − S_proj ≤ 10⁻⁴ nats in every system, else "fails in N systems" |
+
+Description only: the semantic efficiency S_G / I_act, and the number of starts that reach the best value.
+
+### B2b: non-Gaussian partitions (dx = dy = 1, seeds 301 to 330)
+- With dy = 1, the only Gaussian garbling with V(P) = V(I) is P = 1, so S_G = I_act.
+- Partitions of y, searched by brute force: one threshold (321 grid points on [−4, 4]), two cells |y| < t and |y| ≥ t
+  (200 points on (0, 4]), two thresholds (61 values of t₁ on [−3, 3] times 60 values of t₂ > t₁). Each sign change of
+  V − V(actual) between grid neighbours is refined by bisection. S_NG is the smallest I over these roots.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| H3 | Do partitions fail to beat Gaussian garblings? | "Gaussian garblings are optimal" if S_NG ≥ S_G − 10⁻³ nats in every system (or no partition is feasible), else "not optimal in N systems" |
+
+### What we looked at before writing the rules
+- The tests use seeds 901 to 904. They check the code: the proof for dx = 1 holds for the optimizer on one system, and
+  the quadrature gives V(full) and V(actual) in its two limits.
+- A timing run used the throwaway seeds 998 and 999 with 8 starts. We printed only the time and the names of the
+  output fields, not the values.
+
+### Expectations written before the runs
+- Sanity: pass (it is a theorem).
+- H1: we expect "projections suffice", with low confidence. We have no proof for dx = 2.
+- H2: we expect "fails in N systems" with N > 0. The constraint fixes only a determinant, so a rank-1 projection can
+  keep V with less information than Π_W.
+- H3: we expect "not optimal in N systems" with N > 0. A non-Gaussian X_τ has a lower entropy than a Gaussian with the
+  same variance, so V = −H can reach V(actual) with less information. If this happens, the Gaussian value S_G is only
+  an upper bound on S over all interventions, as the gate of the roadmap says.
+

@@ -59,8 +59,22 @@ def syntactic_information(S0, dx, P):
     return -0.5 * _logdet(np.eye(dx) - C @ P @ P @ C.T)
 
 
+_PROP_CACHE = {}
+
+
 def propagator(B, D, tau):
-    """Phi = exp(-B tau) and Q_tau = int_0^tau e^{-Bs} 2D e^{-B^T s} ds (Van Loan's block exponential [VanLoan78])."""
+    """Phi = exp(-B tau) and Q_tau = int_0^tau e^{-Bs} 2D e^{-B^T s} ds (Van Loan's block exponential [VanLoan78]).
+    Results are cached by the bytes of (B, D, tau), because the optimizers of B2 call this many times."""
+    key = (np.asarray(B, float).tobytes(), np.asarray(D, float).tobytes(), float(tau), B.shape)
+    if key not in _PROP_CACHE:
+        if len(_PROP_CACHE) > 256:
+            _PROP_CACHE.clear()
+        _PROP_CACHE[key] = _propagator(B, D, tau)
+    Phi, Q = _PROP_CACHE[key]
+    return Phi.copy(), Q.copy()
+
+
+def _propagator(B, D, tau):
     n = B.shape[0]
     M = np.zeros((2 * n, 2 * n))
     M[:n, :n] = B; M[:n, n:] = 2 * D; M[n:, n:] = -B.T      # drift A = -B in the form [[-A, G], [0, A^T]]
@@ -87,3 +101,80 @@ def value_of_information(B, D, S0, dx, tau):
     """Delta V = V(actual) - V(full scrambling) [KolchinskyWolpert18, Eq. (6)]."""
     n_y = S0.shape[0] - dx
     return viability(B, D, S0, dx, np.eye(n_y), tau) - viability(B, D, S0, dx, np.zeros((n_y, n_y)), tau)
+
+
+# ---------------------------------------------------------------- B2: stored semantic information (docs/B.md, B2)
+def drive_projection(B, D, S0, dx, tau):
+    """Pi_W: orthogonal projector (whitened y) on the row space of W = Phi_XY Sigma_Y^{1/2}, the directions of the
+    environment that drive the agent up to time tau. P = Pi_W keeps Sigma_{X_tau} exactly (Pi_W W^T = W^T)."""
+    Phi, _ = propagator(B, D, tau)
+    W = Phi[:dx, dx:] @ _sqrtm_psd(S0[dx:, dx:])
+    U, s, _ = np.linalg.svd(W.T, full_matrices=False)
+    U = U[:, s > 1e-12 * max(s.max(), 1e-300)]
+    return U @ U.T
+
+
+def drive_information(B, D, S0, dx, tau):
+    """I_C = I(X_0; Pi_W Y_0) = -1/2 log det(I - C Pi_W C^T): the information of the agent about the drive directions.
+    For dx = 1 this equals the stored semantic information over all Gaussian garblings (Cauchy-Schwarz, docs/B.md)."""
+    return syntactic_information(S0, dx, drive_projection(B, D, S0, dx, tau))
+
+
+def _rotation(angles, n):
+    """Orthogonal matrix exp(A - A^T), with the n(n-1)/2 free entries of A given by `angles`."""
+    A = np.zeros((n, n)); A[np.triu_indices(n, 1)] = angles
+    return expm(A - A.T)
+
+
+def _unit(a):
+    """Unit vector in R^3 from two angles."""
+    return np.array([np.cos(a[0]) * np.sin(a[1]), np.sin(a[0]) * np.sin(a[1]), np.cos(a[1])])
+
+
+def min_information(B, D, S0, dx, tau, family="general", n_starts=64, rng=None, tol=1e-7):
+    """Smallest I_P(X_0; Y_0) over P in `family` with V(P) = V(I) (KolchinskyWolpert18, Eqs. (9)-(10)), by SLSQP from
+    n_starts random starts. family: "general" (0 <= P <= I, also starts at P = I), "rank1" (P = u u^T) or
+    "corank1" (P = I - v v^T), the last two for dy = 3 only. P = I and P = Pi_W are always feasible and are added.
+    Returns (best I, best P, number of feasible ends within 1e-4 nats of the best, number of feasible ends)."""
+    from scipy.optimize import minimize
+    rng = np.random.default_rng() if rng is None else rng
+    dy = S0.shape[0] - dx; m = dy * (dy - 1) // 2
+    V_act = viability(B, D, S0, dx, np.eye(dy), tau)
+    if family == "general":
+        def P_of(z):
+            Q = _rotation(z[:m], dy)
+            return Q @ np.diag(np.clip(z[m:], 0.0, 1.0)) @ Q.T
+        bounds = [(-np.pi, np.pi)] * m + [(0.0, 1.0)] * dy
+        starts = [np.concatenate([rng.uniform(-np.pi, np.pi, m), rng.uniform(0, 1, dy)]) for _ in range(n_starts)]
+        starts.append(np.concatenate([np.zeros(m), np.ones(dy)]))
+    else:
+        if dy != 3:
+            raise ValueError("rank1 and corank1 need dy = 3")
+        def P_of(z):
+            u = _unit(z)
+            return np.outer(u, u) if family == "rank1" else np.eye(dy) - np.outer(u, u)
+        bounds = None
+        starts = [rng.uniform(-np.pi, np.pi, 2) for _ in range(n_starts)]
+
+    def f(z):
+        return syntactic_information(S0, dx, P_of(z))
+
+    def g(z):
+        return viability(B, D, S0, dx, P_of(z), tau) - V_act
+
+    ends = []
+    for z0 in starts:
+        try:
+            r = minimize(f, z0, method="SLSQP", bounds=bounds, constraints=[dict(type="eq", fun=g)],
+                         options=dict(maxiter=500, ftol=1e-12))
+        except (ValueError, np.linalg.LinAlgError):
+            continue
+        try:
+            if abs(g(r.x)) <= tol:
+                ends.append((f(r.x), P_of(r.x)))
+        except (ValueError, np.linalg.LinAlgError):
+            continue
+    for P in (np.eye(dy), drive_projection(B, D, S0, dx, tau)):
+        ends.append((syntactic_information(S0, dx, P), P))
+    best = min(ends, key=lambda e: e[0])
+    return best[0], best[1], sum(e[0] <= best[0] + 1e-4 for e in ends), len(ends)
