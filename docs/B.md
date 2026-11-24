@@ -447,3 +447,95 @@ second is a numerical result at 1508 sensors, and F3 proves it only for the firs
 ### Next: B4
 Apply the method: (a) the S3 homeostat, the semantic threshold against our VoI, (b) the S1 worlds, semantic
 information against Φ_TC. The rules come first.
+
+## B4. Application to our systems: rules (written 2026-11-24, before the runs)
+
+B4 applies the closed forms of B1 and B2 to two systems of the paper. (a) The S3 homeostat: the value of information
+of KolchinskyWolpert18 against the simulated VoI of S3. (b) The structures of the S1 worlds: stored semantic
+information against Φ_TC, open question 6 of the paper. Both use the stored form (B1, B2): the intervention acts at
+time 0. B4 runs no new simulation of exit times.
+
+### Two facts (ours, with proofs)
+- **F4. With a scalar environment and V on one coordinate, the stored semantic information is the full information.**
+  With dy = 1, the intervention is a number p in [0, 1]. The variance of the target coordinate at τ is affine in p
+  (B1), so V(p) is monotone. If ΔV ≠ 0, only p = 1 gives V = V_act. Then S = I_act and the efficiency is 1. This is
+  the case of the homeostat, with h as the environment and v as the target. So in B4a we use ΔV and a half-value
+  point, not S.
+- **F5. In linear Gaussian systems the semantic threshold of Sowinski23 is at zero information.** Σ_{X_τ}(P) is
+  affine in P, so V(P) − V(0) is linear in P to first order. But I_P = −½ log det(I − C P² Cᵀ) is quadratic in P
+  near P = 0. So if some garbling raises V to first order, the curve D(R) grows like √R, and its slope is infinite at
+  R = 0. The peak of dV/dR is then always at R = 0. As a threshold that does not degenerate, we use the half-value
+  information R_½: the information at the intervention where V is halfway between V(0) and V(1).
+
+### B4a. The S3 homeostat
+**Data.** The `.pkl` files are not in git, and the phase C file `e5_dataset_v2.pkl` is not on this PC. So we rebuild
+it first: `python experiments/e5_agency.py --tag _b4 --workers 4` (same 400 organisms, seed 2026, bridge on). This
+reruns the S3 simulation of exit times without a change.
+
+**Quantities** (exact, for the intact organism, τ = 1). Agent A = (s, m, u, v), environment h.
+- ΔV_KW: the value of information of KolchinskyWolpert18, Eq. (6), with V = −H(v_τ), the entropy of the viability
+  variable. KolchinskyWolpert18 use the whole system. We choose v because the S3 viability is about v. The whole
+  organism is reported as a description.
+- R_½ / I_act from F5, with p_½ = (√(a(a + b)) − a) / b for Var(v_τ) = a + b p.
+- VoI = log V_intact − log V_scrambled, and P = I(A_t; h_{t+1}), from the S3 data.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| A0 | Do the rebuilt data give the phase C summary? | "pass" if all results of `e5_summary_b4.json` equal `e5_summary_v2.json` to 10^-9 and the verdicts are the same. If not, stop. |
+| R1 | Does the closed form rank the value like the simulation? | ρ(ΔV_KW, VoI), 1000 bootstrap resamples of organisms. "ranks the value" if CI low > 0. |
+| R2 | Do the signs agree? | "signs agree" if sign(ΔV_KW) = sign(VoI) in at least 90 % of organisms. |
+| R3 | Is ΔV_KW a better proxy of VoI than P? | Paired bootstrap of ρ(ΔV_KW, VoI) − ρ(P, VoI). "better than P" if CI low > 0, "worse than P" if CI high < 0, else "no clear difference". |
+
+Description only: ΔV on the whole organism, ρ at τ = 0.5, 2 and 5, ρ(L, ΔV_KW), and the distribution of R_½ / I_act.
+
+**Expectations.**
+- A0: pass. The simulation uses fixed seeds.
+- R1: ranks the value. Both measures depend on how well u cancels h.
+- R2: we expect a failure. Without feedback, h pushes v and v_0 correlates with h_0. Then the correlation makes
+  Var(v_τ) larger, and ΔV_KW < 0. So organisms with a small L can have ΔV_KW < 0 and VoI > 0.
+- R3: no firm expectation. VoI scrambles the loop at all times. ΔV_KW scrambles only the start.
+
+### B4b. The S1 worlds
+**Data.** The S1 baseline of phase C (`results/e3_dataset_v2.pkl`, 90 worlds, N = 6). Same structures and same
+mask as S1b: structures with at least 5 exits in both runs, and worlds with at least 8 such structures. Agent X = the
+structure, environment Y = the rest of the world. log V is the stored viability of S1.
+
+**Quantities** (exact or by search, τ = 1, V = −H(X_τ) of the whole structure as in KolchinskyWolpert18).
+- S_G: stored semantic information over Gaussian garblings. dx = 1: the drive information I_C (B2 theorem). dy = 1:
+  the smallest root of V(p) = V_act on a grid of 200 cells in [0, 1], with bisection. Else: the B2 search, with
+  8 starts (each takes about 5 s, measured on a synthetic system).
+- ΔV_KW (Eq. (6)), I_act = I(X; Y), efficiency S_G / I_act.
+- Φ_TC = P + C − 0.25 TC, as in S1b.
+
+The score ρ is the same as in S1b: Spearman with log V inside each world, then the mean over worlds. "Equal size"
+takes the mean over the sizes in each world first. CI: cluster bootstrap over worlds, 400 resamples.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| W0 | Does our Φ_TC give the S1b phase C value? | "pass" if both ρ values and their CIs equal `s1b_unitfree_v2.json` to 10^-9. If not, stop. |
+| W1 | Is the stored S the stationary covariance of (B, D)? | "pass" if the largest difference is below 10^-8. If not, stop. |
+| Q1 | Does S_G rank structures? | "ranks structures" if the pooled ρ(S_G, log V) has CI low > 0. |
+| Q2 | Does ΔV_KW rank structures? | "ranks structures" if the pooled ρ(ΔV_KW, log V) has CI low > 0. |
+| Q3 | Φ_TC against S_G, pooled | Paired cluster bootstrap of ρ(Φ_TC) − ρ(S_G). "Φ_TC better" if CI low > 0, "S_G better" if CI high < 0, else "no clear difference". |
+| Q4 | Φ_TC against S_G, equal size | As Q3, among structures of equal size. |
+
+Description only: ρ of I_act and of the efficiency, the counts of the three methods, ρ(S_G, Φ_TC) and ρ(S_G, size)
+over all structures, and the pooled ρ for each family.
+
+**Expectations.**
+- W0 and W1: pass. We checked W1 before the rules (largest difference 0.0). We did not look at any semantic value of
+  the 90 worlds.
+- Q1: ranks structures, weakly. S_G grows with I_act, and I_act is close to P, which ranks weakly in S1.
+- Q2: no firm expectation about the sign. ΔV_KW was negative in 41 of 48 systems in B2.
+- Q3 and Q4: Φ_TC better. In S1, memory C was the best single predictor, and S_G does not measure memory.
+
+### Limits of B4
+- Stored information only. The observed form of B3 would also scramble the physical push of h on v in the homeostat,
+  because Eq. (18) scrambles all of p(x_{t+1} | x_t, y_t). We do not use it here.
+- V = −H(X_τ) is not the exit-time viability of S1 and S3. B4 compares the two, but they are different quantities.
+- Gaussian garblings only (an upper bound, B2), with 8 starts for the search in B4b.
+
+**Code.** `src/vlife/semantic_apply.py`. Tests: `tests/test_semantic_b4.py` (4 tests: the permutation against
+semantic.py, the half-value point of a homeostat, the root search with dy = 1 against a fine grid, and the dx = 1
+case). Runs: `experiments/e5_agency.py --tag _b4`, then `experiments/e23_b4a_homeostat.py` and
+`experiments/e24_b4b_worlds.py`.
