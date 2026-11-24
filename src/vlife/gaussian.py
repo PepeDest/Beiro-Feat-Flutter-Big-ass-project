@@ -113,3 +113,22 @@ def structure_entropy_production(B, D, S, idx):
     M = B - D @ np.linalg.inv(S)
     q = np.diag(M @ S @ M.T) / np.diag(D)
     return float(np.sum(q[list(idx)]))
+
+
+def cross_oscillation(B, S, idx):
+    """Part of sigma_osc that crosses the boundary of the structure idx (niche A, step A5, docs/A.md).
+        sigma_cross,A = sum over complex pairs m of  2 Im(lambda_m)^2 / Re(lambda_m) * 4 w_m (1 - w_m),
+        w_m = sum_{i in A} |u_i|^2 / sum_i |u_i|^2,   u = v_m / sqrt(diag S),
+    with v_m a right eigenvector of B for lambda_m (Im lambda_m > 0). The sum of the pair weights 2 Im^2/Re over all
+    pairs is sigma_osc of oscillatory_nonnormal_ep. A mode that lies inside A (w = 1) or outside A (w = 0) adds nothing.
+    A mode split in half adds its full weight. w does not depend on the scale or phase of v_m.
+    The split factor 4 w (1 - w) and the scaling by diag S are our choices (a "novel" flag, docs/A.md)."""
+    lam, V = np.linalg.eig(B)
+    U = V / np.sqrt(np.diag(S))[:, None]
+    idx = list(idx)
+    out = 0.0
+    for m in np.flatnonzero(lam.imag > 1e-12 * (1 + np.abs(lam))):
+        p = np.abs(U[:, m]) ** 2
+        w = p[idx].sum() / p.sum()
+        out += 2 * lam[m].imag ** 2 / lam[m].real * 4 * w * (1 - w)
+    return float(out)

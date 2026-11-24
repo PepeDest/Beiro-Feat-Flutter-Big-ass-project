@@ -323,11 +323,78 @@ rotation means more rotation across boundaries.
   coupling.
 - Ranks inside strata: A4 says nothing about the size of the effect in life units.
 
-## A5. Proposal (rules not written yet)
-A clean test of the reading above, with the controlled worlds of A3 and **no rotation Q** (Q = I), so each oscillating
-pair is a known 2 × 2 block:
-- A structure made of whole blocks: at η = 0, its norm does not feel the rotation, so log R = 0 in distribution for
-  every ω. This is a prediction from the algebra, before any simulation.
-- A structure that cuts a block: log R < 0, and more negative at a larger ω.
-- A measure of "oscillation across the boundary" that can be computed for any structure in any world, then tested on
-  the S1 data.
+## A5. Rules (fixed 2026-11-24, before the runs)
+**Question.** A4 gave a post-hoc reading: the life cost of a drive comes from oscillations that **cross** the boundary
+of a structure, and a structure that **contains** its oscillations is protected. A5 tests this reading in two parts.
+Part 1 uses worlds where the answer follows from the algebra. Part 2 uses a new measure on the S1 data.
+
+### Part 1: controlled worlds without rotation (`experiments/e18_unrotated_worlds.py`)
+**Worlds.** `vlife.controlled.draw` with seeds [2028, k], k = 0 to 19 (new seeds, not the A3 worlds). We set Q = I and
+η = 0. Then B is block diagonal: block k is r_k [[1, ω], [−ω, 1]] on coordinates 2k and 2k+1, S = I and D = diag(r).
+Grid: ω ∈ {0, 1, 2, 4}. At ω = 0, B = D = B_eq, so the run at ω = 0 is the reversible run for every ω.
+
+**Structures.** All 62 structures of 6 coordinates. "Whole": a union of whole blocks (6 structures, sizes 2 and 4).
+"Cut": all others (56 structures).
+
+**Prediction from the algebra, before any run.** For a whole structure, the rotation inside each block is
+antisymmetric, so d|x_k|² does not contain ω. The simulator keeps this exactly: the exact propagator is a rotation times
+exp(−r_k dt), the noise of each block is isotropic, and the bridge correction uses only the block norms. So the exit
+time of a whole structure has the same distribution at every ω, and log R = 0 in distribution. For a cut structure,
+the rotation moves values from the partner coordinate outside A into A.
+
+**Simulation.** As in A3: 600 trajectories, dt 0.05, t_max 200, p_out 0.05, bridge correction, common random numbers
+(seed [2028, k, 1] for every run of world k). Structures with at least 5 exits in both runs.
+
+**Sanity checks (the run is not valid if one fails).** log R = 0 exactly at ω = 0. σ_nn = 0 at every ω.
+
+**Statistics.** Per world: W_ω and C_ω, the mean log R over the whole and over the cut structures. 2000 bootstrap
+resamples of worlds, seed 2026, 95 % percentile intervals. Labels as in A3: "shortens life" if the CI is below 0,
+"lengthens life" if above 0, "no effect within ±0.05" if the CI is inside [−0.05, +0.05], else "inconclusive".
+
+| Rule | Question | Statistic |
+|---|---|---|
+| W1 | Do whole structures lose no life? | W = mean of W_1, W_2, W_4. Also each W_ω |
+| C1 | Do cut structures lose life? | C_1, C_2 and C_4 |
+| C2 | Is the loss larger with faster oscillation? | C_4 − C_1 |
+| C3 | Does the new measure rank the cut structures? | at ω = 4, mean over world × size strata of ρ(x_cross,A, log R_A) |
+
+x_cross,A is defined in part 2. In these worlds it is 0 for a whole structure and 2ω² Σ r_k / λ̄_A over the cut blocks.
+
+**Sensitivity (description only).** Worlds 0 to 4 again at ω = 4 with dt 0.01. Known limit: at r = 3 and ω = 4, the
+rotation turns 0.6 rad per step. The exit check on the time grid can miss crossings of a cut structure, and this makes
+the loss look smaller. Whole structures are not affected (see the argument above).
+
+### Part 2: a measure of oscillation across the boundary, on the S1 data (`experiments/e19_cross_oscillation_s1.py`)
+**Measure (our choice, a "novel" flag).** `gaussian.cross_oscillation(B, S, A)`. For each complex pair of eigenvalues
+λ_m of B, take its weight in σ_osc, 2 Im(λ_m)²/Re(λ_m). Take the right eigenvector v_m and scale each coordinate by
+its stationary standard deviation. w_m is the share of the squared modulus of the scaled vector on A. Then
+σ_cross,A = Σ_m 2 Im(λ_m)²/Re(λ_m) · 4 w_m (1 − w_m), and x_cross,A = σ_cross,A / λ̄_A, λ̄_A = tr(B_AA)/|A| as in A4.
+A mode inside A or outside A adds 0. A mode split in half adds its full weight. Tests:
+`tests/test_cross_oscillation.py`.
+
+**Data, outcome, strata.** As in A4: the S1 datasets `_v2` and `_D3_v2`, driven and modular worlds, sizes 2 to 5,
+log R_A for structures with at least 5 exits in both runs, ranks inside world × size strata.
+
+| Rule | Question | Statistic | Verdict |
+|---|---|---|---|
+| T1 | Do structures with more oscillation across their boundary lose more life? | mean over strata of ρ(x_cross,A, log R_A) | labels of A4 |
+| T2 | Does this hold at a fixed local oscillation? | ranks standardized in strata: rank(log R) = β_cross rank(x_cross) + β_osc rank(x_osc,A) | labels of A4, for β_cross |
+
+Also reported (description only): β_osc in the same model, and T1 for each size.
+
+### What we looked at before writing the rules
+- Part 2, predictors only, no outcome: x_cross,A is never 0 in S1 (3360 structures per dataset). The median ratio
+  σ_cross,A / σ_osc of the world is 0.87 (baseline) and 0.83 (D-test), so the modes of S1 worlds spread over many
+  coordinates. Inside strata, the mean ρ(x_cross,A, x_osc,A) is −0.12 and −0.11.
+- Part 1, a code check: two dry runs with a throwaway seed (99), 1 to 2 worlds and 40 to 60 trajectories. We saw their
+  numbers. W was within ±0.06 of 0 and C was negative at every ω. These runs are not data for A5, and we deleted
+  their output.
+
+### Expectations written before the runs
+- W1 "no effect within ±0.05", for W and for each W_ω. A different result means a bug, because the argument above
+  covers the simulator exactly.
+- C1 "shortens life" at ω = 1, 2 and 4. C2 "shortens life". C3 "shortens life".
+- T1 and T2 "shortens life" in both datasets.
+- Alternative, also written now: the S1 modes spread over many coordinates, so x_cross,A can be close to the world σ_osc
+  for most structures. If part 1 passes and T1 is "no effect", the reading holds for block worlds, but this measure
+  does not carry it to S1 worlds.
