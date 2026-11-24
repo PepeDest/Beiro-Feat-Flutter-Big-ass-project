@@ -1,0 +1,95 @@
+sanity done, 240 s
+B2a system 201: done, 253 s
+B2a system 202: done, 262 s
+B2a system 203: done, 297 s
+B2a system 204: done, 327 s
+B2a system 205: done, 350 s
+B2a system 206: done, 356 s
+B2a system 207: done, 356 s
+B2a system 208: done, 372 s
+B2a system 209: done, 380 s
+B2a system 210: done, 387 s
+B2a system 211: done, 393 s
+B2a system 212: done, 400 s
+C:\Users\Pietro Colombo\Desktop\frazbaro\variational_life\.venv\Lib\site-packages\numpy\linalg\_linalg.py:2366: RuntimeWarning: invalid value encountered in slogdet
+  sign, logdet = _umath_linalg.slogdet(a, signature=signature)
+B2a system 213: done, 407 s
+B2a system 214: done, 413 s
+B2a system 215: done, 418 s
+B2a system 216: done, 428 s
+B2a system 217: done, 438 s
+B2a system 218: done, 448 s
+B2a system 219: done, 453 s
+B2a system 220: done, 458 s
+B2a system 221: done, 464 s
+B2a system 222: done, 471 s
+B2a system 223: done, 482 s
+B2a system 224: done, 492 s
+B2a system 225: done, 503 s
+B2a system 226: done, 530 s
+B2a system 227: done, 538 s
+B2a system 228: done, 546 s
+B2a system 229: done, 552 s
+B2a system 230: done, 561 s
+B2a system 231: done, 570 s
+B2a system 232: done, 615 s
+B2a system 233: done, 621 s
+B2a system 234: done, 629 s
+B2a system 235: done, 629 s
+B2a system 236: done, 636 s
+B2a system 237: done, 648 s
+B2a system 238: done, 655 s
+B2a system 239: done, 660 s
+B2a system 240: done, 666 s
+B2a system 241: done, 677 s
+B2a system 242: done, 684 s
+B2a system 243: done, 691 s
+B2a system 244: done, 697 s
+B2a system 245: done, 709 s
+B2a system 246: done, 715 s
+B2a system 247: done, 723 s
+B2a system 248: done, 729 s
+B2a system 249: done, 735 s
+B2a system 250: done, 748 s
+B2b system 301: done, 765 s
+B2b system 302: done, 783 s
+B2b system 303: done, 802 s
+B2b system 304: done, 821 s
+B2b system 305: done, 821 s
+B2b system 306: done, 840 s
+B2b system 307: done, 860 s
+B2b system 308: done, 879 s
+B2b system 309: done, 879 s
+B2b system 310: done, 901 s
+B2b system 311: done, 923 s
+B2b system 312: done, 945 s
+B2b system 313: done, 967 s
+B2b system 314: done, 989 s
+B2b system 315: done, 1011 s
+B2b system 316: done, 1033 s
+B2b system 317: done, 1075 s
+B2b system 318: done, 1127 s
+B2b system 319: done, 1127 s
+B2b system 320: done, 1146 s
+B2b system 321: done, 1165 s
+B2b system 322: done, 1371 s
+B2b system 323: done, 1391 s
+B2b system 324: done, 2332 s
+B2b system 325: done, 2370 s
+B2b system 326: done, 2407 s
+B2b system 327: done, 2444 s
+B2b system 328: done, 2481 s
+B2b system 329: done, 2518 s
+B2b system 330: done, 2555 s
+# E21: stored semantic information in linear Gaussian systems (niche B, step B2)
+
+Rules: docs/B.md, B2.
+
+Sanity (dx = 1, S_G = I_C): pass, 19 systems, largest gap 1.76e-10 nats.
+
+| Rule | Question | Verdict | Systems |
+|---|---|---|---|
+| H1 | Do projections reach the minimum, S_proj = S_G? | fails in 40 of 48 systems | 48 (skipped 2) |
+| H2 | Is the drive projection the best projection, I_C = S_proj? | fails in 47 of 48 systems | 48 |
+| H3 | Do partitions fail to beat Gaussian garblings, S_NG >= S_G? | not optimal in 2 of 27 systems | 27 (skipped 3) |
+

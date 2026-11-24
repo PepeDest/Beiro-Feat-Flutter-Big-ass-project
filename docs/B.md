@@ -245,3 +245,48 @@ Description only: the semantic efficiency S_G / I_act, and the number of starts 
   same variance, so V = −H can reach V(actual) with less information. If this happens, the Gaussian value S_G is only
   an upper bound on S over all interventions, as the gate of the roadmap says.
 
+
+## B2. Results (added 2026-11-24, after the runs)
+Report: `results/e21_b2_semantic.md` and `.json`. Log: `results/e21_run.log`. The run used commit 71fd0b1 (the rules).
+
+| Rule | Verdict | Systems | Expected |
+|---|---|---|---|
+| Sanity, dx = 1: S_G = I_C | pass, largest gap 1.8·10⁻¹⁰ nats | 19 (1 skipped) | yes |
+| H1: projections reach the minimum | **fails in 40 of 48 systems**, largest gap 0.058 nats | 48 (2 skipped) | **no** ("projections suffice", low confidence) |
+| H2: the drive projection is the best projection | fails in 47 of 48 systems, largest gap 0.27 nats | 48 | yes |
+| H3: partitions do not beat Gaussian garblings | not optimal in 2 of 27 systems | 27 (3 skipped) | yes |
+
+Description:
+- Semantic efficiency S_G / I_act (B2a): median 0.25, range 0.002 to 0.98.
+- The value of information ΔV is negative in 41 of the 48 B2a systems. With V = −H(X_τ), the actual information makes
+  the agent more spread out at time τ than the full scrambling does.
+- B2b: in 25 of the 27 systems, no partition of the three families reaches V(actual). In the other 2 (seeds 322 and
+  324), a partition reaches it with less information than the Gaussian value: 0.0027 against 0.0043 nats (two
+  thresholds), and 0.0008 against 0.0538 nats (|y| < t). In both systems |ΔV| is small (0.004 and 0.001 nats).
+
+**Post-hoc check of H1 (not a rule, `experiments/e21b_posthoc_projection_grid.py`).** A wrong optimizer for the
+projections could make H1 fail. A dense grid on the sphere (361 × 181 points, bisection on the level curve) gives the
+same S_proj as the optimizer to four decimals in the five systems with the largest gaps. So the failure of H1 is real.
+
+### What B2 shows
+1. **For an agent with one coordinate, S has a closed form:** S = −½ log(1 − (cᵀŵ)²), the information of the agent about
+   the one direction of the environment that drives it. The proof is short, and the optimizer agrees to 10⁻¹⁰ nats.
+2. **For dx ≥ 2, there is no closed form of this kind.** The best Gaussian intervention is usually a noisy garbling,
+   not a projection. The drive projection gives only an upper bound I_C ≥ S_G. S_G still needs only an optimization
+   over one dy × dy matrix, a few seconds here, not a search over partitions of the state space.
+3. **The gate of the roadmap.** Nonlinear partitions beat the Gaussian value in 2 of 27 scalar systems. So over all
+   interventions, S_G is an **upper bound** on S, not its exact value. In 25 of 27 systems, no partition that we tried
+   reaches V(actual) at all, so in practice S_G was the best value found there.
+4. A note for KolchinskyWolpert18: their set Φ holds deterministic coarse-grainings only. In the Gaussian case, the
+   noisy garblings reach lower values (H1). So the choice between deterministic and noisy interventions changes the
+   value of S. Their paper mentions pre-garbling as the general class, but uses only the deterministic one.
+
+### Limits
+- One random construction of systems, τ = 1, dy = 3 (B2a) and dy = 1 (B2b).
+- B2b searches three families of partitions only, not all partitions. A wider search can only lower S_NG.
+- V = −H(X_τ) follows KolchinskyWolpert18. It rewards a narrow distribution, even a strange one. Part of the B2b
+  result comes from this property: a non-Gaussian X_τ has a lower entropy at the same variance.
+
+### Next: B3
+The dynamic case: observed semantic information, with interventions at each step, and its link to the minimal directed
+information of TanakaEsfahaniMitter18. The rules come first.
