@@ -1,0 +1,21 @@
+# E17: local dissipation parts of a structure against its life change (niche A, step A4)
+
+Rules: docs/A.md. 95 % cluster-bootstrap intervals over worlds.
+
+| Rule | Statistic | baseline | D-test r = 3 |
+|---|---|---|---|
+| P1 | mean ρ(x_osc,A, log R) | +0.206 [+0.154, +0.262], lengthens life | +0.170 [+0.110, +0.231], lengthens life |
+| P2 | mean ρ(x_nn,A, log R) | +0.044 [-0.006, +0.095], no effect | +0.024 [-0.030, +0.081], no effect |
+| P3 | β_osc | +0.190 [+0.138, +0.243], lengthens life | +0.159 [+0.100, +0.219], lengthens life |
+| P3 | β_nn | +0.010 [-0.039, +0.056], no effect | +0.006 [-0.048, +0.061], no effect |
+| P4 | β_nn − β_osc | -0.180 [-0.254, -0.106], the parts differ | -0.153 [-0.240, -0.063], the parts differ |
+| description | mean ρ(σ_A / λ̄_A, log R), S2c measure | -0.001 [-0.054, +0.053] | -0.095 [-0.156, -0.035] |
+
+Per size (description only):
+
+| Size | P1 baseline | P2 baseline | P1 D-test | P2 D-test |
+|---|---|---|---|---|
+| 2 | +0.042 | -0.019 | +0.046 | +0.006 |
+| 3 | +0.205 | +0.029 | +0.135 | -0.003 |
+| 4 | +0.281 | +0.098 | +0.285 | +0.032 |
+| 5 | +0.297 | +0.070 | +0.212 | +0.060 |

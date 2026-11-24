@@ -72,6 +72,21 @@ def entropy_production(B, D, S):
     return float(np.trace(M.T @ np.linalg.inv(D) @ M @ S))
 
 
+def oscillatory_nonnormal_ep(B, D, S=None):
+    """Split the steady-state entropy production of dx = -Bx dt + sqrt(2D) dW into two non-negative parts:
+        sigma_osc = sum_n Im(lambda_n)^2 / Re(lambda_n),   lambda_n the eigenvalues of B,
+        sigma_nn  = sigma - sigma_osc.
+    sigma_osc comes from complex eigenvalues (oscillations). sigma_nn is zero if and only if D^{-1/2} B D^{1/2}
+    is normal. Returns (sigma, sigma_osc, sigma_nn).
+    [NagayamaKolchinskyIto26 (arXiv 2606.07263 v2, Eq. 7 and the text after it): their drift matrix K is our B.
+     The test file checks sigma_nn against their projection definition. Used in niche A (docs/A.md).]"""
+    S = stationary_cov(B, D) if S is None else S
+    sigma = entropy_production(B, D, S)
+    lam = np.linalg.eigvals(B)
+    sigma_osc = float(np.sum(lam.imag ** 2 / lam.real))
+    return sigma, sigma_osc, sigma - sigma_osc
+
+
 def equilibrium_counterpart(D, S):
     """Drift matrix B_eq = D S^{-1}: a detailed-balance (reversible) dynamics with THE SAME
     stationary distribution N(0,S) as the driven system. Check: B_eq S + S B_eq^T = 2D.
@@ -98,3 +113,22 @@ def structure_entropy_production(B, D, S, idx):
     M = B - D @ np.linalg.inv(S)
     q = np.diag(M @ S @ M.T) / np.diag(D)
     return float(np.sum(q[list(idx)]))
+
+
+def cross_oscillation(B, S, idx):
+    """Part of sigma_osc that crosses the boundary of the structure idx (niche A, step A5, docs/A.md).
+        sigma_cross,A = sum over complex pairs m of  2 Im(lambda_m)^2 / Re(lambda_m) * 4 w_m (1 - w_m),
+        w_m = sum_{i in A} |u_i|^2 / sum_i |u_i|^2,   u = v_m / sqrt(diag S),
+    with v_m a right eigenvector of B for lambda_m (Im lambda_m > 0). The sum of the pair weights 2 Im^2/Re over all
+    pairs is sigma_osc of oscillatory_nonnormal_ep. A mode that lies inside A (w = 1) or outside A (w = 0) adds nothing.
+    A mode split in half adds its full weight. w does not depend on the scale or phase of v_m.
+    The split factor 4 w (1 - w) and the scaling by diag S are our choices (a "novel" flag, docs/A.md)."""
+    lam, V = np.linalg.eig(B)
+    U = V / np.sqrt(np.diag(S))[:, None]
+    idx = list(idx)
+    out = 0.0
+    for m in np.flatnonzero(lam.imag > 1e-12 * (1 + np.abs(lam))):
+        p = np.abs(U[:, m]) ** 2
+        w = p[idx].sum() / p.sum()
+        out += 2 * lam[m].imag ** 2 / lam[m].real * 4 * w * (1 - w)
+    return float(out)
