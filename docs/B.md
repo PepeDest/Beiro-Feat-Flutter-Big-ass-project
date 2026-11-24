@@ -116,6 +116,37 @@ the formulas. A consequence to test in B2: the maximum of a convex function over
 and the extreme points are the projections. So deterministic coarse-grainings can be enough in the Gaussian case. This
 is a conjecture, because the constraint on I is not linear in P.
 
-### Next: B1
-The static case in closed form: joint Gaussian X and Y, linear dynamics to time τ, V = −H(X_τ). Write the formula for
-V(P), code it, and check it against Monte Carlo. B1 has no hypothesis to pre-register: it is a formula and a check.
+## B1. The static case in closed form (written 2026-11-24, before the Monte Carlo check)
+
+**Setting.** Joint state z = (x, y), agent x with dx coordinates, environment y with dy coordinates. Linear dynamics
+dz = −B z dt + √(2D) dW. The start z_0 ~ N(0, S_0) is the stationary law. Viability V = −H(X_τ), as in
+KolchinskyWolpert18, Eq. (2). The intervention acts at time 0 only (stored semantic information).
+
+**Formula (ours).** With the intervention matrix P of B0 (whitened y coordinates, 0 ⪯ P ⪯ I):
+- Σ_XY(P) = Σ_XY Σ_Y^{-1/2} P Σ_Y^{1/2}. The other blocks of S_0 do not change.
+- I_P(X_0; Y_0) = −½ log det(I − C P² Cᵀ).
+- Φ = exp(−Bτ), Q_τ = ∫_0^τ e^{−Bs} 2D e^{−Bᵀs} ds (Van Loan's block exponential [VanLoan78]).
+- Σ_{X_τ}(P) = [Φ S_0(P) Φᵀ + Q_τ]_XX. In blocks of Φ: Σ_{X_τ}(P) = A_0 + M(P) + M(P)ᵀ, with
+  M(P) = Φ_XX Σ_XY(P) Φ_XYᵀ and A_0 the part that does not depend on P.
+- V(P) = −½ (dx log 2πe + log det Σ_{X_τ}(P)).
+
+Two direct consequences:
+- If the environment does not drive the agent (Φ_XY = 0), V does not depend on P. Then the agent has no stored
+  semantic information, whatever its mutual information with the environment.
+- Σ_{X_τ} is affine in P, so V is convex in P (B0).
+
+**Code.** `src/vlife/semantic.py`. Tests: `tests/test_semantic.py` (6 tests: the propagator against the Lyapunov
+solution, the two ends P = I and P = 0, a projection against the information of the coarse-grained environment, the
+range of P, the affine form, and the case Φ_XY = 0).
+
+**Monte Carlo check (`experiments/e20_b1_monte_carlo.py`).** Independent of the formula in two places: the start is
+sampled with the garbling itself (draw y_0, build Z, draw x_0 from the actual p(x_0 | z)), and the dynamics use
+Euler–Maruyama with dt = 5·10⁻⁴.
+- 4 systems (dx = 2, dy = 3, seeds 101 to 104), τ = 0.5 and 1.
+- 4 interventions: actual (P = I), full scrambling (P = 0), a deterministic coarse-graining (a random rank-1
+  projection), and a random Gaussian garbling.
+- 100 000 trajectories in 20 batches. For each case: V and I_P(X_0; Y_0) from the sample covariance, mean and standard
+  error (SE) over the batches. I_P does not depend on τ. That gives 48 checks (32 of V, 16 of I).
+- **Pass criterion, fixed now:** at least 45 of the 48 checks within 3 SE of the formula, and none beyond 5 SE.
+  Known bias: Euler–Maruyama changes the covariance by about dt·‖B‖, about 0.1 %, which is below 1 SE.
+
