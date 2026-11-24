@@ -1,0 +1,10 @@
+system 101: done, 214 s
+system 102: done, 451 s
+system 103: done, 688 s
+system 104: done, 891 s
+# E20: Monte Carlo check of the B1 closed form (niche B)
+
+Criterion and method: docs/B.md, B1.
+
+Checks within 3 SE: 44 of 48. Beyond 5 SE: 4. Verdict: **fail**.
+

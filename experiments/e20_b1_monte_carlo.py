@@ -76,7 +76,9 @@ def main():
         print(f"system {seed}: done, {time.time() - t0:.0f} s", flush=True)
     for r in rows:
         r["z"] = (r["mc"] - r["formula"]) / r["se"]
-    within3 = sum(abs(r["z"]) <= 3 for r in rows); beyond5 = sum(abs(r["z"]) > 5 for r in rows)
+    within3 = int(sum(abs(r["z"]) <= 3 for r in rows)); beyond5 = int(sum(abs(r["z"]) > 5 for r in rows))
+    for r in rows:
+        r.update({k: float(v) for k, v in r.items() if isinstance(v, np.floating)})
     verdict = "pass" if within3 >= 45 and beyond5 == 0 else "fail"
     out = ROOT / "results"
     json.dump(dict(rows=rows, within3=within3, beyond5=beyond5, n_checks=len(rows), verdict=verdict),

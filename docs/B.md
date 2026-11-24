@@ -150,3 +150,39 @@ Euler–Maruyama with dt = 5·10⁻⁴.
 - **Pass criterion, fixed now:** at least 45 of the 48 checks within 3 SE of the formula, and none beyond 5 SE.
   Known bias: Euler–Maruyama changes the covariance by about dt·‖B‖, about 0.1 %, which is below 1 SE.
 
+
+## B1. Results (added 2026-11-24, after the run)
+Report: `results/e20_b1_monte_carlo.md` and `.json`. Logs: `results/e20_run.log`.
+
+**Two problems with the script, both fixed before any result was read:**
+- Before the run: the garbling matrix of the script used K on raw y, but the sampling used K on whitened y. Commit
+  14e8c45 fixed it.
+- The first run (`results/e20_run1_crashed.log`) stopped at the file write (a numpy integer in the JSON). No result
+  reached the disk. The second run used the same seeds, so it draws the same numbers.
+
+**Verdict by the fixed criterion: fail.** 44 of 48 checks are within 3 SE, and 4 checks are beyond 5 SE (the
+criterion asks for at least 45 and none).
+
+| Quantity | Checks within 3 SE | Largest abs(z) |
+|---|---|---|
+| V(P), all interventions and both τ | 32 of 32 | 2.81 |
+| I_P(X_0; Y_0), P = I, projection, garbling | 12 of 12 | 2.74 |
+| I_P(X_0; Y_0), full scrambling (P = 0) | 0 of 4 | 8.61 |
+
+**Why the 4 checks fail.** The 4 failures are the full scrambling, where the true information is 0. There, the sample
+estimate is +0.0006 to +0.0008 nats in every system. The plug-in estimate of a Gaussian mutual information from a
+sample covariance has a known upward bias of about dx·dy/(2n) = 0.0006 nats at n = 5000 per batch. At P = 0 the SE is
+only 0.0001, so this bias is 7 to 9 SE. The criterion did not allow for this bias. That was our error when we wrote it.
+
+**Post-hoc check (not a rule, `experiments/e20b_posthoc_bias.py`).** After we subtract 0.0006 nats from each I
+estimate, all 16 I checks are within 2.42 SE.
+
+**What B1 shows.** The closed form of V(P) agrees with an independent simulation in all 32 cases, for the actual start,
+the full scrambling, a deterministic coarse-graining and a random Gaussian garbling. The formula of I_P agrees in all
+cases where the true value is not 0. At 0, the only gap is the known bias of the estimator. We do not change the verdict
+of the criterion. We report it as written, with this explanation.
+
+### Next: B2
+Partial scrambling: the information/viability curve D(R) and the stored semantic information S of
+KolchinskyWolpert18, Eqs. (9)–(10), with P in {0 ⪯ P ⪯ I}. B2 has a real hypothesis (the conjecture of B0: the optimum
+lies on projections), so its rules come first.
