@@ -41,13 +41,22 @@ def boot_draws(vals, n_boot=N_BOOT, seed=0):
 
 
 def main():
+    """--resume: use results/e26_v_dataset.pkl from an earlier run (T1 runs again on it), and the finished draws of
+    results/e26_cld_partial.pkl. Added on 2026-11-26, after Windows shut down during the first run. No rule changes."""
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     t0 = time.time()
+    resume = "--resume" in sys.argv
+    old_v = pickle.load(open(RES / "e26_v_dataset.pkl", "rb")) if resume else {}
+    part_file = RES / "e26_cld_partial.pkl"
+    cl = pickle.load(open(part_file, "rb")) if resume and part_file.exists() else {}
     draws, T1 = {}, []
     with ProcessPoolExecutor(4) as ex:
         for seed in SEEDS:
-            units = [(i, u) for i, u in enumerate(draw_units(np.random.default_rng([seed, 99]))) if u.kind != "well"]
-            rows = list(ex.map(job_V, [(i, u.kind, u.p, seed, 3000.0) for i, u in units]))
+            if seed in old_v:
+                rows = old_v[seed]["rows"]
+            else:
+                units = [(i, u) for i, u in enumerate(draw_units(np.random.default_rng([seed, 99]))) if u.kind != "well"]
+                rows = list(ex.map(job_V, [(i, u.kind, u.p, seed, 3000.0) for i, u in units]))
             tau_star = float(np.median([r["V_on"] for r in rows if r["kind"] == "rock"]))
             g1 = float(np.median([np.log(r["V_on"] / r["V_off"]) for r in rows if r["kind"] == "oscillator"]))
             ref = json.load(open(RES / summary_name(seed)))
@@ -59,8 +68,14 @@ def main():
         if not all(t["ok"] for t in T1):
             save_json("e26_c2_T1_fail.json", T1)
             raise SystemExit("T1 fails: the rebuilt S2b data differ from the summaries. Stop (docs/C.md, C2).")
-        jobs = [(seed, r["i"], r["kind"], r["p"], d["tau_star"], r["V_on"]) for seed, d in draws.items() for r in d["rows"]]
-        cl = {(c["seed"], c["i"]): c for c in ex.map(job_cld, jobs)}
+        for seed, d in draws.items():                     # one draw at a time, saved after each draw
+            if any(k[0] == seed for k in cl):
+                print(f"seed {seed}: CLD from the partial file", flush=True)
+                continue
+            jobs = [(seed, r["i"], r["kind"], r["p"], d["tau_star"], r["V_on"]) for r in d["rows"]]
+            cl.update({(c["seed"], c["i"]): c for c in ex.map(job_cld, jobs)})
+            pickle.dump(cl, open(part_file, "wb"))
+            print(f"seed {seed}: CLD done, {time.time() - t0:.0f} s", flush=True)
     print(f"CLD done, {time.time() - t0:.0f} s", flush=True)
     per = {}
     for seed, d in draws.items():

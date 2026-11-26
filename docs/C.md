@@ -182,3 +182,88 @@ rock with h = 0.3 for 6 time units, and one synthetic oscillator for the timing.
 **Code.** `src/vlife/negative_controls.py`, and a `target` option in `semantic_apply.stored_semantic`. Tests:
 `tests/test_negative_controls.py` (7 tests). Runs: `experiments/e25_c1_homeostat.py` (a few minutes) and
 `experiments/e26_c2_rocks.py` (about 3 to 4 hours: the V rebuild of 7 draws, then CLD).
+
+## C1 and C2. Results (2026-11-26)
+
+### C1. The S3 homeostat
+Run: `experiments/e25_c1_homeostat.py`. Output: `results/e25_c1_homeostat.md` and `.json`, log `results/e25_run.log`.
+A0 passes. 395 organisms, two versions each (intact, no feedback).
+
+| Rule | Value | Verdict | Expectation |
+|---|---|---|---|
+| A0 | the rebuilt S3 data equal the phase C summary | pass | pass. Met. |
+| N1 | ΔV_KW < 0 in 1.000 of the organisms without feedback, median −0.2551, largest \|ΔV_KW\| 0.32 | not zero | "not zero", ΔV_KW < 0 in all (F6). Met. |
+| N2 | smallest S_KW 0.283 nats, efficiency 1 in 1.000 of the organisms | not zero | "not zero", efficiency 1 in all. Met. |
+| N3 | smallest χ₁ 0.0303, smallest χ₁ / se 60.4, median χ₁ 0.0943 | not zero | "not zero". Met. |
+| N4, ΔV_KW | fraction intact > no feedback 0.787 [0.747, 0.823] | intact higher | "intact higher". Met. |
+| N4, S_KW | 0.433 [0.385, 0.481] | no feedback higher | no firm expectation |
+| N4, CLD χ₁ | 0.600 [0.552, 0.646] | intact higher | no firm expectation |
+
+Description only (medians, intact / no feedback):
+- χ₁: 0.0952 / 0.0943 (ratio 0.99). χ₃ on [0, 5]: 0.0576 / 0.0544. χ₁ on the agent alone: 0.0486 / 0.0381.
+- S_KW: 0.7726 / 0.8144 nats (ratio 1.05). S_KW equals I(A; h) in all 790 cases (the root search finds only p = 1).
+- ΔV_KW: −0.0230 / −0.2551. The median intact organism also has ΔV_KW < 0.
+- ΔV_KW on the whole agent is < 0 in 0.577 of the organisms without feedback.
+- In the reading V ≥ V_act, S_KW is 0 in all organisms without feedback, and the median is 0 in the intact version too.
+- The simulated VoI is 0 without feedback, by construction.
+
+**What C1 shows.** No score of the three gives zero for the organism that uses no information. ΔV_KW is not zero, but
+it is negative, and it ranks the intact organism higher in 79 % of the organisms. So the sign of ΔV_KW carries the
+control, not its size. S_KW is the full information I(A; h) in both versions, so it measures correlation, not use.
+It is a little higher without feedback. CLD gives the same median value to both versions (ratio 0.99). The sensor and
+the memory follow h in both versions, and CLD sees this correlation. The order 0.600 is above 0.5, but it is a small
+effect. The second reading of KolchinskyWolpert18 (V ≥ V_act) gives zero without feedback, but it also gives zero for
+the median intact organism. So it does not separate the two versions either.
+
+### C2. The S2b rocks and oscillators
+Run: `experiments/e26_c2_rocks.py --resume`. Output: `results/e26_c2_rocks.md` and `.json`, log `results/e26_run.log`.
+T1 passes in all 7 draws. 20 000 walkers in each group, dt = 0.01.
+
+| Rule | Value | Verdict | Expectation |
+|---|---|---|---|
+| T1 | τ* and the median log(V_on / V_off) equal the S2b summaries in all 7 draws | pass | pass. Met. |
+| K1 (main) | stratified AUC of χ₃(0, τ*) 0.711 [0.676, 0.748] | CLD mislabels rocks | "CLD mislabels rocks". Met. AUC above 0.8: not met. |
+| K2 | stratified AUC of χ₁(τ*) 0.632 [0.576, 0.696] | CLD mislabels rocks | "CLD mislabels rocks". Met. AUC above 0.8: not met. |
+| K3 | ρ(χ₃, log V) over rocks 0.997 [0.996, 0.998] | yes | yes. Met. |
+| Gate | K1 is not "CLD favours oscillators" | fails | fails. Met. |
+
+Description only:
+- Stratified AUC of χ₃ in each draw: 0.646 to 0.784. All 7 draws are above 0.5. Draws 2026 and 2031 have 2 bins, the
+  others 3.
+- Unstratified AUC of χ₃ in each draw: 0.706 to 0.835.
+- Median χ₃: rocks 0.051 to 0.054 in every draw, oscillators 0.027 to 0.042.
+- At τ*, CLD is small. Median χ₁(τ*): rocks 0.0019 to 0.0028 bits, oscillators 0.0003 to 0.0014 bits. The bias of
+  the histogram at τ* is about 0.0049 bits, and we subtract it. So K2 rests on a value below the size of the bias.
+  K1 uses the whole interval [0, τ*], where CLD is larger, and is the main rule.
+- At the own lag V/2 of each unit (unstratified), the mean AUC is 0.341. At this lag CLD rates oscillators higher.
+  Each unit has a different lag here, so this is not a test of the same life.
+- In S2b, the AUC of memory C(τ*) was 0.575 (mean of the 7 draws). CLD mislabels rocks more strongly than C.
+- Time: 150 min for CLD on 4 cores. The V rebuild of the first run took about 55 min.
+
+**Run note.** The first run stopped on 2026-11-24 at 23:50, during the CLD part, because Windows shut down (system
+event 1074). T1 had passed in all 7 draws. The V data was saved in `results/e26_v_dataset.pkl`. We added the option
+`--resume`: it loads this file, runs T1 again on it, and saves the CLD results after each draw. The rules did not
+change. The log of the first run is `results/e26_run_1_shutdown.log`.
+
+**What C2 shows.** CLD rates rocks above oscillators of the same life, in all 7 draws. Among rocks, χ₃ follows log V
+almost exactly (ρ = 0.997). So χ₃ measures how long the bit sign(x) stays in memory. A rock keeps its well for a time
+of the order of V, and an oscillator loses its phase earlier. Neither class uses information, but CLD prefers the
+passive memory. The flux ratio V_on / V_off separates the two classes with no overlap in S2 and S2b (docs/S2.md).
+It is the fix that the roadmap gate asks us to report.
+
+### What niche C shows
+| Score | Control | Gives zero or a low value? | Verdict |
+|---|---|---|---|
+| ΔV_KW | S3 without feedback | no: negative, and ranks intact higher (0.787) | fails as a zero test, passes as an order |
+| S_KW | S3 without feedback | no: equals I(A; h), a little higher without feedback | fails |
+| CLD | S3 without feedback | no: same median as intact (0.99) | fails |
+| CLD | S2b rocks | no: rocks above oscillators (0.711) | fails |
+
+No score gives zero for a system that holds information without use. The scores measure correlation or memory. A
+test of use needs a term that sees the drive or the feedback. In S3 this is the simulated VoI, which is zero without
+feedback by construction. In S2 it is the flux ratio.
+
+**Limits.** The limits of the rules hold (see "Limits of C"). Also:
+- K2 is close to the bias of the histogram.
+- The expectation "AUC above 0.8" was not met. The verdicts of K1 and K2 do not depend on it.
+- We test one choice of the bit, of Ω_scr and of the grid. The CLD papers leave these choices open.
