@@ -202,9 +202,9 @@ A0 passes. 395 organisms, two versions each (intact, no feedback).
 Description only (medians, intact / no feedback):
 - χ₁: 0.0952 / 0.0943 (ratio 0.99). χ₃ on [0, 5]: 0.0576 / 0.0544. χ₁ on the agent alone: 0.0486 / 0.0381.
 - S_KW: 0.7726 / 0.8144 nats (ratio 1.05). S_KW equals I(A; h) in all 790 cases (the root search finds only p = 1).
-- ΔV_KW: −0.0230 / −0.2551. The median intact organism also has ΔV_KW < 0.
+- ΔV_KW: −0.0230 / −0.2551. ΔV_KW < 0 also in 0.534 of the intact organisms.
 - ΔV_KW on the whole agent is < 0 in 0.577 of the organisms without feedback.
-- In the reading V ≥ V_act, S_KW is 0 in all organisms without feedback, and the median is 0 in the intact version too.
+- In the reading V ≥ V_act, S_KW is 0 in all organisms without feedback, and in 0.534 of the intact organisms.
 - The simulated VoI is 0 without feedback, by construction.
 
 **What C1 shows.** No score of the three gives zero for the organism that uses no information. ΔV_KW is not zero, but
@@ -213,7 +213,7 @@ control, not its size. S_KW is the full information I(A; h) in both versions, so
 It is a little higher without feedback. CLD gives the same median value to both versions (ratio 0.99). The sensor and
 the memory follow h in both versions, and CLD sees this correlation. The order 0.600 is above 0.5, but it is a small
 effect. The second reading of KolchinskyWolpert18 (V ≥ V_act) gives zero without feedback, but it also gives zero for
-the median intact organism. So it does not separate the two versions either.
+0.534 of the intact organisms. So it gives zero to about half of the organisms that use information.
 
 ### C2. The S2b rocks and oscillators
 Run: `experiments/e26_c2_rocks.py --resume`. Output: `results/e26_c2_rocks.md` and `.json`, log `results/e26_run.log`.
