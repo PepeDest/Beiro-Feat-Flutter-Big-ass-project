@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage[numbers,sort&compress]{natbib}
@@ -130,8 +131,9 @@ pre-garblings $Z=KY+N$, $N\sim\mathcal{N}(0,\Sigma_N)$, with $x_0$ drawn from th
 Write $C=\Sigma_X^{-1/2}\Sigma_{XY}\Sigma_Y^{-1/2}$ for the whitened cross-covariance at time 0.
 
 \begin{proposition}[Gaussian pre-garbling]\label{prop:P}
-Let $P=K_w^\top(K_wK_w^\top+\Sigma_N)^{-1}K_w$, with $K_w=K\Sigma_Y^{1/2}$. Then $0\preceq P\preceq I$, and every such
-$P$ comes from some $(K,\Sigma_N)$. The intervention keeps the marginals of $X_0$ and $Y_0$ and changes only the
+Let $P=K_w^\top(K_wK_w^\top+\Sigma_N)^{-1}K_w$, with $K_w=K\Sigma_Y^{1/2}$ and $\Sigma_N\succeq0$. Then
+$0\preceq P\preceq I$. Every such $P$ comes from some $(K,\Sigma_N)$: for $P=U\mathrm{diag}(s)U^\top$, take
+$K_w=\mathrm{diag}(\sqrt s)U^\top$ and $\Sigma_N=\mathrm{diag}(1-s)$. The intervention keeps the marginals of $X_0$ and $Y_0$ and changes only the
 cross-covariance:
 \begin{equation}
   \Sigma_{XY}(P)=\Sigma_{XY}\Sigma_Y^{-1/2}P\,\Sigma_Y^{1/2}, \qquad
@@ -297,7 +299,18 @@ $\DT$ is attained, the median of $\STE/\DT$ is 0.15 in D1 and 0.17 in D2 (larges
 six times more information than the agent uses. The median efficiency $\STE/\mathrm{TE}_{\mathrm{act}}$ is 0.56 in D1
 and 0.68 in D2. The median of $\SDI/\STE$ is 0.84 in D1 and 0.75 in D2 (smallest 0.47), so the choice between DI and TE
 matters. An agent with one coordinate never uses its actual sensor optimally (H2 in D1). In the 10 systems of D2 where
-the actual sensor is optimal, $\DT$ is also not attained. We have no proof of this link.
+the actual sensor is optimal, $\DT$ is also not attained. We have no proof of this link. Figure~\ref{fig:b} shows both
+gaps: projections against garblings in the stored form, and $\STE$ against $\DT$ in the observed form.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_b.pdf}
+\caption{(a) Stored semantic information with $d_x=2$. The best projection (dots) and the drive projection
+(triangles) need more information than the best Gaussian garbling $\SG$ in most systems. The grey line is equality.
+(b) Observed semantic information $\STE$ against the smallest sensor information $\DT$ in the measure of Tanaka et al.,
+in the 58 systems where $\DT$ is attained. All points lie above the line of equality.}
+\label{fig:b}
+\end{figure}
 
 \section{Application to a homeostat and to linear worlds}
 \label{sec:apply}
@@ -322,11 +335,23 @@ $V(P)-V(0)$ is linear in $P$ to first order (Eq.~(\ref{eq:affine})), while $I_P$
 
 \paragraph{A linear homeostat.} The companion study \cite{Beiro26} builds 400 linear organisms. Each has a hidden
 environment $h$ with time scale $T_h\in[2,20]$, a sensor $s$, a memory $m$ and an actuator $u$ with loop gain $L$. A
-viability variable $v$ feels the push of $h$, and $u$ can push it back. Its value of information
+viability variable $v$ feels the push of $h$, and $u$ can push it back:
+\begin{equation}
+\begin{aligned}
+  \mathrm{d}h &= -h/T_h\,\mathrm{d}t + \mathrm{d}\xi_h, &
+  \mathrm{d}s &= -k_s(s-h)\,\mathrm{d}t + \mathrm{d}\xi_s, &
+  \mathrm{d}m &= -k_m(m-s)\,\mathrm{d}t + \mathrm{d}\xi_m,\\
+  \mathrm{d}u &= -k_u(u+Lm)\,\mathrm{d}t + \mathrm{d}\xi_u, &
+  \mathrm{d}v &= (-k_vv+h+u)\,\mathrm{d}t + \mathrm{d}\xi_v , & &
+\end{aligned}
+\label{eq:homeostat}
+\end{equation}
+with independent Gaussian noises $\xi$ and $\mathrm{var}(h)=1$. The rates are log-uniform ($k_s,k_m,k_u\in[0.5,5]$,
+$k_v\in[0.2,1]$), and $L\in[0,1.5]$ is uniform. Its value of information
 $\mathrm{VoI}=\log V_{\mathrm{intact}}-\log V_{\mathrm{scrambled}}$ uses simulated exit times. We computed the value of
 information of Ref.~\cite{KolchinskyWolpert18}, $\DVKW=V(I)-V(0)$, with $V=-H(v_\tau)$, $\tau=1$ and the agent
 $A=(s,m,u,v)$. We rebuilt the data of Ref.~\cite{Beiro26} with the same seeds, and a rule checked that the summary did
-not change (395 organisms count). $\DVKW$ ranks the simulated value: $\rho(\DVKW,\mathrm{VoI})=+0.363$
+not change. We use the 395 organisms that the companion study keeps. $\DVKW$ ranks the simulated value: $\rho(\DVKW,\mathrm{VoI})=+0.363$
 [$+0.274$, $+0.449$]. But its sign agrees with the sign of VoI in only 0.471 of the organisms, while VoI is positive in
 0.990. $\DVKW$ is positive only when the loop gain is large (median $L$ 1.15, against 0.46 when $\DVKW\le0$). It is
 not a better proxy of VoI than the predictive information $P=I(A_t;h_{t+1})$: the difference of the two rank
@@ -374,7 +399,7 @@ In the homeostat with $L=0$, the value of information on $v$ is negative for eve
 Proposition~\ref{prop:F4}, $\SKW=\Iact$ and the efficiency is 1.
 \end{proposition}
 \begin{proof}
-$v_\tau=\phi_{vv}v_0+\phi_{vh}h_0+\phi_{vu}u_0+(\text{terms independent of the start})$, with
+With $L=0$, Eq.~(\ref{eq:homeostat}) gives $v_\tau=\phi_{vv}v_0+\phi_{vh}h_0+\phi_{vu}u_0+(\text{terms independent of the start})$, with
 $\phi_{vv}=e^{-k_v\tau}>0$ and $\phi_{vh}=\int_0^\tau e^{-k_v(\tau-s)}e^{-s/T_h}\mathrm{d}s>0$. With $L=0$, $u$ is
 independent of $h$, and $\mathrm{Cov}(v_0,h_0)=\int_0^\infty e^{-k_vs}e^{-s/T_h}\mathrm{d}s>0$ for $\mathrm{var}(h)=1$.
 The full scrambling sets $\mathrm{Cov}(A_0,h_0)$ to zero, so $\mathrm{Var}(v_\tau)$ falls by
@@ -459,6 +484,19 @@ the effect is weaker than we predicted, but the verdicts do not depend on this. 
 small difference, and K1, over the whole interval, is the main rule. At the own lag $V/2$ of each unit, CLD rates
 oscillators higher (mean AUC 0.341), as memory did in the companion study. There, each unit has a different lag, so
 this is not a comparison at the same life.
+
+Figure~\ref{fig:c} shows the mechanism. CLD decays more slowly for rocks than for oscillators in every draw. Among
+rocks, $\chi_3$ grows steeply with life. Among oscillators, it hardly changes with life.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_c.pdf}
+\caption{Negative controls. (a) CLD $\chi_1$ of each homeostat with and without feedback. The points lie close to the
+line of equality. (b) The median CLD of rocks and oscillators in each of the 7 draws, against time in units of $\tau^\ast$. The
+histogram bias is subtracted. (c) $\chi_3(0,\tau^\ast)$ against life for all 840 units. Rocks with the same life as an
+oscillator mostly score higher.}
+\label{fig:c}
+\end{figure}
 
 \section{Discussion}
 \label{sec:discussion}
