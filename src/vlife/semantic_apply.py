@@ -50,17 +50,21 @@ def half_value_information(B, D, S0, agent, env, tau, target):
     return float(p), float(syntactic_information(Sp, dx, np.array([[p]]))), float(I_act)
 
 
-def stored_semantic(B, D, S0, agent, env, tau, n_starts=8, rng=None, n_grid=200, iters=50):
-    """S_G [KolchinskyWolpert18, Eqs. (9)-(10)] over Gaussian garblings, V = -H(X_tau) of the whole agent.
+def stored_semantic(B, D, S0, agent, env, tau, n_starts=8, rng=None, n_grid=200, iters=50, target=None):
+    """S_G [KolchinskyWolpert18, Eqs. (9)-(10)] over Gaussian garblings, V = -H(X_tau) of the whole agent, or of the
+    `target` coordinates (local indices in the agent, dy = 1 only; added for niche C, docs/C.md).
     dx = 1: S_G = I_C, the drive information (B2 theorem). dy = 1: the roots of V(p) = V_act on a grid of [0, 1] with
     bisection, and S_G = I at the smallest root (I_p grows with p). Else: min_information of semantic.py, family
     "general". Returns (S_G, method)."""
     Bp, Dp, Sp = permute(B, D, S0, agent, env)
     dx, dy = len(agent), len(env)
+    if target is not None and dy != 1:
+        raise ValueError("target needs dy = 1")
     if dx == 1:
         return float(drive_information(Bp, Dp, Sp, 1, tau)), "drive (dx = 1)"
     if dy == 1:
-        V = lambda p: viability_target(Bp, Dp, Sp, dx, np.array([[p]]), tau, range(dx))
+        t = range(dx) if target is None else list(target)
+        V = lambda p: viability_target(Bp, Dp, Sp, dx, np.array([[p]]), tau, t)
         V_act = V(1.0)
         g = lambda p: V(p) - V_act
         grid = np.linspace(0.0, 1.0, n_grid + 1)

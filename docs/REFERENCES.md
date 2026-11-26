@@ -112,3 +112,7 @@ Keys match the `[Key]` tags used in the source code and in `PROVENANCE.md`.
 - **SabagTianKostinaHassibi23** — O. Sabag, P. Tian, V. Kostina, B. Hassibi, "Reducing the LQG cost with minimal communication", *IEEE Trans. Autom. Control* 68, 5258 (2023). DOI: 10.1109/tac.2022.3220511. arXiv:2109.12246. Checked on Crossref.
 - **Kolchinsky26** — A. Kolchinsky, "Redundancy and synergy in multivariate Gaussians via the Blackwell order", arXiv:2610.07360 (2026). Checked on the arXiv page (v1, 5 Oct 2026, no journal reference yet).
 - **VanLoan78** — C. F. Van Loan, "Computing integrals involving the matrix exponential", *IEEE Trans. Autom. Control* 23, 395 (1978). DOI: 10.1109/tac.1978.1101743. Checked on Crossref. (Used in semantic.propagator.)
+
+## Added for niche C (2026-11-24)
+- **Bartlett24** — S. J. Bartlett, "Causal Leverage Density: a general approach to semantic information", arXiv:2407.07335 (2024). Checked on the arXiv page (v1, 10 Jul 2024, no journal reference).
+- **SowinskiEtAl25** — D. R. Sowinski, S. Holler, M. Wong, G. Segal, D. Parkinson, C. Vidal, J. H. Cleaves, P. Sinhadc, A. Prabhu, S. Bartlett, "Causal Leverage Density: a universal framework for semantic information", *ALIFE 2025: Proceedings of the Artificial Life Conference 2025*, article 43, MIT Press (2025). DOI: 10.1162/isal.a.871. Checked on Crossref.
