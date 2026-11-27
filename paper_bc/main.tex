@@ -1,0 +1,580 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newcommand{\Vact}{V_{\mathrm{act}}}
+\newcommand{\Iact}{I_{\mathrm{act}}}
+\newcommand{\SG}{S_{\mathrm{G}}}
+\newcommand{\STE}{S_{\mathrm{TE}}}
+\newcommand{\SDI}{S_{\mathrm{DI}}}
+\newcommand{\DT}{D_{\mathrm{T}}^{\ast}}
+\newcommand{\DVKW}{\Delta V_{\mathrm{KW}}}
+\newcommand{\SKW}{S_{\mathrm{KW}}}
+\newcommand{\JS}{\mathrm{JS}}
+\newcommand{\Oscr}{\Omega_{\mathrm{scr}}}
+\newcommand{\PhiTC}{\Phi_{\mathrm{TC}}}
+\newcommand{\Von}{V_{\mathrm{on}}}
+\newcommand{\Voff}{V_{\mathrm{off}}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\TC}{\mathrm{TC}}
+
+% DRAFT 1, 2026-11-26. Every number comes from docs/B.md, docs/C.md and the files in results/.
+% Status: not compiled on this PC (no TeX). Compile on Overleaf with pdfLaTeX.
+
+\title{Semantic information in linear Gaussian systems:\\
+closed forms, bounds and negative controls}
+\author{Alexander Beiro\\ \small Independent researcher}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Semantic information, in the sense of Kolchinsky and Wolpert, is the part of the information about its environment
+that a system needs to keep its viability. Its computation needs a search over interventions. Earlier work names this
+cost as the main obstacle. We compute it for linear Gaussian systems. For the stored form,
+Gaussian pre-garblings of the environment give an exact formula for the viability as a function of one positive
+semidefinite matrix $P$, with $0\preceq P\preceq I$. For an agent with one coordinate, the stored semantic information
+has a closed form. It is the information of the agent about the one direction of the environment that drives it. For
+more coordinates, noisy garblings beat deterministic coarse-grainings in 40 of 48 test systems, and the minimum needs a
+search over one matrix. Non-Gaussian partitions beat the Gaussian value in 2 of 27 scalar systems, so the Gaussian
+value is an upper bound. For the observed form, we prove that one time step never changes the viability and that the
+directed information is at most the transfer entropy. Numerically, the transfer entropy of the agent is at most the sensor
+information in the measure of Tanaka et al.\ at all 1508 tested sensors. So the observed semantic information is at
+most the smallest such sensor information, and about six times smaller in the median. Then we apply the formulas and Causal Leverage Density (CLD) to two negative controls: a homeostat whose
+actuator does not read its sensor, and passive bistable units. No score gives zero. For every organism without feedback, the value of
+information of Kolchinsky and Wolpert is negative (we prove this), and the stored semantic information is the full
+mutual information. CLD rates passive units above driven oscillators of the same life (stratified AUC 0.711 [0.676,
+0.748]). These scores measure correlation or memory. A test of use needs a term that sees the drive. We fixed
+all rules before the runs.
+\end{abstract}
+
+\section{Introduction}
+A living system holds information about its environment, but not all of it matters. Kolchinsky and Wolpert proposed
+to call \emph{semantic} the part of the information that the system needs to keep its viability
+\cite{KolchinskyWolpert18}. They scramble the correlations between a system $X$ and its environment $Y$, and they
+measure how the viability changes. The smallest amount of information that keeps the actual viability is the semantic
+information. The idea is now part of a programme on information as a feature of life \cite{Bartlett25}, with
+applications to foraging agents \cite{Sowinski23} and to a feedback-controlled Kuramoto model
+\cite{SowinskiFrankGhoshal24}.
+
+The computation is the obstacle. The definition needs a search over all coarse-grainings of the environment, and two
+groups name its cost as an obstacle \cite{Sowinski23,SowinskiFrankGhoshal24}. One of them puts the limit at several
+hundred states \cite{SowinskiFrankGhoshal24}.
+Both groups therefore replaced the search with a one-parameter family of interventions (sensor noise). In a search of
+the 181 papers that cite the main sources, we found no computation of semantic information for continuous or Gaussian
+variables.
+
+This paper gives that computation for linear Gaussian systems, and it tests the resulting scores on negative controls.
+It has four parts.
+\begin{enumerate}
+\item \textbf{Stored semantic information} (Sec.~\ref{sec:static}). A Gaussian pre-garbling of the environment is one
+matrix $P$ with $0\preceq P\preceq I$. The viability is an exact function of $P$. For an agent with one coordinate the
+semantic information has a closed form. For more coordinates it needs a search over $P$, which takes seconds.
+\item \textbf{Observed semantic information} (Sec.~\ref{sec:dynamic}). With interventions at each time step, we prove
+two general facts and compare the result with the minimal directed information of linear quadratic Gaussian control
+\cite{TanakaEsfahaniMitter18}.
+\item \textbf{Application} (Sec.~\ref{sec:apply}). We apply the formulas to a linear homeostat and to the structures of
+random linear worlds from a companion study \cite{Beiro26}.
+\item \textbf{Negative controls} (Sec.~\ref{sec:controls}). A score of the use of information must give zero, or a
+low value, to a system that holds information but does not use it. We test three scores on two such systems: the value of
+information and the semantic information of Kolchinsky and Wolpert, and the Causal Leverage Density (CLD) of Bartlett
+and Sowinski et al.\ \cite{Bartlett24,SowinskiEtAl25}.
+\end{enumerate}
+
+\paragraph{Pre-registration.} Each step had written rules, pass conditions and expectations before its runs. The rules
+are in the step documents of the repository (\texttt{docs/B.md}, \texttt{docs/C.md}), each in a commit before the
+commit of the results. We report every verdict as the rule gives it, also when the rule was badly written
+(Sec.~\ref{sec:b1}). Values in brackets are 95\% bootstrap intervals \cite{Efron79}. Information is in nats, except
+CLD, which is in bits as in its definition.
+
+\section{Setting}
+\label{sec:setting}
+\paragraph{Dynamics.} The joint state $z=(x,y)$ has an agent part $x\in\mathbb{R}^{d_x}$ and an environment part
+$y\in\mathbb{R}^{d_y}$. It follows the Ornstein--Uhlenbeck process
+\begin{equation}
+  \mathrm{d}z = -Bz\,\mathrm{d}t + \sqrt{2D}\,\mathrm{d}W
+\end{equation}
+\cite{Gardiner04}, and it starts from its stationary law $z_0\sim\mathcal{N}(0,S_0)$. The propagator is
+$\Phi=e^{-B\tau}$, and the noise covariance $Q_\tau=\int_0^\tau e^{-Bs}2De^{-B^\top s}\mathrm{d}s$ comes from the block
+exponential of Van Loan \cite{VanLoan78}.
+
+\paragraph{Viability.} As in Ref.~\cite{KolchinskyWolpert18}, Eq.~(2), the viability is the negative entropy of the agent
+at a time $\tau$:
+\begin{equation}
+  V = -H(X_\tau) = -\tfrac12\bigl(d_x\log 2\pi e + \log\det\Sigma_{X_\tau}\bigr).
+\end{equation}
+This choice rewards a narrow distribution of the agent. It is not the exit-time viability of the companion study
+\cite{Beiro26}. We return to this difference in Sec.~\ref{sec:apply}.
+
+\paragraph{Interventions.} Ref.~\cite{KolchinskyWolpert18} replaces the channel $p(x_0\mid y_0)$ with
+$p(x_0\mid\varphi(y_0))$, for a coarse-graining $\varphi$ of the environment. The marginals of $X_0$ and $Y_0$ do not
+change, and the dynamics after time 0 do not change. The full scrambling $p(x_0)p(y_0)$ is the coarsest case. The
+paper names the general class \emph{pre-garbling}, but it computes only deterministic $\varphi$. We use the Gaussian
+pre-garblings $Z=KY+N$, $N\sim\mathcal{N}(0,\Sigma_N)$, with $x_0$ drawn from the actual law $p(x_0\mid z)$.
+
+\section{Stored semantic information}
+\label{sec:static}
+
+\subsection{The viability as a function of one matrix}
+\label{sec:b1}
+Write $C=\Sigma_X^{-1/2}\Sigma_{XY}\Sigma_Y^{-1/2}$ for the whitened cross-covariance at time 0.
+
+\begin{proposition}[Gaussian pre-garbling]\label{prop:P}
+Let $P=K_w^\top(K_wK_w^\top+\Sigma_N)^{-1}K_w$, with $K_w=K\Sigma_Y^{1/2}$ and $\Sigma_N\succeq0$. Then
+$0\preceq P\preceq I$. Every such $P$ comes from some $(K,\Sigma_N)$: for $P=U\mathrm{diag}(s)U^\top$, take
+$K_w=\mathrm{diag}(\sqrt s)U^\top$ and $\Sigma_N=\mathrm{diag}(1-s)$. The intervention keeps the marginals of $X_0$ and $Y_0$ and changes only the
+cross-covariance:
+\begin{equation}
+  \Sigma_{XY}(P)=\Sigma_{XY}\Sigma_Y^{-1/2}P\,\Sigma_Y^{1/2}, \qquad
+  I_P(X_0;Y_0) = -\tfrac12\log\det\bigl(I-CP^2C^\top\bigr).
+\end{equation}
+The covariance of the agent at $\tau$ is affine in $P$:
+\begin{equation}
+  \Sigma_{X_\tau}(P) = A_0 + M(P) + M(P)^\top, \qquad M(P)=\Phi_{XX}\,\Sigma_{XY}(P)\,\Phi_{XY}^\top ,
+  \label{eq:affine}
+\end{equation}
+where $A_0$ does not depend on $P$. So $V(P)$ is convex in $P$, because $\log\det$ is concave.
+\end{proposition}
+
+The proof is a direct computation of the Gaussian conditional law. $P=I$ is the actual system, $P=0$ is the full
+scrambling, and the orthogonal projections are the deterministic coarse-grainings $\varphi(y)=U^\top\Sigma_Y^{-1/2}y$.
+The information $I_P$ equals $I(X_0;Z)$ only when $P$ is a projection. Two consequences follow at once. First, if
+the environment does not drive the agent up to time $\tau$ ($\Phi_{XY}=0$), then $V$ does not depend on $P$. The agent
+then has no stored semantic information, whatever its mutual information with the environment. Second, the set of $P$
+is compact and convex. So the search is over one $d_y\times d_y$ matrix, not over partitions of a state space.
+
+\paragraph{Check by simulation.} We checked Proposition~\ref{prop:P} against an independent simulation: the start
+sampled through the garbling itself, and Euler--Maruyama dynamics with $\mathrm{d}t=5\cdot10^{-4}$. There were 4 systems
+($d_x=2$, $d_y=3$), 2 values of $\tau$, 4 interventions (actual, full scrambling, a random rank-1 projection and a
+random garbling) and $10^5$ trajectories in 20 batches. The rule asked for at least 45 of 48 checks within 3 standard
+errors (SE) and none beyond 5 SE. The verdict is \emph{fail}: 44 of 48. All 32 checks of $V$ pass (largest
+$|z|=2.81$), and all 12 checks of $I_P$ with a nonzero true value pass. The 4 failures are $I_P$ at the full
+scrambling, where the true value is 0. There, the plug-in estimate of a Gaussian mutual information has a known upward
+bias of about $d_xd_y/2n=0.0006$ nats, which is 7 to 9 SE. The rule did not allow for this bias. After a subtraction of
+this bias (a check made after the run), all 16 checks of $I_P$ are within 2.42 SE.
+
+\subsection{The minimum}
+The stored semantic information is the smallest information that keeps the actual viability
+\cite{KolchinskyWolpert18}, Eqs.~(9)--(10). Over Gaussian garblings,
+\begin{equation}
+  \SG = \min\bigl\{\,I_P(X_0;Y_0)\;:\;0\preceq P\preceq I,\; V(P)=V(I)\,\bigr\},
+\end{equation}
+and the semantic efficiency is $\SG/\Iact$, with $\Iact=I_{I}(X_0;Y_0)$.
+
+Let $W=\Phi_{XY}\Sigma_Y^{1/2}$. Its rows are the directions of the whitened environment that drive the agent up to
+time $\tau$. The projector $\Pi_W$ on the row space of $W$ keeps $\Sigma_{X_\tau}$ exactly, because
+$M(\Pi_W)=M(I)$. So the \emph{drive information} $I_C=-\tfrac12\log\det(I-C\Pi_WC^\top)$ is always an upper bound,
+$\SG\le I_C$.
+
+\begin{theorem}[one agent coordinate]\label{thm:dx1}
+Let $d_x=1$, let $c=C^\top\in\mathbb{R}^{d_y}$, and let $w=W^\top$ with $c^\top w\neq0$. Then
+\begin{equation}
+  \SG = I_C = -\tfrac12\log\bigl(1-(c^\top\hat w)^2\bigr), \qquad \hat w = w/\lVert w\rVert .
+\end{equation}
+\end{theorem}
+\begin{proof}
+With $d_x=1$, Eq.~(\ref{eq:affine}) makes $\Sigma_{X_\tau}$ a scalar affine in $c^\top Pw$. If
+$\Phi_{XX}\neq0$, then $V(P)=V(I)$ means $c^\top Pw=c^\top w$. Also $I_P=-\tfrac12\log(1-\lVert Pc\rVert^2)$ grows with $\lVert Pc\rVert$. The Cauchy--Schwarz
+inequality gives $c^\top w=(Pc)^\top w\le\lVert Pc\rVert\,\lVert w\rVert$, so $\lVert Pc\rVert^2\ge(c^\top\hat w)^2$.
+The projection $P=\hat w\hat w^\top$ reaches this bound and keeps $c^\top Pw=c^\top w$.
+\end{proof}
+
+So for an agent with one coordinate, the stored semantic information is the information of the agent about the one
+direction of the environment that drives it. For $d_x\ge2$, the condition $V(P)=V(I)$ fixes only $\det\Sigma_{X_\tau}$,
+not the whole matrix, and the proof does not carry over.
+
+\paragraph{Tests.} We used SLSQP with 32 random starts, plus $P=I$ and $P=\Pi_W$, at $\tau=1$
+(Table~\ref{tab:b2}). A sanity rule checked the optimizer against Theorem~\ref{thm:dx1} on 20 systems with $d_x=1$.
+For non-Gaussian interventions, we searched three families of partitions of a scalar environment by brute force. The
+families are one threshold, the two cells $|y|<t$ and $|y|\ge t$, and two thresholds. A bisection refines each sign
+change of $V-\Vact$. With $d_y=1$, the only Gaussian garbling that keeps $V$ is $P=1$, so there $\SG=\Iact$.
+
+\begin{table}[t]
+\centering
+\caption{Stored semantic information: pre-registered rules. Systems with $|\Delta V|<10^{-3}$ nats are skipped.}
+\label{tab:b2}
+\begin{tabular}{p{6.2cm}p{5.2cm}p{2.6cm}}
+\toprule
+Rule & Result & As expected? \\
+\midrule
+Sanity: $\SG=I_C$ for $d_x=1$ (19 systems) & pass, largest gap $1.8\cdot10^{-10}$ nats & yes \\
+H1: projections reach the minimum ($d_x=2$, $d_y=3$, 48 systems) & fails in 40 of 48, largest gap 0.058 nats & no (we expected a pass, low confidence) \\
+H2: the drive projection is the best projection & fails in 47 of 48, largest gap 0.27 nats & yes \\
+H3: partitions do not beat $\SG$ ($d_x=d_y=1$, 27 systems) & beaten in 2 of 27 & yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Results.} The optimizer agrees with Theorem~\ref{thm:dx1} to $10^{-10}$ nats. For $d_x=2$, the best Gaussian
+intervention is usually a noisy garbling, not a projection. A dense grid on the sphere of projections gave the same
+best projection as the optimizer, to four decimals, in the five systems with the largest gaps. So the failure of H1 is
+not a failure of the optimizer. This matters for the definition: the set of interventions in
+Ref.~\cite{KolchinskyWolpert18} holds deterministic coarse-grainings only, and a larger set gives a lower value. The
+median semantic efficiency is 0.25 (range 0.002 to 0.98). The value of information $\Delta V=V(I)-V(0)$ is negative in
+41 of 48 systems. With $V=-H(X_\tau)$, the actual correlation usually makes the agent more spread out at $\tau$.
+
+Non-Gaussian partitions reach $\Vact$ in 2 of 27 scalar systems, both with less information than the Gaussian value
+(0.0027 against 0.0043 nats, and 0.0008 against 0.0538 nats). In both systems $|\Delta V|$ is small (0.004 and 0.001
+nats). In the other 25 systems no partition of the three families reaches $\Vact$. So over all interventions, $\SG$ is
+an upper bound on the semantic information, not its exact value. Part of this gap comes from the viability: a
+non-Gaussian $X_\tau$ has a lower entropy than a Gaussian with the same variance.
+
+\section{Observed semantic information}
+\label{sec:dynamic}
+
+\paragraph{Setting.} Here time is discrete, $z_{t+1}=Fz_t+w_t$, with $w_t\sim\mathcal{N}(0,W)$ and
+$W=\mathrm{diag}(W_x,W_y)$, from the stationary start. The observed form of Ref.~\cite{KolchinskyWolpert18} (Sec.~V B)
+uses the transfer entropy $\mathrm{TE}=\sum_{t=0}^{\tau-1}I(X_{t+1};Y_t\mid X_t)$ \cite{Schreiber00}. It applies one
+coarse-graining at each step. The intervened channel is $p(x_{t+1}\mid x_t,\varphi(y_t))$, built from the actual
+channel and the intervened joint law at time $t$. The response of the environment does not change. We use one
+Gaussian sensor $Z_t=Ky_t+N_t$ for all $t$, with $K=\mathrm{diag}(\sqrt s)R^\top$, $\Sigma_N=\mathrm{diag}(1-s)$, a
+rotation $R$ and $s\in[0,1]^{d_y}$. This family holds every Gaussian sensor up to an invertible change of $z$. The
+intervened process stays Gaussian, and a recursion of its covariance gives $V$ and TE exactly. $\STE$ is the smallest
+TE with $V=\Vact$, and $\SDI$ is the same with the directed information
+$\mathrm{DI}=\sum_tI(Y_{0..t};X_{t+1}\mid X_{0..t})$ \cite{Massey90}.
+
+\begin{proposition}[one step]\label{prop:F1}
+Under the intervention of Ref.~\cite{KolchinskyWolpert18}, Eq.~(18), the law of $x_{t+1}$ given $x_t$ does not change.
+So $p(x_1)$ does not change, and $\Delta V_{\mathrm{obs}}=\STE=0$ at $\tau=1$, for every system.
+\end{proposition}
+\begin{proof}
+$\sum_y\hat p(x'\mid x,y)\hat p(y\mid x)=\sum_y p(x'\mid x,y)\hat p(y\mid x)$, and at $t=0$ the intervened joint is the
+actual one.
+\end{proof}
+
+\begin{proposition}[DI and TE]\label{prop:F2}
+$\mathrm{DI}\le\mathrm{TE}$ at each step of the intervened process. So $\SDI\le\STE$.
+\end{proposition}
+\begin{proof}
+The intervened process is Markov in $(x_t,y_t)$, because each step uses new noise. So
+$H(X_{t+1}\mid X_{0..t},Y_{0..t})=H(X_{t+1}\mid X_t,Y_t)$, and $H(X_{t+1}\mid X_{0..t})\le H(X_{t+1}\mid X_t)$.
+\end{proof}
+
+\paragraph{The link to control.} Tanaka et al.\ minimise the directed information from the plant to the controller at
+a fixed quadratic cost \cite{TanakaEsfahaniMitter18}. The optimal policy is a memoryless linear Gaussian sensor, a
+Kalman filter and a certainty-equivalence controller; see also Ref.~\cite{SabagTianKostinaHassibi23}. Our sensor class
+is the same, but the decoder is the fixed agent. We measure the sensor as Tanaka et al.\ do,
+$\mathrm{DT}=\sum_tI(Y_{0..t};Z_t\mid Z_{0..t-1})$, and we let $\DT$ be the smallest DT with $V=\Vact$. This is not their
+problem: the decoder is fixed, the cost is an entropy, the horizon is finite, and the sensor does not change in time.
+At the first step, given $X_0$, the chain $Y_0\to Z_0\to X_1$ gives
+$I(Y_0;X_1\mid X_0)\le I(Y_0;Z_0)$. We have no proof for later steps. So we tested the conjecture
+$\SDI\le\STE\le\DT$.
+
+\paragraph{Tests.} Two groups of random systems, $F=0.85A/\rho(A)$ with Gaussian $A$, at $\tau=4$: D1 with $d_x=1$,
+$d_y=2$ (40 systems) and D2 with $d_x=2$, $d_y=2$ (30 systems). One system of D1 was skipped ($|\Delta
+V_{\mathrm{obs}}|<10^{-3}$). Table~\ref{tab:b3} gives the rules.
+
+\begin{table}[t]
+\centering
+\caption{Observed semantic information: pre-registered rules (69 systems).}
+\label{tab:b3}
+\begin{tabular}{p{6.0cm}p{5.6cm}p{2.4cm}}
+\toprule
+Rule & Result & As expected? \\
+\midrule
+Sanity: $\tau=1$ keeps $V$ (Prop.~\ref{prop:F1}) & pass, largest gap $8.9\cdot10^{-16}$ & yes \\
+Sanity: $\mathrm{TE}-\mathrm{DI}\ge0$ (Prop.~\ref{prop:F2}) & pass, smallest $5.7\cdot10^{-7}$ & yes \\
+H1: projections reach $\STE$ & fails in 31 of 69 & yes (fails) \\
+H2: the actual sensor is not optimal & holds in all 39 of D1, fails in 10 of 30 of D2 & yes, in both groups \\
+H3: $\mathrm{TE}\le\mathrm{DT}$ at each noisy sensor & holds at all 1508 sensors, smallest gap $+0.030$ & yes \\
+H4: $\DT$ attained and equal to $\STE$ & fails in all 69 ($\DT$ not attained in 11) & yes (fails) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Results.} The link to control is a bound, not an equality: $\SDI\le\STE\le\DT$. The first inequality is
+Proposition~\ref{prop:F2}. The second holds at every tested sensor, and it is proved only for the first step. Where
+$\DT$ is attained, the median of $\STE/\DT$ is 0.15 in D1 and 0.17 in D2 (largest 0.47). So the sensor must carry about
+six times more information than the agent uses. The median efficiency $\STE/\mathrm{TE}_{\mathrm{act}}$ is 0.56 in D1
+and 0.68 in D2. The median of $\SDI/\STE$ is 0.84 in D1 and 0.75 in D2 (smallest 0.47), so the choice between DI and TE
+matters. An agent with one coordinate never uses its actual sensor optimally (H2 in D1). In the 10 systems of D2 where
+the actual sensor is optimal, $\DT$ is also not attained. We have no proof of this link. Figure~\ref{fig:b} shows both
+gaps: projections against garblings in the stored form, and $\STE$ against $\DT$ in the observed form.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_b.pdf}
+\caption{(a) Stored semantic information with $d_x=2$. The best projection (dots) and the drive projection
+(triangles) need more information than the best Gaussian garbling $\SG$ in most systems. The grey line is equality.
+(b) Observed semantic information $\STE$ against the smallest sensor information $\DT$ in the measure of Tanaka et al.,
+in the 58 systems where $\DT$ is attained. All points lie above the line of equality.}
+\label{fig:b}
+\end{figure}
+
+\section{Application to a homeostat and to linear worlds}
+\label{sec:apply}
+Two facts limit what the stored form can say.
+
+\begin{proposition}[scalar environment]\label{prop:F4}
+Let $d_y=1$, and let $V$ be the negative entropy of one coordinate of the agent. If $\Delta V\ne0$, then only $P=1$
+gives $V=\Vact$. So $\SG=\Iact$, and the efficiency is 1.
+\end{proposition}
+\begin{proof}
+$P$ is a number $p\in[0,1]$, and the variance of the coordinate at $\tau$ is affine in $p$, so $V(p)$ is monotone.
+\end{proof}
+
+\begin{proposition}[the semantic threshold]\label{prop:F5}
+In a linear Gaussian system, if some garbling changes $V$ to first order, the information/viability curve grows like
+$\sqrt R$ near $R=0$. So the peak of $\mathrm{d}V/\mathrm{d}R$, the semantic threshold of Ref.~\cite{Sowinski23}, is
+always at $R=0$.
+\end{proposition}
+\begin{proof}
+$V(P)-V(0)$ is linear in $P$ to first order (Eq.~(\ref{eq:affine})), while $I_P$ is quadratic in $P$ near 0.
+\end{proof}
+
+\paragraph{A linear homeostat.} The companion study \cite{Beiro26} builds 400 linear organisms. Each has a hidden
+environment $h$ with time scale $T_h\in[2,20]$, a sensor $s$, a memory $m$ and an actuator $u$ with loop gain $L$. A
+viability variable $v$ feels the push of $h$, and $u$ can push it back:
+\begin{equation}
+\begin{aligned}
+  \mathrm{d}h &= -h/T_h\,\mathrm{d}t + \mathrm{d}\xi_h, &
+  \mathrm{d}s &= -k_s(s-h)\,\mathrm{d}t + \mathrm{d}\xi_s, &
+  \mathrm{d}m &= -k_m(m-s)\,\mathrm{d}t + \mathrm{d}\xi_m,\\
+  \mathrm{d}u &= -k_u(u+Lm)\,\mathrm{d}t + \mathrm{d}\xi_u, &
+  \mathrm{d}v &= (-k_vv+h+u)\,\mathrm{d}t + \mathrm{d}\xi_v , & &
+\end{aligned}
+\label{eq:homeostat}
+\end{equation}
+with independent Gaussian noises $\xi$ and $\mathrm{var}(h)=1$. The rates are log-uniform ($k_s,k_m,k_u\in[0.5,5]$,
+$k_v\in[0.2,1]$), and $L\in[0,1.5]$ is uniform. Its value of information
+$\mathrm{VoI}=\log V_{\mathrm{intact}}-\log V_{\mathrm{scrambled}}$ uses simulated exit times. We computed the value of
+information of Ref.~\cite{KolchinskyWolpert18}, $\DVKW=V(I)-V(0)$, with $V=-H(v_\tau)$, $\tau=1$ and the agent
+$A=(s,m,u,v)$. We rebuilt the data of Ref.~\cite{Beiro26} with the same seeds, and a rule checked that the summary did
+not change. We use the 395 organisms that the companion study keeps. $\DVKW$ ranks the simulated value: $\rho(\DVKW,\mathrm{VoI})=+0.363$
+[$+0.274$, $+0.449$]. But its sign agrees with the sign of VoI in only 0.471 of the organisms, while VoI is positive in
+0.990. $\DVKW$ is positive only when the loop gain is large (median $L$ 1.15, against 0.46 when $\DVKW\le0$). It is
+not a better proxy of VoI than the predictive information $P=I(A_t;h_{t+1})$: the difference of the two rank
+correlations is $-0.045$ [$-0.173$, $+0.074$]. With $V$ on the whole agent, the rank correlation is higher, $+0.651$
+[$+0.593$, $+0.709$]. Because $d_y=1$, Proposition~\ref{prop:F4} makes the stored semantic information equal to the full
+information, so we do not use it as a score here.
+
+\paragraph{Structures in linear worlds.} The companion study \cite{Beiro26} defines a structure as a subset of the
+variables of a 6-dimensional Ornstein--Uhlenbeck world, and its viability $V$ as its mean exit time from a typical set.
+It found that a unit-free information score $\PhiTC=P+C-0.25\,\TC$ (prediction, memory and total correlation) ranks
+structures by $\log V$. We asked whether $\SG$ ranks them too (90 worlds, 5580 structures, $\tau=1$, $V=-H(X_\tau)$ of
+the whole structure). The score is the Spearman correlation with $\log V$ inside each world, averaged over worlds, with
+a cluster bootstrap over worlds.
+\begin{itemize}
+\item $\SG$ ranks structures, weakly: $\rho=+0.197$ [$+0.167$, $+0.226$].
+\item $\DVKW$ has the wrong sign: $\rho=-0.161$ [$-0.205$, $-0.112$]. It is positive in only 0.311 of structures.
+\item $\PhiTC$ ranks better than $\SG$: by $+0.146$ [$+0.085$, $+0.209$] over all structures, and by $+0.402$
+[$+0.344$, $+0.464$] among structures of equal size.
+\item In equilibrium worlds, $\SG$ ranks structures ($+0.198$) and $\PhiTC$ does not ($+0.006$). This was not a rule,
+so it is a description only.
+\end{itemize}
+
+\section{Negative controls}
+\label{sec:controls}
+A score of the use of information must give zero, or a low value, to a system that holds information but does not use
+it. Our data has two such systems. We test three scores on them.
+
+\paragraph{Causal Leverage Density.} Bartlett \cite{Bartlett24} and Sowinski et al.\ \cite{SowinskiEtAl25} drop the
+viability. They scramble part of the information of a known state and run the same dynamics. Then they compare the two laws
+$p$ and $\hat p$ of the state at a later time:
+\begin{equation}
+  \chi = \JS(p\,\Vert\,\hat p)/\Oscr ,
+\end{equation}
+with the Jensen--Shannon divergence in bits and $\Oscr$ the number of scrambled bits. $\chi_1(t)$ is this value at time
+$t$, and $\chi_3(t_1,t_2)$ is its time average \cite{SowinskiEtAl25}, Eqs.~(4)--(7). Neither paper computes CLD for a
+model or tests it on a negative control. The papers leave the scrambled degrees of freedom, $\Oscr$ for continuous
+variables and the times open. Our choices follow.
+
+\subsection{An organism that does not act}
+In the homeostat of Sec.~\ref{sec:apply} without feedback ($L=0$), the sensor and the memory still follow $h$, but the
+actuator ignores them. Nothing uses the information.
+
+\begin{proposition}[no feedback]\label{prop:F6}
+In the homeostat with $L=0$, the value of information on $v$ is negative for every $\tau>0$. So with
+Proposition~\ref{prop:F4}, $\SKW=\Iact$ and the efficiency is 1.
+\end{proposition}
+\begin{proof}
+With $L=0$, Eq.~(\ref{eq:homeostat}) gives $v_\tau=\phi_{vv}v_0+\phi_{vh}h_0+\phi_{vu}u_0+(\text{terms independent of the start})$, with
+$\phi_{vv}=e^{-k_v\tau}>0$ and $\phi_{vh}=\int_0^\tau e^{-k_v(\tau-s)}e^{-s/T_h}\mathrm{d}s>0$. With $L=0$, $u$ is
+independent of $h$, and $\mathrm{Cov}(v_0,h_0)=\int_0^\infty e^{-k_vs}e^{-s/T_h}\mathrm{d}s>0$ for $\mathrm{var}(h)=1$.
+The full scrambling sets $\mathrm{Cov}(A_0,h_0)$ to zero, so $\mathrm{Var}(v_\tau)$ falls by
+$2\phi_{vv}\phi_{vh}\mathrm{Cov}(v_0,h_0)>0$, and $V=-H(v_\tau)$ rises.
+\end{proof}
+
+This uses the equality $V=\Vact$ of Ref.~\cite{KolchinskyWolpert18}, Eq.~(9). With the weaker condition $V\ge\Vact$,
+$P=0$ is feasible when $\DVKW<0$, and $\SKW=0$. For CLD we used the full scrambling of the joint state $(A,h)$ at
+$t=0$ and $\Oscr=I(A_0;h_0)$ in bits. JS comes from the exact Gaussian laws, by Monte Carlo with $2\cdot10^5$ samples
+from each law.
+
+\begin{table}[t]
+\centering
+\caption{The homeostat without feedback (395 organisms, $\tau=1$). N4 is the fraction of organisms where the intact
+version scores higher, with 1000 bootstrap resamples of organisms.}
+\label{tab:c1}
+\begin{tabular}{p{4.6cm}p{6.4cm}p{3.0cm}}
+\toprule
+Rule & Result & Verdict \\
+\midrule
+N1: $\DVKW=0$? & $\DVKW<0$ in all, median $-0.255$ & not zero \\
+N2: $\SKW=0$? & smallest 0.283 nats, efficiency 1 in all & not zero \\
+N3: CLD $\chi_1=0$? & smallest 0.030 bits ($\ge60$ SE), median 0.094 & not zero \\
+N4: $\DVKW$, intact higher & 0.787 [0.747, 0.823] & intact higher \\
+N4: $\SKW$, intact higher & 0.433 [0.385, 0.481] & no feedback higher \\
+N4: CLD $\chi_1$, intact higher & 0.600 [0.552, 0.646] & intact higher \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Results.} Table~\ref{tab:c1} gives the rules. All expectations were met. No score gives zero. $\DVKW$ is
+negative, so its sign carries the control, but its size does not. It ranks the intact organism higher in only 79\% of
+cases. It is also negative in 53.4\% of intact organisms. $\SKW$ is the full information in both versions, and it is
+a little higher without feedback. CLD gives the same median to both versions (0.095 intact and 0.094 without feedback).
+The sensor and the memory follow $h$ in both versions, and CLD sees this correlation. With the condition
+$V\ge\Vact$, $\SKW$ is zero without feedback, but also in 53.4\% of the intact organisms. The simulated VoI is zero
+without feedback by construction, because the actuator reads nothing.
+
+\subsection{Passive memory}
+The companion study \cite{Beiro26} built inertial units $z=(x,v)$ with noise. \emph{Rocks} sit in a double well
+$U=h(x^2-1)^2$ with constant friction. They persist because they stay in a well, with no drive. \emph{Oscillators}
+have a harmonic potential and an active friction that pumps energy in at low speed
+\cite{SchweitzerEbelingTilch98,Romanczuk12}. Their life $\Von$ is the time to leave the cycle. With the drive off,
+their life $\Voff$ is about 23 times shorter. Neither class uses information about an environment, but only the
+oscillator does work to persist. That study used 7 draws of 60 rocks and 60 oscillators. There, the memory
+$C=I(z_t;z_{t+\tau^\ast})$ at a long common lag rated rocks slightly above oscillators of the same life (stratified AUC
+0.57 [0.51, 0.65]).
+
+For CLD, we scramble one bit, $b=\mathrm{sign}(x)$. The start is the stationary law of the unit with $x>0$, so $b$ is
+known. The intervention sets $b$ to a fair coin, which maps each walker to $(-x,-v)$ with probability $\tfrac12$. Both
+classes are symmetric under this map, so the intervention does not change the dynamics, and
+$\hat p=\tfrac12(p+Rp)$ with $R(x,v)=(-x,-v)$. We estimate JS from one $40\times40$ histogram, symmetric about 0, with
+$2\cdot10^4$ walkers. A second group of walkers starts with $b$ already scrambled. Its true CLD is zero, so its value is
+the bias of the histogram, and we subtract it. $\tau^\ast$ is the median rock life of the draw, and $\chi_3$ is the
+average over 41 equal steps on $[0,\tau^\ast]$. The rule compares rocks and oscillators of the same life. It
+computes AUC $=P(\text{rock}>\text{oscillator})$ inside tertiles of $\log V$, in bins with at least 5 units of each
+class. Then it averages over bins, and over the 7 draws with a bootstrap over draws.
+
+\begin{table}[t]
+\centering
+\caption{Rocks against oscillators (7 draws, 840 units). The rebuilt units equal the published summaries in all
+draws.}
+\label{tab:c2}
+\begin{tabular}{p{5.4cm}p{4.6cm}p{3.8cm}}
+\toprule
+Rule & Result & Verdict \\
+\midrule
+K1 (main): stratified AUC of $\chi_3(0,\tau^\ast)$ & 0.711 [0.676, 0.748] & CLD mislabels rocks \\
+K2: stratified AUC of $\chi_1(\tau^\ast)$ & 0.632 [0.576, 0.696] & CLD mislabels rocks \\
+K3: $\rho(\chi_3,\log V)$ over rocks & 0.997 [0.996, 0.998] & yes \\
+Gate: does CLD pass the control? & & fails \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Results.} Table~\ref{tab:c2} gives the rules. CLD rates rocks above oscillators of the same life in all 7
+draws (AUC 0.646 to 0.784 per draw). Among rocks, $\chi_3$ follows $\log V$ almost exactly. So $\chi_3$ measures how
+long the bit stays in memory: a rock keeps its well for a time of the order of its life, and an oscillator loses its
+phase earlier. CLD mislabels rocks more strongly than memory did (0.711 against 0.57). We expected an AUC above 0.8, so
+the effect is weaker than we predicted, but the verdicts do not depend on this. At $\tau^\ast$ itself, CLD is small
+(median $\chi_1$ 0.002 to 0.003 bits for rocks), below the bias of the histogram (about 0.005 bits). So K2 rests on a
+small difference, and K1, over the whole interval, is the main rule. At the own lag $V/2$ of each unit, CLD rates
+oscillators higher (mean AUC 0.341), as memory did in the companion study. There, each unit has a different lag, so
+this is not a comparison at the same life.
+
+Figure~\ref{fig:c} shows the mechanism. CLD decays more slowly for rocks than for oscillators in every draw. Among
+rocks, $\chi_3$ grows steeply with life. Among oscillators, it hardly changes with life.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_c.pdf}
+\caption{Negative controls. (a) CLD $\chi_1$ of each homeostat with and without feedback. The points lie close to the
+line of equality. (b) The median CLD of rocks and oscillators in each of the 7 draws, against time in units of $\tau^\ast$. The
+histogram bias is subtracted. (c) $\chi_3(0,\tau^\ast)$ against life for all 840 units. Rocks with the same life as an
+oscillator mostly score higher.}
+\label{fig:c}
+\end{figure}
+
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{What the Gaussian case gives.} In linear Gaussian systems the stored semantic information of Kolchinsky and
+Wolpert is a convex search over one matrix, with a closed form for an agent with one coordinate. The observed form is
+exact through a covariance recursion. This removes the cost that earlier work named as the obstacle. Two results bear
+on the definition itself. First, the class of interventions matters: noisy garblings beat deterministic
+coarse-grainings in most systems with two agent coordinates, and non-Gaussian partitions can beat both. Second, one
+step of the observed form never changes the viability, so the observed semantic information comes from correlations
+that the agent builds over two or more steps.
+
+\paragraph{What the controls show.} Table~\ref{tab:summary} collects the verdicts. No score gives zero for a system that
+holds information without use. The value of information of Kolchinsky and Wolpert has the correct order in the
+homeostat, but it is negative in most systems: correlation with the environment usually widens the agent. As a score of
+persistence in linear worlds it has the wrong sign. The stored semantic information is the full mutual information
+whenever the environment is one number and the viability is one coordinate. CLD gives the same value to an organism
+that acts and to one that does not, and it prefers passive memory to driven persistence. These scores measure
+correlation or memory. The protocol of Ref.~\cite{SowinskiFrankGhoshal24} asks the user to choose the viability and the
+intervention, and our results show that these choices decide whether a score passes a negative control.
+
+\begin{table}[t]
+\centering
+\caption{Negative controls: summary.}
+\label{tab:summary}
+\begin{tabular}{llll}
+\toprule
+Score & Control & Zero or low? & Verdict \\
+\midrule
+$\DVKW$ & homeostat without feedback & no, negative; order correct (0.787) & fails as a zero test \\
+$\SKW$ & homeostat without feedback & no, equals $\Iact$ & fails \\
+CLD & homeostat without feedback & no, same median as intact & fails \\
+CLD & rocks against oscillators & no, rocks higher (0.711) & fails \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What passes.} In each control, a term that sees the drive or the loop separates the classes. In the
+homeostat, the simulated VoI is zero without feedback, because it scrambles the input of the actuator at all times.
+For the units, the flux ratio $\Von/\Voff$ separates rocks from oscillators with no overlap \cite{Beiro26}: a rock lives
+the same with the drive off, and an oscillator lives much less. Both need an intervention on the mechanism, not only on
+the correlations of a state. We propose these two systems, with code, as negative controls for any score of semantic
+information or agency.
+
+\paragraph{Limits.} The viability $-H(X_\tau)$ follows Ref.~\cite{KolchinskyWolpert18}, and it is not an exit time. Our
+Gaussian values are upper bounds over all interventions. The bound $\STE\le\DT$ is proved only for the first step. We
+fix one choice for CLD where the papers leave it open (the scrambled bit, $\Oscr$, the times and the JS functional).
+Another choice can give another result. The random systems come from one construction each, with one value of $\tau$
+in each rule.
+
+\paragraph{Open problems.} A proof or a counterexample for $\mathrm{TE}\le\mathrm{DT}$ after the first step. A closed
+form, or a tight bound, for $d_x\ge2$. The gap to Tanaka et al.\ with a Kalman filter as decoder. And a score of use
+that passes both controls without a second simulation.
+
+\section*{Data and code availability}
+The code, the step documents with the rules, the reports and the logs are public at
+\url{https://github.com/PepeDest/Beiro-Feat-Flutter-Big-ass-project}. The formulas are in
+\texttt{src/vlife/semantic.py}, \texttt{semantic\_dynamic.py}, \texttt{semantic\_apply.py} and
+\texttt{negative\_controls.py}. The runs are \texttt{experiments/e20} to \texttt{e26}. The test suite has 113 tests.
+
+\section*{Deviations from the rules}
+\begin{itemize}
+\item B1: the pass rule did not allow for the bias of the plug-in estimator at zero information. We report the
+verdict ``fail'' as written (Sec.~\ref{sec:b1}).
+\item B1: a garbling matrix in the simulation script acted on raw $y$ instead of whitened $y$. We fixed it before the
+run.
+\item B4: one script stopped at the last print, after it wrote its results. The second run has no random step and gave
+the same numbers.
+\item C2: the first run stopped when the computer shut down. A resume option reused the saved units, checked them again
+against the summaries, and saved the CLD results after each draw. The rules did not change.
+\end{itemize}
+
+\section*{Use of generative AI}
+The code, the analyses and a first draft of this text were produced with substantial help from Claude (Anthropic), a
+generative AI model, under the direction of the author. The author takes full responsibility for all contents of this
+paper.
+
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+
+\end{document}

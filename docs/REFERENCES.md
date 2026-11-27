@@ -116,3 +116,6 @@ Keys match the `[Key]` tags used in the source code and in `PROVENANCE.md`.
 ## Added for niche C (2026-11-24)
 - **Bartlett24** — S. J. Bartlett, "Causal Leverage Density: a general approach to semantic information", arXiv:2407.07335 (2024). Checked on the arXiv page (v1, 10 Jul 2024, no journal reference).
 - **SowinskiEtAl25** — D. R. Sowinski, S. Holler, M. Wong, G. Segal, D. Parkinson, C. Vidal, J. H. Cleaves, P. Sinhadc, A. Prabhu, S. Bartlett, "Causal Leverage Density: a universal framework for semantic information", *ALIFE 2025: Proceedings of the Artificial Life Conference 2025*, article 43, MIT Press (2025). DOI: 10.1162/isal.a.871. Checked on Crossref.
+
+## Added for the paper of niches B and C (2026-11-26)
+- **Massey90** — J. L. Massey, "Causality, feedback and directed information", *Proceedings of the International Symposium on Information Theory and its Applications (ISITA)*, 303–305 (1990). Check: conference paper, no DOI, not checked against a catalogue. Cited for the definition of directed information.
