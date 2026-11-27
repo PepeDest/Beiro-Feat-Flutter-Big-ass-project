@@ -135,3 +135,57 @@ semantic information is the one of the sensor channel, not of all paths from h t
 only, steady state only.
 
 **Where it runs.** This PC, `experiments/e31_h_energy.py`. A few minutes.
+
+## H1 and H2. Results (run 2026-11-27, `results/e31_h_energy.md`, 449 s on this PC)
+
+| Rule | Value | Verdict | Expectation |
+|---|---|---|---|
+| H1a | largest relative difference of the two l_X: 1.4e-10 | pass | pass. Met |
+| H1b | Ṫ: 2.6e-13. İ_s on the grid: 5.9e-5 | pass | pass. Met |
+| H1c | all theorems hold. The smallest margins: q_X − l_X 0.24 q_X, l_X ≥ 0.004 Ṫ, Ṫ − l_X ≥ 0.0009 Ṫ | pass | pass. Met |
+| H1d | 20 systems, 1000 garblings for each class, none below the optimum | pass | pass. Met |
+| H1e | largest change on the fine grid: 2.3e-4 | pass | pass. Met |
+| H2a | S_Z ≤ q_X. Family H: 0 failures of 400, smallest q_X / S_Z = 29.9. Family R: 0 failures of 2000, smallest 1.22. Class A: 0 failures | holds (H), holds (R) | holds (H). Met. No expectation for R |
+| H2b | S_Z ≤ l_X. Family H: 3 failures of 400, smallest l_X / S_Z = 0.72. Family R: 155 failures of 2000, smallest 0.14. Class A: 1 and 53 failures | fails (H), fails (R) | no firm expectation |
+| H2c | S_Z ≤ q_s. Family H: 117 failures, smallest 0.14. Family R: 241 failures, smallest 0.13 | fails (H), fails (R) | no firm expectation |
+
+The sensor helps (∫ Re c < 0) in all 400 organisms of family H and in 988 of the 2000 systems of family R. In the other
+1012 systems of family R, S = 0.
+
+**Description (H2d, median [10 %, 90 %], systems where the sensor helps).**
+| Ratio | Family H | Family R |
+|---|---|---|
+| S_Z / İ_s (semantic part of the channel) | 0.56 [0.23, 0.84] | 0.82 [0.17, 1.00] |
+| S_A / İ_s | 0.31 [0.08, 0.65] | 0.37 [0.06, 0.80] |
+| S_Z / q_X (used information per unit of heat) | 0.002 [0.000, 0.012] | 0.008 [0.000, 0.120] |
+| S_Z / l_X | 0.27 [0.12, 0.47] | 0.41 [0.08, 1.18] |
+| η = l_X / q_X (all systems) | 0.007 [0.000, 0.041] | 0.025 [0.001, 0.168] |
+| C = l_X / Ṫ (all systems) | 0.48 [0.15, 0.82] | 0.54 [0.16, 0.92] |
+
+**H2e (family H, 395 organisms, Spearman ρ with the simulated VoI of S3).** S_Z +0.57, S_A +0.56, İ_s +0.46,
+l_X +0.30, q_X −0.34. For comparison (B4a, `results/e23_b4a_homeostat.json`): ΔV_KW +0.36, P +0.41.
+
+**Post-hoc observations (not rules).**
+1. In the systems where S_Z > l_X, S_Z / İ_s is near 1 (median 0.88 in family H, 1.00 in family R) and η is very
+   small (median 5e-5 in family H). These agents need almost all of the channel, and their own dynamics make little
+   new correlation with h.
+2. The transfer entropy rate is not below the heat: Ṫ / q_X reaches 1.11 in family R. İ_s / q_X stays below 0.82 in
+   all 2400 systems. We did not expect this, and we have no proof for it.
+
+### What H1 and H2 show
+1. **The learning rate does not bound the semantic information.** The second law prices the learning rate l_X. The
+   observed semantic information rate of the sensor channel can be larger than l_X, by up to seven times in family R.
+   So "the agent pays for the information that it uses" is false if one measures the payment with the learning rate.
+2. **The heat of the agent bounds the semantic information in all 2400 systems, with a wide margin in the
+   homeostat.** The heat is about 500 times the used information in the median organism (S_Z / q_X = 0.002). This is
+   a numerical result. In family R the smallest margin is 1.22, so a search for a counterexample is the next test (H3).
+3. **The heat of the sensor alone does not bound it.** In 117 organisms of family H the sensor gives less heat than
+   the semantic information that passes through it. The heat that "pays" is the heat of the parts after the sensor.
+4. **The semantic rate ranks the S3 organisms better than the earlier measures.** ρ = +0.57 with the simulated VoI,
+   against +0.41 for P and +0.36 for the stored value ΔV_KW. This is a description, not a rule.
+
+### Limits
+- One bath for each coordinate, with the temperature D_ii. Other physical models of the same equations give other
+  heats.
+- The semantic information is the one of the sensor channel only.
+- Two families, drawn by us. The bound of H2a is numerical.
