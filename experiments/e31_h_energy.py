@@ -88,6 +88,15 @@ def thermo(sy):
     return r
 
 
+def thermo_fast(sy):
+    """q_X and the closed-form I_s only (for the H3 search, e31b_h3_search.py)."""
+    B, D, S, X, s, h = sy["B"], sy["D"], sy["S"], sy["X"], sy["s"], sy["h"]
+    Dd = np.diag(D); M = B - D @ np.linalg.inv(S)
+    q = np.diag(B @ S @ M.T) / Dd
+    b, Dh, k = B[h, h], D[h, h], -B[s, h]
+    return dict(q_X=float(q[X].sum()), Is_closed=0.5 * (np.sqrt(b ** 2 + 2 * (k ** 2 / (2 * Dd[s])) * Dh) - b))
+
+
 # ------------------------------------------------------------------ semantic information rate (docs/H.md, H1)
 class Grid:
     def __init__(self, n=20_000, lo=1e-6, hi=1e5):

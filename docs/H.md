@@ -215,3 +215,48 @@ We report if the best point lies at a limit of the box. **Expectations:** no fir
 counterexample is likely, because İ_s / q_s reaches 8 in H2 and the search can make the heat after the sensor small.
 
 **Where it runs.** This PC, `experiments/e31b_h3_search.py`, 4 workers.
+
+## H3. Results (run 2026-11-27, `results/e31b_h3_search.md`, 136 s on this PC)
+
+| Rule | Best ratio | Fine grid | Starts above 1 | Best point at a limit of the box | Checks H1a to H1c | Verdict | Expectation |
+|---|---|---|---|---|---|---|---|
+| H3a | S_Z / q_X = 499.5 (from R 289, start 0.27) | 499.5 | 48 of 48 | yes | pass | counterexample | no firm expectation |
+| H3b | İ_s / q_X = 499.5 (from R 648, start 0.82) | 499.5 | 48 of 48 | yes | pass | counterexample | counterexample likely. Met |
+
+The first run stopped when it wrote the JSON file (a numpy bool). We fixed the write and ran the same search again.
+The search is deterministic, and we saw no result of the first run.
+
+**The best point (both searches, dx = 2: a sensor and the target).** T_h = 1000 (a slow environment). The sensor has
+k = 1000 and d_s = 1000, so its input noise is N' = 0.002. The target relaxes at the rate 1000, with D = 1000, and the
+sensor acts on it with a weight of only 0.001. Here S_Z = İ_s = Ṫ = 0.4995, and q_X = q_s = l_X = 0.001 nats per unit
+time. So η = l_X / q_X ≈ 1, and the sensory capacity is C = l_X / Ṫ ≈ 0.002.
+
+**The gain in viability at this point is very small (post-hoc).** The sensor lowers Var(x_T) by 2.0e-9 of its value.
+The semantic information of KolchinskyWolpert18 asks for V = V_act exactly, so even this small gain needs the whole
+channel (S_Z = İ_s). The counterexample is real, but it lives where the use of the information is almost zero.
+
+**What H3 shows.**
+1. **The heat does not bound the semantic information in general.** H2a holds in the two families of H2, but a search
+   breaks it in every one of the 48 starts. The best ratio sits at the limit of the box (10⁻³ to 10³), so we see no
+   finite constant.
+2. **The mechanism.** A slow environment and a precise sensor give a large transfer entropy, but the dynamics of the
+   agent make little new correlation with h: l_X is small. The second law prices l_X, so the heat can be as small as
+   l_X. The semantic information of the channel is part of the transfer entropy, not of l_X.
+3. **Consequence for H.** In linear systems, the observed semantic information of a channel has no thermodynamic
+   price of its own. The search found the counterexample where the viability gain is almost zero. We did not test a
+   search with a lower limit on the gain. The thermodynamic price is on the learning rate, and S_Z can exceed it by a large factor. A
+   bound needs a semantic measure built on the learning rate, not on the transfer entropy. We did not define one.
+
+## What niche H shows (2026-11-27)
+| Statement | Status |
+|---|---|
+| The learning rate, the heat and the transfer entropy of linear bipartite systems in closed form, each checked by a second method | done (H1a to H1c) |
+| The observed semantic information rate of a sensor channel, as a convex problem with a closed-form optimum | done (H1d, H1e) |
+| S ≤ heat of the agent | holds in 2400 random systems, but false in general (H3a: up to 500 times, at the limit of the search box, with a gain in viability of 2e-9) |
+| S ≤ learning rate | false (H2b) |
+| S ≤ heat of the sensor | false (H2c) |
+| The semantic rate ranks the S3 organisms by VoI | ρ = +0.57, above P (+0.41) and ΔV_KW (+0.36). Descriptive |
+
+**For the contact (Kolchinsky, Ito).** The statement for them is a negative result with a mechanism: the
+transfer-entropy form of semantic information is not priced by the second law. Before any email, an expert must check
+the closed forms of H1 and the counterexample of H3.
