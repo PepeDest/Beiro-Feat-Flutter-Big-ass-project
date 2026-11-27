@@ -28,10 +28,13 @@ controls and gives these tests:
 
 A score can skip a control: the user gives only `linear_score`, or only `unit_score` or precomputed `unit_values`.
 
-**Reference scores in the package.** ΔV_KW (Eq. (6) of KolchinskyWolpert18, V = −H of the target at τ), the stored
-semantic information S_KW (dy = 1, the root search of docs/B.md, B4, in the reading V = V_act), CLD for linear
-systems (exact Gaussian laws, Monte Carlo JS, docs/C.md), CLD for the units (the mirror method of docs/C.md, C2), and
-the flux ratio.
+**Reference scores in the package.**
+- ΔV_KW: Eq. (6) of KolchinskyWolpert18, with V = −H of the target at τ.
+- S_KW: the stored semantic information for dy = 1. It uses the root search of docs/B.md (B4) and the reading
+  V = V_act.
+- CLD for linear systems: exact Gaussian laws and a Monte Carlo JS (docs/C.md, C1).
+- CLD for the units: the mirror method of docs/C.md (C2).
+- The flux ratio log(V_on / V_off).
 
 ## I1 and I2. Rules (fixed 2026-11-27, before the code)
 
@@ -39,7 +42,7 @@ the flux ratio.
 |---|---|---|
 | I1a | Are the controls the same as in this repository? | "pass" if the (B, D, S) of the homeostat equal `vlife.agency.homeostat` to 10⁻¹² for all 400 organisms and both versions, and the unit data equal `results/e26_v_dataset.pkl` and `cluster/data/f_units.json` exactly |
 | I1b | Do the reference scores give the known answers? | "pass" if all hold: ΔV_KW < 0 without feedback in all 400 organisms (F6 of docs/C.md). S_KW = I(A; h) without feedback in all 400 (F4). \|ΔV_KW\| < 10⁻¹⁰ and S_KW < 10⁻¹⁰ in all 200 reader systems at τ in {0.5, 1, 5}. CLD of the package equals `vlife.negative_controls.cld_gaussian` with the same seeds on 5 organisms, to 10⁻¹² |
-| I1c | Does `check` give the verdicts of niche C? | "pass" if, on the 395 organisms of C1, the order fraction of ΔV_KW is 0.787 and of CLD χ₁ 0.600 (to 10⁻³), and the `rocks_order` AUC of the stored χ₃ values is the K1 value 0.711 [0.676, 0.748] of `results/e26_c2_rocks.json` (to 10⁻⁹) |
+| I1c | Does `check` give the verdicts of niche C? | "pass" if both hold. On the 395 organisms of C1, the order fraction is 0.787 for ΔV_KW and 0.600 for CLD χ₁ (to 10⁻³). On the stored χ₃ values, the `rocks_order` AUC is the K1 value 0.711 [0.676, 0.748] (to 10⁻⁹) |
 | I1d | Does the package install and test from the repository? | "pass" if `pip install ./semcontrols` works in a new venv, and its tests pass there |
 | I2 | Does the README example run in under 1 minute? | "pass" if the example (ΔV_KW and CLD on each control, with small sizes) runs in under 60 s on this PC |
 
