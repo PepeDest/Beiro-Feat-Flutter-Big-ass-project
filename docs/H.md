@@ -189,3 +189,29 @@ l_X +0.30, q_X −0.34. For comparison (B4a, `results/e23_b4a_homeostat.json`): 
   heats.
 - The semantic information is the one of the sensor channel only.
 - Two families, drawn by us. The bound of H2a is numerical.
+
+## H3. A search for a counterexample to H2a (rules fixed 2026-11-27, after the H2 results, before the search)
+
+**Why.** H2a holds in all 2400 systems, but the smallest margin in family R is 1.22. A random draw rarely finds the
+worst case. Post-hoc observation 2 (İ_s ≤ q_X) is also untested. H3 searches for systems that break each bound.
+
+**Search.**
+- Starts: the 40 systems of family R and the 8 organisms of family H with the largest S_Z / q_X in
+  `results/e31_h_energy.json`.
+- Free parameters: the logarithm of the modulus of each nonzero entry of B_xx (the signs stay fixed, the sensor keeps
+  B_00 = −B_0h = k), the logarithm of each D_ii of the agent, and log T_h (with B_hh = D_hh = 1/T_h). The push on the
+  target stays −1. Each logarithm stays in [log 10⁻³, log 10³].
+- Objective: the largest S_Z / q_X (H3a), and in a second search the largest İ_s / q_X (H3b). A point with an
+  eigenvalue of B_xx below 0.01 in real part gets the value −∞.
+- Method: Nelder–Mead, at most 600 evaluations for each start and each objective, on the grid of 4000 frequencies.
+- Confirmation of the best point: the grid of 200 000 frequencies, and the checks H1a, H1b and H1c on that system.
+
+| Rule | Question | Verdict |
+|---|---|---|
+| H3a | Is there a system with S_Z > q_X? | "counterexample" if the best ratio is above 1 on the fine grid and the system passes H1a to H1c. Else "none found", with the largest ratio |
+| H3b | Is there a system with İ_s > q_X? | as H3a |
+
+We report if the best point lies at a limit of the box. **Expectations:** no firm expectation for H3a. H3b: a
+counterexample is likely, because İ_s / q_s reaches 8 in H2 and the search can make the heat after the sensor small.
+
+**Where it runs.** This PC, `experiments/e31b_h3_search.py`, 4 workers.
