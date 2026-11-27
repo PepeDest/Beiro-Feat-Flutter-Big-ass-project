@@ -1,0 +1,69 @@
+{
+  "verdicts": {
+    "I1a": "pass",
+    "I1b": "pass",
+    "I1c": "pass"
+  },
+  "results": {
+    "I1a": {
+      "max_dev_homeostat": 0.0,
+      "units_equal": true
+    },
+    "I1b": {
+      "frac_dV_negative_nf": 1.0,
+      "max_rel_dev_SKW": 3.986433737649721e-15,
+      "reader_max": 0.0,
+      "cld_max_dev": 0.0
+    },
+    "I1c": {
+      "frac_dV": 0.7873417721518987,
+      "frac_cld": 0.6,
+      "rocks": [
+        0.7111576859868282,
+        0.6760929640551343,
+        0.7481136408279331
+      ],
+      "K1": [
+        0.7111576859868282,
+        0.6760929640551343,
+        0.7481136408279331
+      ],
+      "check_kw_value": {
+        "homeostat_zero": "fail",
+        "homeostat_order": "pass",
+        "reader_zero": "pass"
+      }
+    },
+    "desc": {
+      "reader_cld_median": 0.032569222934090244,
+      "reader_cld_min_over_se": -2.1543556251124443,
+      "check_kw_value": {
+        "homeostat_zero": {
+          "known": "0 without feedback",
+          "n": 395,
+          "max_abs": 0.32042157905927504,
+          "frac_zero": 0.0,
+          "verdict": "fail"
+        },
+        "homeostat_order": {
+          "known": "intact above no feedback",
+          "n": 395,
+          "frac": 0.7873417721518987,
+          "ci": [
+            0.7467721518987341,
+            0.8228481012658228
+          ],
+          "verdict": "pass"
+        },
+        "reader_zero": {
+          "known": "0 when the environment only reads the agent",
+          "n": 200,
+          "max_abs": 0.0,
+          "frac_zero": 1.0,
+          "verdict": "pass"
+        }
+      }
+    },
+    "seconds": 123.43970775604248
+  }
+}

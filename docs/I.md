@@ -52,3 +52,42 @@ closed form of docs/B.md (B1: if Φ_XY = 0, V does not depend on P).
 **What the README must say.** Each control, its known answer and its source. How a reader adds a score. That a "pass"
 on these controls is necessary, not sufficient: the controls test only that a score does not confuse correlation or
 passive memory with use.
+
+## I1 and I2. Results (run 2026-11-27)
+
+Package: `semcontrols/` (source in `semcontrols/src/semcontrols/`, 14 tests in `semcontrols/tests/`). Checks against
+this repository: `experiments/e32_i_semcontrols.py`, `results/e32_i_semcontrols.md`, 123 s on this PC.
+
+| Rule | Value | Verdict | Expectation |
+|---|---|---|---|
+| I1a | homeostat (B, D, S): largest difference 0 in all 400 organisms and both versions. The 840 units equal both sources | pass | pass. Met |
+| I1b | ΔV_KW < 0 without feedback in 400 of 400. S_KW against I(A; h): 4e-15 relative. Reader systems: largest \|ΔV_KW\| or S_KW is 0 at the three τ. CLD against `vlife`: difference 0 | pass | pass. Met |
+| I1c | order fraction 0.7873 for ΔV_KW and 0.6000 for CLD χ₁. `rocks_order` AUC 0.7112 [0.6761, 0.7481], the same as K1 | pass | pass. Met |
+| I1d | `pip install "./semcontrols[test]"` in a new venv (numpy 2.5.5, scipy 1.18.1, pytest 9.2.0 from the pip cache or PyPI). 14 tests pass in that venv | pass | pass. Met |
+| I2 | `semcontrols/examples/example.py`: 5.0 s in the new venv, 6.7 s from the source tree | pass | pass. Met |
+
+**The new `reader` control (description).**
+- ΔV_KW and S_KW give exactly 0, as B1 says. They pass `reader_zero`.
+- CLD χ₁ at τ = 1 gives a median of 0.033. CLD sees the correlation that the environment builds when it reads the
+  agent, so CLD fails `reader_zero`. In some systems the value is inside the Monte Carlo noise (the smallest χ₁ / se
+  is −2.2).
+
+**Results of the reference scores on the controls (full sizes).**
+| Score | `homeostat_zero` | `homeostat_order` | `reader_zero` | `rocks_order` |
+|---|---|---|---|---|
+| ΔV_KW | fail (negative, F6) | pass (0.787) | pass | — |
+| CLD χ₁ | fail | pass (0.600) | fail | fail (AUC 0.711, χ₃) |
+| flux ratio | — | — | — | pass (AUC 0) |
+
+**Other changes.** `semcontrols/tests/conftest.py` lets a plain `pytest` at the repository root find the source tree.
+All 127 tests of the repository pass (113 before, plus the 14 of the package). `.gitignore` now excludes the build
+outputs of `pip install`.
+
+### What I shows
+1. The controls of niches B, C and S2 are now one package with known answers, a test function and reference scores.
+   It does not import `vlife`, and it gives the same numbers as `vlife`.
+2. No reference score passes all four tests. ΔV_KW passes the order test and the reader test, but it is not zero
+   without feedback. CLD passes only the order test. The flux ratio passes the rock test, but it is not defined for
+   the linear controls.
+3. The D controls (the still agent and the deaf forager) are not in the package yet. They wait for the results of the
+   Xeon machines.

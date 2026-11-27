@@ -17,3 +17,7 @@ paper/main.pdf
 cluster_out*/
 results_cluster_out_*.zip
 cluster_bundle_*.zip
+
+# Build outputs of pip install ./semcontrols
+semcontrols/build/
+*.egg-info/
