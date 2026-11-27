@@ -94,3 +94,54 @@ signal to kinase activity: approach"), and the paper says that the Gaussian form
 gradients. We use the measured median cell only.
 
 **Where it runs.** This PC, `experiments/e30_e_coli.py`. A few minutes.
+
+## E1 to E3. Results (run 2026-11-27, `results/e30_e_coli.md`, 1940 s on this PC)
+
+| Rule | Value | Verdict | Expectation |
+|---|---|---|---|
+| E1a | β: closed form 0.216489, integral 0.216489 bits/s/mm⁻² | agree | agree. Met |
+| E1b | β = 0.2169 [0.1945, 0.2412] (10 000 draws of Table S1) | agrees (paper: 0.22 ± 0.03) | agrees. Met |
+| E2a | class A: 171 feasible random garblings, the best is 1.42 times the optimum. Class Z: 0 feasible random garblings | pass (empty for class Z, see below) | pass. Met for A |
+| E2b | e_Z = 0.439 [0.431, 0.447] | yes | yes. Met |
+| E2c | e_A = 0.086 [0.085, 0.087] | descriptive | e_A < e_Z. Met |
+| E3a | e_Z against 0.44 ± 0.07 | match | no firm expectation |
+| E3b | e_A against 0.44 ± 0.07 | differ | no firm expectation |
+
+A grid of 200 000 frequencies gives the same e_A and e_Z to four decimals. Re K < 0 above ω = 1.43 rad/s.
+
+**The E2a check is empty for class Z.** A random garbling of class Z with |H| < 1 almost always lowers V below
+V_actual, so none of the 1000 draws was feasible. A post-hoc check (not a rule, `experiments/e30b_posthoc_z_check.py`,
+`results/e30b_posthoc_z_check.json`) perturbs the optimum at random and then mixes it with H = 1{Re K > 0} to meet
+V = V_actual exactly. 961 draws are feasible. The best is 1.0008 times the optimum. None is below it. The problem is
+convex, so this is what we expect.
+
+**How the result depends on the parameters (post-hoc, descriptive, central values of Table S1 except one).**
+| Parameter | Value: e_Z (e_A) |
+|---|---|
+| τ1 | 0.01 s: 0.700 (0.089), **0.05 s: 0.439 (0.086)**, 0.22 s: 0.209 (0.076) |
+| λ | 0.5 s⁻¹: 0.630 (0.142), **0.862 s⁻¹: 0.439 (0.086)**, 1.5 s⁻¹: 0.242 (0.050) |
+| τ2 | 5 s: 0.519 (0.099), **9.9 s: 0.439 (0.086)**, 20 s: 0.378 (0.084) |
+| τ_n | 5 s: 0.581 (0.166), **11.75 s: 0.439 (0.086)**, 25 s: 0.404 (0.053) |
+
+### What E shows
+1. **A first semantic information of a measured pathway.** With the pathway fixed and the measured parameters, the
+   E. coli kinase needs 44 % of the information that it gets (class Z) to keep its drift. If the intervention can also
+   shift the signal in time (class A), 8.6 % is enough. The CIs from Table S1 are narrow (±0.01), because the
+   parameters of Table S1 have small errors.
+2. **Why the rest is not needed.** The kinase lags the signal. Above about 1.4 rad/s its response is out of phase with
+   the velocity, so these frequencies lower the drift (Re K < 0). The best garbling of class Z removes them and
+   keeps the slow ones. The best garbling of class A also undoes the lag, which a real intervention cannot do.
+3. **The match with the paper (E3a) is a match of numbers, not yet of mechanisms.** The 0.44 of the paper comes from
+   the measured drift speed, the motors and the behaviour. Our 0.44 uses only the kinase model. The match depends on
+   τ1: with the fit value τ1 = 0.22 s, e_Z is 0.21. With τ1 = 0.22 s the paper's β falls by 16 %, so its efficiency
+   rises to about 0.72 and the square to about 0.52. So at τ1 = 0.22 s the two numbers differ. We report the match as a
+   fact at the paper's choice τ1 = 0.05 s, and not as a law.
+4. **What readers can use.** The semantic information of KolchinskyWolpert18 is cheap for any linear pathway: one
+   closed-form optimum in the frequency domain. A group with measured K, N and signal statistics can compute it in
+   seconds with `experiments/e30_e_coli.py`.
+
+### Limits
+- The viability is the covariance of the kinase output and the velocity, not the measured drift speed.
+- Class A is not causal. A causal class (H analytic in the lower half plane) is a harder problem, and we did not solve
+  it. Its value lies between e_A and the value of the best causal filter that we did not compute.
+- One median cell. The paper reports a spread of phenotypes.
