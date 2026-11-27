@@ -32,10 +32,16 @@ PDFs and checked Appendix B of Sowinski23 ourselves. Neither paper gives a link 
 | Wall rule "if x > L then x ↦ L − x" (a typo: L − x is outside the box for x > L) | x ↦ 2L − x |
 | Move at a detection: "x + y1/|y1| Δt" (no v, a typo) | x + v n̂ Δt |
 | Initial heading | uniform |
-| Fuel cap at S | no cap (the update rules have none) |
+| Fuel cap at S | s ↦ min(s + ε, S), with S = 1. Table II calls S the "maximum stored energy". See the note below the table |
 | Fuel cost on a harvest step | none (as in the flowchart) |
 | Maximum time | 10^4 time units. A run that reaches it counts as censored and is reported |
 | η = 0 in the grid | included (the first value of [0, 0.15)) |
+
+**Note on the fuel cap (2026-11-27, a test before any run, not a result).** Our first choice was no cap. A test with
+40 runs for each speed at η = 0 gave agents that do not die at v = 25 and v = 30: most runs reached the time limit of
+10^4. With the cap, all runs end before the limit (200 runs for each speed: mean V from 0.82 at v = 5 to 48 at v = 30
+at η = 0). The paper shows finite viabilities at all six speeds (Fig. 4). So we use the cap. Without the cap, V at
+η = 0 and v = 20 is 24.8, and with the cap 14.5. At η = 1 the cap changes nothing (0.86 in both).
 
 ### SowinskiFrankGhoshal24: the Kuramoto agent (Sec. III, Appendix A)
 - Oscillators: dθ_i/dt = ω_i + σ Σ_j A_ij sin(θ_j − θ_i) (Eq. (1)), ω_i standard normal, uniform initial phases. No

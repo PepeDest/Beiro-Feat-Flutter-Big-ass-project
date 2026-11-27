@@ -12,3 +12,8 @@ paper/*.blg
 paper/*.log
 paper/*.out
 paper/main.pdf
+
+# cluster runs (niches D, F, G)
+cluster_out*/
+results_cluster_out_*.zip
+cluster_bundle_*.zip

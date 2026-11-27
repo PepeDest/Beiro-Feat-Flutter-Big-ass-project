@@ -91,3 +91,53 @@ own best sensor, which can differ from the best sensor of DT.
 
 **Where it runs.** G1 and G2 run on this PC. G3 runs on the Xeon machines (`cluster/`). G3 uses the Kalman
 filter of G2 for DT.
+
+## G1. Results (run 2026-11-27, `results/e29_g1.json`, log `results/e29_g1_run.log`)
+
+| τ | TE exact | TE Monte Carlo (SE) | DT exact | DT Monte Carlo (SE) | DT − TE Monte Carlo [95 % CI] |
+|---|---|---|---|---|---|
+| 16 | 0.9430 | 0.9437 (0.0013) | 1.4557 | 1.4571 (0.0006) | +0.513 [+0.511, +0.515] |
+| 64 | 4.0104 | 4.0082 (0.0038) | 2.6272 | 2.6369 (0.0009) | −1.371 [−1.379, −1.364] |
+
+| Rule | Verdict | Expectation |
+|---|---|---|
+| G1a | agree | agree. Met |
+| G1b | false: TE ≤ DT is false in general | false. Met |
+
+The Kalman filter (G2) and the trajectory covariance of B3 also give the same TE and DT, to 10^-12 nats.
+
+## G2. Results (run 2026-11-27, `results/e29_g2.md`, log `results/e29_g2_run.log`)
+
+Before the run, the Kalman filter DT agreed with the trajectory covariance on 200 systems at τ = 16 (largest difference
+1.9 × 10^-11 nats, `results/e29_g_check.json`). Time: 834 s on 4 cores.
+
+| Rule | Value | Verdict | Expectation |
+|---|---|---|---|
+| G2a | 308 systems fail at τ ≤ 4. The smallest failing τ is 2 | fails at τ ≤ 4 in 308 systems | "never at τ ≤ 4". **Not met** |
+| G2b | logistic slope on log(τ_y / τ_x): 0.369 [0.353, 0.384] | yes | yes. Met |
+| G2c | fraction failing, M − S: −0.014 [−0.032, 0.005] | no | yes. **Not met** |
+
+| Family | Systems | Fail by τ = 64 | Fail at τ ≤ 4 |
+|---|---|---|---|
+| R (random, as B3) | 5000 | 63 (1.3 %) | 6 |
+| S (slow environment) | 5000 | 1669 (33 %) | 7 |
+| SF (slow environment, feedback) | 5000 | 1575 (32 %) | 258 |
+| M (agent with a long memory) | 5000 | 1600 (32 %) | 37 |
+
+Quantiles of the failing τ: 5 % at 4, median 18, 95 % below 64.
+
+**Check of the τ = 2 failures (after the run, not a rule).** We computed three failing systems again with the trajectory
+covariance of B3. Example: SF seed 92013, dx = dy = 1, s = 0.605. DT − TE is +0.399 nats at τ = 1 (as F3 requires) and
+−0.103 nats at τ = 2. So the failure is real, and it can come at the second step.
+
+### What G1 and G2 show
+1. **Conjecture B3-T is false in its pointwise form.** TE ≤ DT holds at the first step (F3), but not after it. In
+   random systems like those of B3 it fails rarely (1.3 %), which explains why B3 saw no failure in 69 systems at τ = 4.
+   In systems with a slow environment it fails in about one third of the systems by τ = 64.
+2. **A slow environment drives the failure (G2b).** The argument of G0 (the agent forgets, so TE counts the same
+   information again) is not the full story: an agent with a long memory fails as often (G2c). Feedback from the agent
+   to the environment gives the early failures (258 of the 308 systems with τ ≤ 4).
+3. **What it means for the paper of B and C.** The paper states the bound after the first step as numerical only, and it
+   reports "in all tests". This stays true for its tests, but the general claim is false. G3 tests the claim that the
+   paper uses (S_TE ≤ D_T*), which is about the best sensors and not about each sensor. A correction goes into the paper
+   after G3 (step G4).
