@@ -9,6 +9,7 @@ controls (niche C). Every number comes from `docs/B.md`, `docs/C.md` and the rep
 | `refs.bib` | The bibliography |
 | `figures/` | The two figures (PDF and PNG) |
 | `make_figures.py` | Makes the figures from the result files. Run it from the repository root |
+| `paper_bc_overleaf.zip` | main.tex, refs.bib and figures/, ready to upload to Overleaf |
 | `abstract_arxiv.txt` | The abstract as plain ASCII text for the arXiv field (limit 1920 characters) |
 
 The figure of the C2 units needs `results/e26_units.csv` (the class and the life of each unit). The script
