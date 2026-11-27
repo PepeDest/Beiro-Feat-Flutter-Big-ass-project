@@ -119,3 +119,11 @@ Keys match the `[Key]` tags used in the source code and in `PROVENANCE.md`.
 
 ## Added for the paper of niches B and C (2026-11-26)
 - **Massey90** — J. L. Massey, "Causality, feedback and directed information", *Proceedings of the International Symposium on Information Theory and its Applications (ISITA)*, 303–305 (1990). Check: conference paper, no DOI, not checked against a catalogue. Cited for the definition of directed information.
+
+## Added for niche H (2026-11-27)
+- **HorowitzEsposito14** — J. M. Horowitz, M. Esposito, "Thermodynamics with continuous information flow", *Physical Review X* 4, 031015 (2014). DOI: 10.1103/PhysRevX.4.031015. Checked on Crossref.
+- **BaratoHartichSeifert14** — A. C. Barato, D. Hartich, U. Seifert, "Efficiency of cellular information processing", *New Journal of Physics* 16, 103024 (2014). DOI: 10.1088/1367-2630/16/10/103024. Checked on Crossref.
+- **HartichBaratoSeifert14** — D. Hartich, A. C. Barato, U. Seifert, "Stochastic thermodynamics of bipartite systems: transfer entropy inequalities and a Maxwell's demon interpretation", *J. Stat. Mech.* P02016 (2014). DOI: 10.1088/1742-5468/2014/02/P02016. Checked on Crossref.
+- **HartichBaratoSeifert16** — D. Hartich, A. C. Barato, U. Seifert, "Sensory capacity: an information theoretical measure of the performance of a sensor", *Physical Review E* 93, 022116 (2016). DOI: 10.1103/PhysRevE.93.022116. Checked on Crossref.
+- **MatsumotoSagawa18** — T. Matsumoto, T. Sagawa, "Role of sufficient statistics in stochastic thermodynamics and its implication to sensory adaptation", *Physical Review E* 97, 042103 (2018). DOI: 10.1103/PhysRevE.97.042103. Checked on Crossref.
+- **MatsumotoSasaDechant25** — K. Matsumoto, S.-i. Sasa, A. Dechant, "Learning rate matrix and information-thermodynamic trade-off relation", arXiv:2504.09981 (2025). Checked on the arXiv page (v3, 24 Jul 2025).
