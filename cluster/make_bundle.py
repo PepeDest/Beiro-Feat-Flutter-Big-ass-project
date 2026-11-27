@@ -17,9 +17,7 @@ def main():
         for f in FILES:
             data = (ROOT / f).read_bytes()
             if f.endswith(".sh"):
-                data = data.replace(b"
-", b"
-")          # bash needs LF line ends
+                data = data.replace(b"\r\n", b"\n")          # bash needs LF line ends
             sums.append(f"{hashlib.sha256(data).hexdigest()}  {f}")
             info = zipfile.ZipInfo(f"{name}/{f}", date_time=(2026, 11, 27, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
